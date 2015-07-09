@@ -42,6 +42,16 @@ class SimpleTaskTest extends Test
     /**
      * @test
      */
+    public function throwsExceptionsForInvalidCallable()
+    {
+        $this->setExpectedException("InvalidArgumentException");
+
+        new SimpleTask("foo");
+    }
+
+    /**
+     * @test
+     */
     public function taskCanBeSerializedAndUnserialized()
     {
         // tasks should be able to serialize

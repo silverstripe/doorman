@@ -16,9 +16,9 @@ class SimpleHandler implements Handler
     {
         $data = $task->getData();
 
-        // TODO handle malformed data
-
-        $callback = $data["callback"];
-        $callback();
+        if (isset($data["callback"])) {
+            $callback = $data["callback"];
+            $callback();
+        }
     }
 }

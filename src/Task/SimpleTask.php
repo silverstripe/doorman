@@ -3,6 +3,7 @@
 namespace AsyncPHP\Doorman\Task;
 
 use AsyncPHP\Doorman\Task;
+use InvalidArgumentException;
 use Jeremeamia\SuperClosure\SerializableClosure;
 
 class SimpleTask implements Task
@@ -17,7 +18,9 @@ class SimpleTask implements Task
      */
     public function __construct($callback)
     {
-        // TODO handle malformed callback
+        if (!is_callable($callback)) {
+            throw new InvalidArgumentException("Invalid callable");
+        }
 
         $this->callback = $callback;
     }
