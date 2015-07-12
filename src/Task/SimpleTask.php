@@ -54,6 +54,7 @@ class SimpleTask implements Task
      */
     public function unserialize($serialized)
     {
+        /** @var SerializableClosure $closure */
         $closure = unserialize($serialized);
 
         $this->callback = $closure->getClosure();
