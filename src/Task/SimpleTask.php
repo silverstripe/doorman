@@ -14,11 +14,6 @@ class SimpleTask implements Task
     protected $callback;
 
     /**
-     * @var null|int
-     */
-    protected $pid;
-
-    /**
      * @param callable $callback
      */
     public function __construct($callback)
@@ -28,30 +23,6 @@ class SimpleTask implements Task
         }
 
         $this->callback = $callback;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @return null|int
-     */
-    public function getPid()
-    {
-        return $this->pid;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @param int $pid
-     *
-     * @return $this
-     */
-    public function setPid($pid)
-    {
-        $this->pid = $pid;
-
-        return $this;
     }
 
     /**

@@ -19,18 +19,4 @@ interface Task extends Serializable
      * @return array
      */
     public function getData();
-
-    /**
-     * Gets the process ID for this task.
-     *
-     * @return null|int
-     */
-    public function getPid();
-
-    /**
-     * Sets the process ID for this task.
-     *
-     * @param int $pid
-     */
-    public function setPid($pid);
 }

@@ -1,6 +1,6 @@
 # Doorman
 
-Process forking and management.
+Child process management.
 
 ## Examples
 
@@ -23,7 +23,9 @@ $manager = new SimpleManager();
 $manager->addTask($task1);
 $manager->addTask($task2);
 
-$manager->run();
+while($manager->tick()) {
+    usleep(500);
+}
 ```
 
 You can also implement your own tasks and handlers. Using the simple manager will still make these tasks execute in a blocking sequence.
@@ -64,7 +66,9 @@ $manager = new SimpleManager();
 
 $manager->addTask(new MyTask());
 
-$manager->run();
+while($manager->tick()) {
+    usleep(500);
+}
 ```
 
 The `Task` interface extends the `Serializable` interface. You'll need to make sure your tasks can be serialized.

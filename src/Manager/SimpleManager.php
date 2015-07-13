@@ -5,47 +5,37 @@ namespace AsyncPHP\Doorman\Manager;
 use AsyncPHP\Doorman\Handler;
 use AsyncPHP\Doorman\Manager;
 use AsyncPHP\Doorman\Task;
-use SplQueue;
 
 class SimpleManager implements Manager
 {
     /**
-     * @var SplQueue
+     * @var array
      */
-    protected $queue;
-
-    /**
-     * Creates the internal queue instance.
-     */
-    protected function createInternalQueue()
-    {
-        if (!$this->queue) {
-            $this->queue = new SplQueue();
-        }
-    }
+    protected $waiting = array();
 
     /**
      * @inheritdoc
      *
      * @param Task $task
+     *
+     * @return $this
      */
     public function addTask(Task $task)
     {
-        $this->createInternalQueue();
+        $this->waiting[] = $task;
 
-        $this->queue->enqueue($task);
+        return $this;
     }
 
     /**
      * @inheritdoc
+     *
+     * @return bool
      */
-    public function run()
+    public function tick()
     {
-        $this->createInternalQueue();
-
-        while (!$this->queue->isEmpty()) {
-            $task = $this->queue->dequeue();
-
+        foreach ($this->waiting as $task) {
+            /** @var Task $task */
             $handler = $task->getHandler();
 
             $object = new $handler();
@@ -54,5 +44,7 @@ class SimpleManager implements Manager
                 $object->handle($task);
             }
         }
+
+        return false;
     }
 }

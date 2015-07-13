@@ -12,7 +12,9 @@ interface Manager
     public function addTask(Task $task);
 
     /**
-     * Runs the main loop, to process tasks.
+     * Runs a single processing cycle. Will return false when all tasks are complete.
+     *
+     * @return bool
      */
-    public function run();
+    public function tick();
 }

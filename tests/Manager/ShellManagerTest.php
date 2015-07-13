@@ -54,12 +54,10 @@ class ShellManagerTest extends Test
         $this->manager->addTask($task1);
         $this->manager->addTask($task2);
         $this->manager->addTask($task3);
-        $this->manager->run();
 
-        /**
-         * Gotta sleep to let the child processes finish.
-         */
-        sleep(1);
+        while($this->manager->tick()) {
+            usleep(500);
+        }
 
         $this->assertFileExists(__DIR__ . "/task1.tmp");
         $this->assertFileExists(__DIR__ . "/task2.tmp");

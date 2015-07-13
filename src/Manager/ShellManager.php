@@ -3,20 +3,20 @@
 namespace AsyncPHP\Doorman\Manager;
 
 use AsyncPHP\Doorman\Manager;
+use AsyncPHP\Doorman\Process;
 use AsyncPHP\Doorman\Task;
-use SplQueue;
 
 class ShellManager implements Manager
 {
     /**
-     * @var SplQueue
+     * @var array
      */
-    protected $waiting;
+    protected $waiting = array();
 
     /**
-     * @var SplQueue
+     * @var array
      */
-    protected $running;
+    protected $running = array();
 
     /**
      * @var string
@@ -53,16 +53,25 @@ class ShellManager implements Manager
      *
      * @param int        $processes
      * @param string     $handler
-     * @param null|float $cpu
-     * @param null|float $memory
+     * @param null|float $minCpu
+     * @param null|float $maxCpu
+     * @param null|float $minMemory
+     * @param null|float $maxMemory
      *
      * @return int
      */
-    public function addRule($processes, $handler = null, $cpu = null, $memory = null)
+    public function addRule($processes, $handler = null, $minCpu = null, $maxCpu = null, $minMemory = null, $maxMemory = null)
     {
         static $index = 0;
 
-        $this->rules[$index] = array($processes, $handler, $cpu, $memory);
+        $this->rules[$index] = array(
+            $processes,
+            $handler,
+            $minCpu,
+            $maxCpu,
+            $minMemory,
+            $maxMemory,
+        );
 
         return $index++;
     }
@@ -95,47 +104,151 @@ class ShellManager implements Manager
      * @inheritdoc
      *
      * @param Task $task
+     *
+     * @return $this
      */
     public function addTask(Task $task)
     {
-        $this->createInternalQueues();
+        $this->waiting[] = $task;
 
-        $this->waiting->enqueue($task);
-    }
-
-    /**
-     * Creates the internal queue instance.
-     */
-    protected function createInternalQueues()
-    {
-        if (!$this->waiting) {
-            $this->waiting = new SplQueue();
-        }
-
-        if (!$this->running) {
-            $this->running = new SplQueue();
-        }
+        return $this;
     }
 
     /**
      * @inheritdoc
+     *
+     * @return bool
      */
-    public function run()
+    public function tick()
     {
-        $this->createInternalQueues();
+        $waiting = array();
+        $running = array();
 
-        while (!$this->waiting->isEmpty()) {
-            /** @var Task $task */
-            $task = $this->waiting->dequeue();
+        foreach ($this->waiting as $task) {
+            if (!$this->canRunTask($task)) {
+                $waiting[] = $task;
+                continue;
+            }
 
             $command = $this->getCommandForTask($task);
 
             $pid = exec($command);
 
-            $task->setPid($pid);
+            if ($task instanceof Process) {
+                $task->setId($pid);
+            }
 
-            $this->running->enqueue($task);
+            $this->running[] = $task;
         }
+
+        foreach ($this->running as $task) {
+            if (!$this->canRemoveTask($task)) {
+                $running[] = $task;
+            }
+        }
+
+        $this->waiting = $waiting;
+        $this->running = $running;
+
+        return count($this->waiting) > 0 || count($this->running) > 0;
+    }
+
+    /**
+     * Checks whether another task can be run at this time.
+     *
+     * @param Task $task
+     *
+     * @return bool
+     */
+    protected function canRunTask(Task $task)
+    {
+        $processes = array_filter($this->running, function (Task $task) {
+            return $task instanceof Process;
+        });
+
+        if (count($processes) < 1) {
+            return true;
+        }
+
+        $stats = $this->getStats($processes);
+
+        // TODO
+
+        return true;
+    }
+
+    /**
+     * Gets the statistics for all running processes.
+     *
+     * @param array $processes
+     *
+     * @return array
+     */
+    protected function getStats(array $processes)
+    {
+        $stats = array();
+
+        foreach ($processes as $process) {
+            $command = $this->getCommandForStats($process);
+
+            $result = exec($command);
+
+            if (empty($result)) {
+                continue;
+            }
+
+            $stats[] = preg_split("/\s+/", $result);
+        }
+
+        return $stats;
+    }
+
+    /**
+     * Gets the command for process statistics.
+     *
+     * @param Process $process
+     *
+     * @return string
+     */
+    protected function getCommandForStats(Process $process)
+    {
+        return sprintf("ps -o %s -p %s",
+            "pid,%cpu,%mem,state,start",
+            $process->getId()
+        );
+    }
+
+    /**
+     * Checks whether a running process can be removed (has stopped running).
+     *
+     * @param Task $task
+     *
+     * @return bool
+     */
+    protected function canRemoveTask(Task $task)
+    {
+        if (!$task instanceof Process) {
+            return true;
+        }
+
+        $processes = array_filter($this->running, function (Task $task) {
+            return $task instanceof Process;
+        });
+
+        if (count($processes) < 1) {
+            return true;
+        }
+
+        $found = false;
+        $stats = $this->getStats($processes);
+
+        foreach ($stats as $stat) {
+            if ($stat[0] === $task->getId()) {
+                $found = true;
+            }
+        }
+
+        return !$found;
     }
 
     /**

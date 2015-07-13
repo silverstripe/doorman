@@ -50,7 +50,10 @@ class SimpleManagerTest extends Test
 
         $this->manager->addTask($task1);
         $this->manager->addTask($task2);
-        $this->manager->run();
+
+        while($this->manager->tick()) {
+            usleep(500);
+        }
 
         // tasks should have added 3 to store
 
