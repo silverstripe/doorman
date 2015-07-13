@@ -4,7 +4,7 @@ namespace AsyncPHP\Doorman\Tests\Manager;
 
 use AsyncPHP\Doorman\Manager\ShellManager;
 use AsyncPHP\Doorman\Manager\SimpleManager;
-use AsyncPHP\Doorman\Task\SimpleTask;
+use AsyncPHP\Doorman\Task\ShellTask;
 use AsyncPHP\Doorman\Tests\Test;
 
 class ShellManagerTest extends Test
@@ -39,15 +39,15 @@ class ShellManagerTest extends Test
      */
     public function handlesShellTasks()
     {
-        $task1 = new SimpleTask(function () {
+        $task1 = new ShellTask(function () {
             touch(__DIR__ . "/task1.tmp");
         });
 
-        $task2 = new SimpleTask(function () {
+        $task2 = new ShellTask(function () {
             touch(__DIR__ . "/task2.tmp");
         });
 
-        $task3 = new SimpleTask(function () {
+        $task3 = new ShellTask(function () {
             touch(__DIR__ . "/task3.tmp");
         });
 
@@ -55,6 +55,11 @@ class ShellManagerTest extends Test
         $this->manager->addTask($task2);
         $this->manager->addTask($task3);
         $this->manager->run();
+
+        /**
+         * Gotta sleep to let the child processes finish.
+         */
+        sleep(1);
 
         $this->assertFileExists(__DIR__ . "/task1.tmp");
         $this->assertFileExists(__DIR__ . "/task2.tmp");

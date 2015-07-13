@@ -12,6 +12,10 @@ if (count($argv) < 2) {
 $script = array_shift($argv);
 
 $task = array_shift($argv);
+
+/**
+ * We must account for the input data being malformed. That's why we use "@".
+ */
 $task = @unserialize(base64_decode($task));
 
 if ($task instanceof Task) {
