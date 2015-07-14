@@ -17,32 +17,4 @@ interface Process
      * @param int $pid
      */
     public function setId($pid);
-
-    /**
-     * Gets the CPU load for this process.
-     *
-     * @return float
-     */
-    public function getCpu();
-
-    /**
-     * Sets the CPU load for this process.
-     *
-     * @param float $cpu
-     */
-    public function setCpu($cpu);
-
-    /**
-     * Gets the memory load for this process.
-     *
-     * @return float
-     */
-    public function getMemory();
-
-    /**
-     * Sets the memory load for this process.
-     *
-     * @param float $memory
-     */
-    public function setMemory($memory);
 }
