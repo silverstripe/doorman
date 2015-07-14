@@ -7,24 +7,24 @@ Child process management.
 You can use the simple task and handler. These tasks will be executed in a blocking sequence.
 
 ```php
-use AsyncPHP\Doorman\Task\SimpleTask;
-use AsyncPHP\Doorman\Manager\SimpleManager;
+use AsyncPHP\Doorman\Task\CallbackTask;
+use AsyncPHP\Doorman\Manager\SynchronousManager;
 
-$task1 = new SimpleTask(function () {
+$task1 = new CallbackTask(function () {
     print "task 1 complete";
 });
 
-$task2 = new SimpleTask(function () {
+$task2 = new CallbackTask(function () {
     print "task 2 complete";
 });
 
-$manager = new SimpleManager();
+$manager = new SynchronousManager();
 
 $manager->addTask($task1);
 $manager->addTask($task2);
 
-while($manager->tick()) {
-    usleep(500);
+while ($this->manager->tick()) {
+    usleep(250);
 }
 ```
 
@@ -33,7 +33,7 @@ You can also implement your own tasks and handlers. Using the simple manager wil
 ```php
 use AsyncPHP\Doorman\Handler;
 use AsyncPHP\Doorman\Task;
-use AsyncPHP\Doorman\Manager\SimpleManager;
+use AsyncPHP\Doorman\Manager\SynchronousManager;
 
 class MyHandler implements Handler
 {
@@ -62,13 +62,37 @@ class MyTask implements Task
     // implement serialization methods
 }
 
-$manager = new SimpleManager();
+$manager = new SynchronousManager();
 
 $manager->addTask(new MyTask());
 
-while($manager->tick()) {
-    usleep(500);
+while ($this->manager->tick()) {
+    usleep(250);
 }
 ```
 
 The `Task` interface extends the `Serializable` interface. You'll need to make sure your tasks can be serialized.
+
+If you want to start running tasks in parallel, then try something like:
+
+```php
+use AsyncPHP\Doorman\Manager\ProcessManager;
+use AsyncPHP\Doorman\Task\ProcessCallbackTask;
+
+$task1 = new ProcessCallbackTask(function () {
+    touch(__DIR__ . "/task1.tmp");
+});
+
+$task2 = new ProcessCallbackTask(function () {
+    touch(__DIR__ . "/task2.tmp");
+});
+
+$manager = new ProcessManager();
+
+$manager->addTask($task1);
+$manager->addTask($task2);
+
+while ($manager->tick()) {
+    usleep(250);
+}
+```
