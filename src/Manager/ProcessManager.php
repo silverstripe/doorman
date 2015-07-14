@@ -4,10 +4,13 @@ namespace AsyncPHP\Doorman\Manager;
 
 use AsyncPHP\Doorman\Manager;
 use AsyncPHP\Doorman\Process;
+use AsyncPHP\Doorman\Profile\InMemoryProfile;
 use AsyncPHP\Doorman\Rule;
+use AsyncPHP\Doorman\Rules;
+use AsyncPHP\Doorman\Rules\InMemoryRules;
 use AsyncPHP\Doorman\Task;
 
-class ShellManager implements Manager
+class ProcessManager implements Manager
 {
     /**
      * @var array
@@ -25,9 +28,14 @@ class ShellManager implements Manager
     protected $logPath;
 
     /**
-     * @var array
+     * @var Rules
      */
-    protected $rules = array();
+    protected $rules;
+
+    public function __construct()
+    {
+        $this->rules = new InMemoryRules();
+    }
 
     /**
      * @return bool
@@ -47,46 +55,6 @@ class ShellManager implements Manager
         $this->logPath = $logPath;
 
         return $this;
-    }
-
-    /**
-     * Adds a new concurrency rule and returns an identifier for the rule.
-     *
-     * @param Rule $rule
-     *
-     * @return int
-     */
-    public function addRule(Rule $rule)
-    {
-        static $index = 0;
-
-        $this->rules[$index] = $rule;
-
-        return $index++;
-    }
-
-    /**
-     * Removes a concurrency rule.
-     *
-     * @param int $index
-     *
-     * @return $this
-     */
-    public function removeRule($index)
-    {
-        if (isset($this->rules[$index])) {
-            unset($this->rules[$index]);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return array
-     */
-    public function getRules()
-    {
-        return $this->rules;
     }
 
     /**
@@ -183,98 +151,15 @@ class ShellManager implements Manager
             return (float) $stat[2];
         }, $siblingStats));
 
-        $rules = $this->getRulesForTask($task);
+        $profile = new InMemoryProfile();
+        $profile->setProcesses($processes);
+        $profile->setProcessorLoad($processor);
+        $profile->setMemoryLoad($memory);
+        $profile->setSiblingProcesses($siblings);
+        $profile->setSiblingProcessorLoad($siblingProcessor);
+        $profile->setSiblingMemoryLoad($siblingMemory);
 
-        if (count($rules) > 0) {
-            /** @var Rule $rule */
-            foreach ($rules as $rule) {
-                if ($rule->getHandler() === null && $this->withinConstraints($rule, $processor, $memory) && $this->withinSiblingConstraints($rule, $siblingProcessor, $siblingMemory) && count($processes) >= $rule->getProcesses()) {
-                    return false;
-                }
-
-                if ($rule->getHandler() === $task->getHandler() && $this->withinConstraints($rule, $processor, $memory) && $this->withinSiblingConstraints($rule, $siblingProcessor, $siblingMemory) && count($siblings) >= $rule->getProcesses()) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
-
-    /**
-     * Checks whether all process and memory usage is within the constraints of a rule.
-     *
-     *
-     * @param Rule  $rule
-     * @param float $processor
-     * @param float $memory
-     *
-     * @return bool
-     */
-    protected function withinConstraints(Rule $rule, $processor, $memory)
-    {
-        $minimumProcessor = 0;
-
-        if ($rule->getMinimumProcessorUsage()) {
-            $minimumProcessor = $rule->getMinimumProcessorUsage();
-        }
-
-        $maximumProcessor = 100;
-
-        if ($rule->getMinimumProcessorUsage()) {
-            $maximumProcessor = $rule->getMaximumProcessorUsage();
-        }
-        $minimumMemory = 0;
-
-        if ($rule->getMinimumMemoryUsage()) {
-            $minimumMemory = $rule->getMinimumMemoryUsage();
-        }
-
-        $maximumMemory = 100;
-
-        if ($rule->getMinimumMemoryUsage()) {
-            $maximumMemory = $rule->getMaximumMemoryUsage();
-        }
-
-        return $processor >= $minimumProcessor && $processor <= $maximumProcessor && $memory >= $minimumMemory && $memory <= $maximumMemory;
-    }
-
-    /**
-     * Checks whether sibling process and memory usage is within the constraints of a rule.
-     *
-     *
-     * @param Rule  $rule
-     * @param float $processor
-     * @param float $memory
-     *
-     * @return bool
-     */
-    protected function withinSiblingConstraints(Rule $rule, $processor, $memory)
-    {
-        $minimumProcessor = 0;
-
-        if ($rule->getMinimumSiblingProcessorUsage()) {
-            $minimumProcessor = $rule->getMinimumSiblingProcessorUsage();
-        }
-
-        $maximumProcessor = 100;
-
-        if ($rule->getMinimumSiblingProcessorUsage()) {
-            $maximumProcessor = $rule->getMaximumSiblingProcessorUsage();
-        }
-        $minimumMemory = 0;
-
-        if ($rule->getMinimumSiblingMemoryUsage()) {
-            $minimumMemory = $rule->getMinimumSiblingMemoryUsage();
-        }
-
-        $maximumMemory = 100;
-
-        if ($rule->getMinimumSiblingMemoryUsage()) {
-            $maximumMemory = $rule->getMaximumSiblingMemoryUsage();
-        }
-
-        return $processor >= $minimumProcessor && $processor <= $maximumProcessor && $memory >= $minimumMemory && $memory <= $maximumMemory;
+        return $this->rules->canRunTask($task, $profile);
     }
 
     /**
@@ -316,27 +201,6 @@ class ShellManager implements Manager
             "pid,%cpu,%mem,state,start",
             $process->getId()
         );
-    }
-
-    /**
-     * Gets the rules which apply to a task.
-     *
-     * @param Task $task
-     *
-     * @return array
-     */
-    protected function getRulesForTask(Task $task)
-    {
-        $rules = array();
-
-        /** @var Rule $rule */
-        foreach ($this->rules as $rule) {
-            if ($rule->getHandler() === null || $rule->getHandler() === $task->getHandler()) {
-                $rules[] = $rule;
-            }
-        }
-
-        return $rules;
     }
 
     /**
@@ -444,5 +308,29 @@ class ShellManager implements Manager
         }
 
         return !$found;
+    }
+
+    /**
+     * @param Rule $rule
+     *
+     * @return $this
+     */
+    public function addRule(Rule $rule)
+    {
+        $this->rules->addRule($rule);
+
+        return $this;
+    }
+
+    /**
+     * @param Rule $rule
+     *
+     * @return $this
+     */
+    public function removeRule(Rule $rule)
+    {
+        $this->rules->removeRule($rule);
+
+        return $this;
     }
 }

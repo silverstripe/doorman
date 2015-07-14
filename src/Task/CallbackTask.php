@@ -6,7 +6,7 @@ use AsyncPHP\Doorman\Task;
 use InvalidArgumentException;
 use Jeremeamia\SuperClosure\SerializableClosure;
 
-class SimpleTask implements Task
+class CallbackTask implements Task
 {
     /**
      * @var callable
@@ -67,6 +67,6 @@ class SimpleTask implements Task
      */
     public function getHandler()
     {
-        return "AsyncPHP\\Doorman\\Handler\\SimpleHandler";
+        return "AsyncPHP\\Doorman\\Handler\\CallbackHandler";
     }
 }

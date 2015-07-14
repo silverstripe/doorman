@@ -6,7 +6,7 @@ use AsyncPHP\Doorman\Handler;
 use AsyncPHP\Doorman\Manager;
 use AsyncPHP\Doorman\Task;
 
-class SimpleManager implements Manager
+class SynchronousManager implements Manager
 {
     /**
      * @var array

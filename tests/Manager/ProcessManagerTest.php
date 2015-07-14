@@ -2,17 +2,17 @@
 
 namespace AsyncPHP\Doorman\Tests\Manager;
 
-use AsyncPHP\Doorman\Manager\ShellManager;
-use AsyncPHP\Doorman\Rule\SimpleRule;
-use AsyncPHP\Doorman\Task\ShellTask;
+use AsyncPHP\Doorman\Manager\ProcessManager;
+use AsyncPHP\Doorman\Rule\InMemoryRule;
+use AsyncPHP\Doorman\Task\ProcessCallbackTask;
 use AsyncPHP\Doorman\Tests\Manager\Fixture\TestTask1;
 use AsyncPHP\Doorman\Tests\Manager\Fixture\TestTask2;
 use AsyncPHP\Doorman\Tests\Test;
 
-class ShellManagerTest extends Test
+class ProcessManagerTest extends Test
 {
     /**
-     * @var ShellManager
+     * @var ProcessManager
      */
     protected $manager;
 
@@ -23,7 +23,7 @@ class ShellManagerTest extends Test
     {
         parent::setUp();
 
-        $this->manager = new ShellManager();
+        $this->manager = new ProcessManager();
     }
 
     /**
@@ -39,17 +39,17 @@ class ShellManagerTest extends Test
     /**
      * @test
      */
-    public function handlesShellTasks()
+    public function handlesProcessCallbackTasks()
     {
-        $task1 = new ShellTask(function () {
+        $task1 = new ProcessCallbackTask(function () {
             touch(__DIR__ . "/task1.tmp");
         });
 
-        $task2 = new ShellTask(function () {
+        $task2 = new ProcessCallbackTask(function () {
             touch(__DIR__ . "/task2.tmp");
         });
 
-        $task3 = new ShellTask(function () {
+        $task3 = new ProcessCallbackTask(function () {
             touch(__DIR__ . "/task3.tmp");
         });
 
@@ -81,7 +81,7 @@ class ShellManagerTest extends Test
     {
         // Let's create a task that keeps running for 10 seconds.
 
-        $task1 = new ShellTask(function () {
+        $task1 = new ProcessCallbackTask(function () {
             $ticks = 0;
 
             while ($ticks++ < 10) {
@@ -93,7 +93,7 @@ class ShellManagerTest extends Test
 
         // Then let's make a rule that says only 1 process can be run at a time.
 
-        $rule1 = new SimpleRule();
+        $rule1 = new InMemoryRule();
         $rule1->setProcesses(1);
 
         $this->manager->addRule($rule1);
@@ -110,7 +110,7 @@ class ShellManagerTest extends Test
             sleep(1);
 
             if (!$added && $ticks > 1) {
-                $task2 = new ShellTask(function () {
+                $task2 = new ProcessCallbackTask(function () {
                     touch(__DIR__ . "/fail-handles-rules.tmp");
                 });
 
@@ -144,7 +144,7 @@ class ShellManagerTest extends Test
 
         // Then let's make a rule that says only 1 process can be run at a time.
 
-        $rule1 = new SimpleRule();
+        $rule1 = new InMemoryRule();
         $rule1->setHandler("AsyncPHP\\Doorman\\Tests\\Manager\\Fixture\\TestHandler1");
         $rule1->setProcesses(1);
 

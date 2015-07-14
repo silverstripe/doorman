@@ -2,14 +2,14 @@
 
 namespace AsyncPHP\Doorman\Tests\Manager;
 
-use AsyncPHP\Doorman\Manager\SimpleManager;
-use AsyncPHP\Doorman\Task\SimpleTask;
+use AsyncPHP\Doorman\Manager\SynchronousManager;
+use AsyncPHP\Doorman\Task\CallbackTask;
 use AsyncPHP\Doorman\Tests\Test;
 
-class SimpleManagerTest extends Test
+class SynchronousManagerTest extends Test
 {
     /**
-     * @var SimpleManager
+     * @var SynchronousManager
      */
     protected $manager;
 
@@ -20,7 +20,7 @@ class SimpleManagerTest extends Test
     {
         parent::setUp();
 
-        $this->manager = new SimpleManager();
+        $this->manager = new SynchronousManager();
     }
 
     /**
@@ -36,13 +36,13 @@ class SimpleManagerTest extends Test
     /**
      * @test
      */
-    public function handlesSimpleTasks()
+    public function handlesCallbackTasks()
     {
-        $task1 = new SimpleTask(function () {
+        $task1 = new CallbackTask(function () {
             touch(__DIR__ . "/task1.tmp");
         });
 
-        $task2 = new SimpleTask(function () {
+        $task2 = new CallbackTask(function () {
             touch(__DIR__ . "/task2.tmp");
         });
 

@@ -2,9 +2,9 @@
 
 namespace AsyncPHP\Doorman\Tests\Manager\Fixture;
 
-use AsyncPHP\Doorman\Task\ShellTask;
+use AsyncPHP\Doorman\Task\ProcessCallbackTask;
 
-class TestTask2 extends ShellTask
+class TestTask2 extends ProcessCallbackTask
 {
     /**
      * @inheritdoc

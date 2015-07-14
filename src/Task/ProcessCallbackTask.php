@@ -4,7 +4,7 @@ namespace AsyncPHP\Doorman\Task;
 
 use AsyncPHP\Doorman\Process;
 
-class ShellTask extends SimpleTask implements Process
+class ProcessCallbackTask extends CallbackTask implements Process
 {
     /**
      * @var null|int

@@ -2,15 +2,15 @@
 
 namespace AsyncPHP\Doorman\Tests\Manager\Fixture;
 
-use AsyncPHP\Doorman\Task\ShellTask;
+use AsyncPHP\Doorman\Task\ProcessCallbackTask;
 
-class TestTask1 extends ShellTask
+class TestTask1 extends ProcessCallbackTask
 {
     /**
- * @inheritdoc
- *
- * @return string
- */
+     * @inheritdoc
+     *
+     * @return string
+     */
     public function getHandler()
     {
         return "AsyncPHP\\Doorman\\Tests\\Manager\\Fixture\\TestHandler1";

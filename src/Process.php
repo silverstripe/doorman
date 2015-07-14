@@ -5,16 +5,12 @@ namespace AsyncPHP\Doorman;
 interface Process
 {
     /**
-     * Gets the ID for this process.
-     *
      * @return null|int
      */
     public function getId();
 
     /**
-     * Sets the ID for this process.
-     *
-     * @param int $pid
+     * @param int $id
      */
-    public function setId($pid);
+    public function setId($id);
 }

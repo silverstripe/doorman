@@ -4,7 +4,7 @@ namespace AsyncPHP\Doorman\Rule;
 
 use AsyncPHP\Doorman\Rule;
 
-class SimpleRule implements Rule
+class InMemoryRule implements Rule
 {
     /**
      * @var null|int

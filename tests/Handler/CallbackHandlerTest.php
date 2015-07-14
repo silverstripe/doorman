@@ -2,14 +2,14 @@
 
 namespace AsyncPHP\Doorman\Tests\Handler;
 
-use AsyncPHP\Doorman\Handler\SimpleHandler;
-use AsyncPHP\Doorman\Task\SimpleTask;
+use AsyncPHP\Doorman\Handler\CallbackHandler;
+use AsyncPHP\Doorman\Task\CallbackTask;
 use AsyncPHP\Doorman\Tests\Test;
 
-class SimpleHandlerTest extends Test
+class CallbackHandlerTest extends Test
 {
     /**
-     * @var SimpleHandler
+     * @var CallbackHandler
      */
     protected $handler;
 
@@ -20,7 +20,7 @@ class SimpleHandlerTest extends Test
     {
         parent::setUp();
 
-        $this->handler = new SimpleHandler();
+        $this->handler = new CallbackHandler();
     }
 
     /**
@@ -36,15 +36,15 @@ class SimpleHandlerTest extends Test
     /**
      * @test
      */
-    public function handlesSimpleTasks()
+    public function handlesCallbackTasks()
     {
         $store = 0;
 
-        $task1 = new SimpleTask(function () use (&$store) {
+        $task1 = new CallbackTask(function () use (&$store) {
             $store += 1;
         });
 
-        $task2 = new SimpleTask(function () use (&$store) {
+        $task2 = new CallbackTask(function () use (&$store) {
             $store += 2;
         });
 

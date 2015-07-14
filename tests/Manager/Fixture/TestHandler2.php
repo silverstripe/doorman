@@ -2,8 +2,8 @@
 
 namespace AsyncPHP\Doorman\Tests\Manager\Fixture;
 
-use AsyncPHP\Doorman\Handler\SimpleHandler;
+use AsyncPHP\Doorman\Handler\CallbackHandler;
 
-class TestHandler2 extends SimpleHandler
+class TestHandler2 extends CallbackHandler
 {
 }

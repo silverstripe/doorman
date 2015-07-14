@@ -2,13 +2,13 @@
 
 namespace AsyncPHP\Doorman\Tests\Task;
 
-use AsyncPHP\Doorman\Task\SimpleTask;
+use AsyncPHP\Doorman\Task\CallbackTask;
 use AsyncPHP\Doorman\Tests\Test;
 
-class SimpleTaskTest extends Test
+class CallbackTaskTest extends Test
 {
     /**
-     * @var SimpleTask
+     * @var CallbackTask
      */
     protected $task;
 
@@ -24,7 +24,7 @@ class SimpleTaskTest extends Test
     {
         parent::setUp();
 
-        $this->task = new SimpleTask(function () {
+        $this->task = new CallbackTask(function () {
             return "hello world";
         });
     }
@@ -46,7 +46,7 @@ class SimpleTaskTest extends Test
     {
         $this->setExpectedException("InvalidArgumentException");
 
-        new SimpleTask("foo");
+        new CallbackTask("foo");
     }
 
     /**
