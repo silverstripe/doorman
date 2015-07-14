@@ -12,6 +12,16 @@ class ShellTask extends SimpleTask implements Process
     protected $id;
 
     /**
+     * @var null|float
+     */
+    protected $cpu;
+
+    /**
+     * @var null|float
+     */
+    protected $memory;
+
+    /**
      * @inheritdoc
      *
      * @return null|int
@@ -38,40 +48,48 @@ class ShellTask extends SimpleTask implements Process
     /**
      * Gets the CPU load for this process.
      *
-     * @return float
+     * @return null|float
      */
     public function getCpu()
     {
-        // TODO: Implement getCpu() method.
+        return $this->cpu;
     }
 
     /**
      * Sets the CPU load for this process.
      *
      * @param float $cpu
+     *
+     * @return $this
      */
     public function setCpu($cpu)
     {
-        // TODO: Implement setCpu() method.
+        $this->cpu = $cpu;
+
+        return $this;
     }
 
     /**
      * Gets the memory load for this process.
      *
-     * @return float
+     * @return null|float
      */
     public function getMemory()
     {
-        // TODO: Implement getMemory() method.
+        return $this->memory;
     }
 
     /**
      * Sets the memory load for this process.
      *
      * @param float $memory
+     *
+     * @return $this
      */
     public function setMemory($memory)
     {
-        // TODO: Implement setMemory() method.
+        $this->memory = $memory;
+
+        return $this;
     }
 }

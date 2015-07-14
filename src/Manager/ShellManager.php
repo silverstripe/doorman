@@ -4,6 +4,7 @@ namespace AsyncPHP\Doorman\Manager;
 
 use AsyncPHP\Doorman\Manager;
 use AsyncPHP\Doorman\Process;
+use AsyncPHP\Doorman\Rule;
 use AsyncPHP\Doorman\Task;
 
 class ShellManager implements Manager
@@ -49,29 +50,17 @@ class ShellManager implements Manager
     }
 
     /**
-     * Adds a new concurrency rule.
+     * Adds a new concurrency rule and returns an identifier for the rule.
      *
-     * @param int        $processes
-     * @param string     $handler
-     * @param null|float $minCpu
-     * @param null|float $maxCpu
-     * @param null|float $minMemory
-     * @param null|float $maxMemory
+     * @param Rule $rule
      *
      * @return int
      */
-    public function addRule($processes, $handler = null, $minCpu = null, $maxCpu = null, $minMemory = null, $maxMemory = null)
+    public function addRule(Rule $rule)
     {
         static $index = 0;
 
-        $this->rules[$index] = array(
-            $processes,
-            $handler,
-            $minCpu,
-            $maxCpu,
-            $minMemory,
-            $maxMemory,
-        );
+        $this->rules[$index] = $rule;
 
         return $index++;
     }
@@ -170,11 +159,122 @@ class ShellManager implements Manager
             return true;
         }
 
-        $stats = $this->getStats($processes);
+        $stats = $this->getStatsForProcesses($processes);
 
-        // TODO
+        $processor = (float) array_sum(array_map(function ($stat) {
+            return (float) $stat[1];
+        }, $stats));
+
+        $memory = (float) array_sum(array_map(function ($stat) {
+            return (float) $stat[2];
+        }, $stats));
+
+        $siblings = array_filter($processes, function (Task $next) use ($task) {
+            return $next->getHandler() === $task->getHandler();
+        });
+
+        $siblingStats = $this->getStatsForProcesses($siblings);
+
+        $siblingProcessor = (float) array_sum(array_map(function ($stat) {
+            return (float) $stat[1];
+        }, $siblingStats));
+
+        $siblingMemory = (float) array_sum(array_map(function ($stat) {
+            return (float) $stat[2];
+        }, $siblingStats));
+
+        $rules = $this->getRulesForTask($task);
+
+        if (count($rules) > 0) {
+            /** @var Rule $rule */
+            foreach ($rules as $rule) {
+                if ($rule->getHandler() === null && $this->withinConstraints($rule, $processor, $memory) && $this->withinSiblingConstraints($rule, $siblingProcessor, $siblingMemory) && count($processes) >= $rule->getProcesses()) {
+                    return false;
+                }
+
+                if ($rule->getHandler() === $task->getHandler() && $this->withinConstraints($rule, $processor, $memory) && $this->withinSiblingConstraints($rule, $siblingProcessor, $siblingMemory) && count($siblings) >= $rule->getProcesses()) {
+                    return false;
+                }
+            }
+        }
 
         return true;
+    }
+
+    /**
+     * Checks whether all process and memory usage is within the constraints of a rule.
+     *
+     *
+     * @param Rule  $rule
+     * @param float $processor
+     * @param float $memory
+     *
+     * @return bool
+     */
+    protected function withinConstraints(Rule $rule, $processor, $memory)
+    {
+        $minimumProcessor = 0;
+
+        if ($rule->getMinimumProcessorUsage()) {
+            $minimumProcessor = $rule->getMinimumProcessorUsage();
+        }
+
+        $maximumProcessor = 100;
+
+        if ($rule->getMinimumProcessorUsage()) {
+            $maximumProcessor = $rule->getMaximumProcessorUsage();
+        }
+        $minimumMemory = 0;
+
+        if ($rule->getMinimumMemoryUsage()) {
+            $minimumMemory = $rule->getMinimumMemoryUsage();
+        }
+
+        $maximumMemory = 100;
+
+        if ($rule->getMinimumMemoryUsage()) {
+            $maximumMemory = $rule->getMaximumMemoryUsage();
+        }
+
+        return $processor >= $minimumProcessor && $processor <= $maximumProcessor && $memory >= $minimumMemory && $memory <= $maximumMemory;
+    }
+
+    /**
+     * Checks whether sibling process and memory usage is within the constraints of a rule.
+     *
+     *
+     * @param Rule  $rule
+     * @param float $processor
+     * @param float $memory
+     *
+     * @return bool
+     */
+    protected function withinSiblingConstraints(Rule $rule, $processor, $memory)
+    {
+        $minimumProcessor = 0;
+
+        if ($rule->getMinimumSiblingProcessorUsage()) {
+            $minimumProcessor = $rule->getMinimumSiblingProcessorUsage();
+        }
+
+        $maximumProcessor = 100;
+
+        if ($rule->getMinimumSiblingProcessorUsage()) {
+            $maximumProcessor = $rule->getMaximumSiblingProcessorUsage();
+        }
+        $minimumMemory = 0;
+
+        if ($rule->getMinimumSiblingMemoryUsage()) {
+            $minimumMemory = $rule->getMinimumSiblingMemoryUsage();
+        }
+
+        $maximumMemory = 100;
+
+        if ($rule->getMinimumSiblingMemoryUsage()) {
+            $maximumMemory = $rule->getMaximumSiblingMemoryUsage();
+        }
+
+        return $processor >= $minimumProcessor && $processor <= $maximumProcessor && $memory >= $minimumMemory && $memory <= $maximumMemory;
     }
 
     /**
@@ -184,7 +284,7 @@ class ShellManager implements Manager
      *
      * @return array
      */
-    protected function getStats(array $processes)
+    protected function getStatsForProcesses(array $processes)
     {
         $stats = array();
 
@@ -219,36 +319,24 @@ class ShellManager implements Manager
     }
 
     /**
-     * Checks whether a running process can be removed (has stopped running).
+     * Gets the rules which apply to a task.
      *
      * @param Task $task
      *
-     * @return bool
+     * @return array
      */
-    protected function canRemoveTask(Task $task)
+    protected function getRulesForTask(Task $task)
     {
-        if (!$task instanceof Process) {
-            return true;
-        }
+        $rules = array();
 
-        $processes = array_filter($this->running, function (Task $task) {
-            return $task instanceof Process;
-        });
-
-        if (count($processes) < 1) {
-            return true;
-        }
-
-        $found = false;
-        $stats = $this->getStats($processes);
-
-        foreach ($stats as $stat) {
-            if ($stat[0] === $task->getId()) {
-                $found = true;
+        /** @var Rule $rule */
+        foreach ($this->rules as $rule) {
+            if ($rule->getHandler() === null || $rule->getHandler() === $task->getHandler()) {
+                $rules[] = $rule;
             }
         }
 
-        return !$found;
+        return $rules;
     }
 
     /**
@@ -267,6 +355,26 @@ class ShellManager implements Manager
             $this->getStdOut(),
             $this->getStdErr()
         );
+    }
+
+    /**
+     * Get the PHP binary executing the current request.
+     *
+     * @return string
+     */
+    protected function getExecutable()
+    {
+        return PHP_BINDIR . "/php";
+    }
+
+    /**
+     * Get the worker script, to execute in parallel.
+     *
+     * @return string
+     */
+    protected function getWorker()
+    {
+        return realpath(__DIR__ . "/../../bin/worker.php");
     }
 
     /**
@@ -306,22 +414,35 @@ class ShellManager implements Manager
     }
 
     /**
-     * Get the PHP binary executing the current request.
+     * Checks whether a running process can be removed (has stopped running).
      *
-     * @return string
+     * @param Task $task
+     *
+     * @return bool
      */
-    protected function getExecutable()
+    protected function canRemoveTask(Task $task)
     {
-        return PHP_BINDIR . "/php";
-    }
+        if (!$task instanceof Process) {
+            return true;
+        }
 
-    /**
-     * Get the worker script, to execute in parallel.
-     *
-     * @return string
-     */
-    protected function getWorker()
-    {
-        return realpath(__DIR__ . "/../../bin/worker.php");
+        $processes = array_filter($this->running, function (Task $task) {
+            return $task instanceof Process;
+        });
+
+        if (count($processes) < 1) {
+            return true;
+        }
+
+        $found = false;
+        $stats = $this->getStatsForProcesses($processes);
+
+        foreach ($stats as $stat) {
+            if ($stat[0] === $task->getId()) {
+                $found = true;
+            }
+        }
+
+        return !$found;
     }
 }

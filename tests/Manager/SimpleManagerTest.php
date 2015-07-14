@@ -38,25 +38,28 @@ class SimpleManagerTest extends Test
      */
     public function handlesSimpleTasks()
     {
-        $store = 0;
-
-        $task1 = new SimpleTask(function () use (&$store) {
-            $store += 1;
+        $task1 = new SimpleTask(function () {
+            touch(__DIR__ . "/task1.tmp");
         });
 
-        $task2 = new SimpleTask(function () use (&$store) {
-            $store += 2;
+        $task2 = new SimpleTask(function () {
+            touch(__DIR__ . "/task2.tmp");
         });
 
         $this->manager->addTask($task1);
         $this->manager->addTask($task2);
 
-        while($this->manager->tick()) {
-            usleep(500);
+        @unlink(__DIR__ . "/task1.tmp");
+        @unlink(__DIR__ . "/task2.tmp");
+
+        while ($this->manager->tick()) {
+            usleep(250);
         }
 
-        // tasks should have added 3 to store
+        $this->assertFileExists(__DIR__ . "/task1.tmp");
+        $this->assertFileExists(__DIR__ . "/task2.tmp");
 
-        $this->assertEquals(3, $store);
+        @unlink(__DIR__ . "/task1.tmp");
+        @unlink(__DIR__ . "/task2.tmp");
     }
 }
