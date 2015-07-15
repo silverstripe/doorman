@@ -8,6 +8,7 @@ use AsyncPHP\Doorman\Task\ProcessCallbackTask;
 use AsyncPHP\Doorman\Tests\Manager\Fixture\TestTask1;
 use AsyncPHP\Doorman\Tests\Manager\Fixture\TestTask2;
 use AsyncPHP\Doorman\Tests\Test;
+use Exception;
 
 class ProcessManagerTest extends Test
 {
@@ -186,5 +187,34 @@ class ProcessManagerTest extends Test
 
         @unlink(__DIR__ . "/fail-handles-rules.tmp");
         @unlink(__DIR__ . "/pass-handles-rules.tmp");
+    }
+
+    /**
+     * @test
+     */
+    public function logsOutput()
+    {
+        $this->manager->setLogPath(__DIR__);
+
+        $task1 = new ProcessCallbackTask(function () {
+            print "hello stdout!";
+        });
+
+        $task2 = new ProcessCallbackTask(function () {
+            throw new Exception("hello stderr!");
+        });
+
+        $this->manager->addTask($task1);
+        $this->manager->addTask($task2);
+
+        while ($this->manager->tick()) {
+            usleep(250);
+        }
+
+        $this->assertFileExists(__DIR__ . "/stdout.log");
+        $this->assertFileExists(__DIR__ . "/stderr.log");
+
+        @unlink(__DIR__ . "/stdout.log");
+        @unlink(__DIR__ . "/stderr.log");
     }
 }

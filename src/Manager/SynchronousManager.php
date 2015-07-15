@@ -9,7 +9,7 @@ use AsyncPHP\Doorman\Task;
 class SynchronousManager implements Manager
 {
     /**
-     * @var array
+     * @var Task[]
      */
     protected $waiting = array();
 
@@ -35,7 +35,6 @@ class SynchronousManager implements Manager
     public function tick()
     {
         foreach ($this->waiting as $task) {
-            /** @var Task $task */
             $handler = $task->getHandler();
 
             $object = new $handler();

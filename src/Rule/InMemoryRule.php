@@ -67,8 +67,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * Sets the number of processes a manager is allowed to run at once, following this rule.
-     *
      * @param int|null $processes
      *
      * @return $this
@@ -91,8 +89,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * Sets the name of the handler which defines sibling processes.
-     *
      * @param null|string $handler
      *
      * @return $this
@@ -115,8 +111,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * Sets the required minimum processor usage of all running processes.
-     *
      * @param null|float $minimumProcessorUsage
      *
      * @return $this
@@ -139,8 +133,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * Sets the required maximum processor usage of all running processes.
-     *
      * @param null|float $maximumProcessorUsage
      *
      * @return $this
@@ -163,8 +155,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * Sets the required minimum memory usage of all running processes.
-     *
      * @param null|float $minimumMemoryUsage
      *
      * @return $this
@@ -187,8 +177,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * Sets the required maximum memory usage of all running processes.
-     *
      * @param null|float $maximumMemoryUsage
      *
      * @return $this
@@ -211,8 +199,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * Sets the required minimum processor usage of processes using the same handler.
-     *
      * @param null|float $minimumSiblingProcessorUsage
      *
      * @return $this
@@ -235,8 +221,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * Sets the required maximum processor usage of processes using the same handler.
-     *
      * @param null|float $maximumSiblingProcessorUsage
      *
      * @return $this
@@ -259,8 +243,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * Sets the required minimum memory usage of processes using the same handler.
-     *
      * @param null|float $minimumSiblingMemoryUsage
      *
      * @return $this
@@ -283,8 +265,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * Sets the required maximum memory usage of processes using the same handler.
-     *
      * @param null|float $maximumSiblingMemoryUsage
      *
      * @return $this

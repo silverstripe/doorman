@@ -8,41 +8,83 @@ use AsyncPHP\Doorman\Profile\InMemoryProfile;
 use AsyncPHP\Doorman\Rule;
 use AsyncPHP\Doorman\Rules;
 use AsyncPHP\Doorman\Rules\InMemoryRules;
+use AsyncPHP\Doorman\Shell;
+use AsyncPHP\Doorman\Shell\BashShell;
 use AsyncPHP\Doorman\Task;
 
 class ProcessManager implements Manager
 {
     /**
-     * @var array
+     * @var Task[]
      */
     protected $waiting = array();
 
     /**
-     * @var array
+     * @var Task[]
      */
     protected $running = array();
 
     /**
-     * @var string
+     * @var null|string
      */
     protected $logPath;
 
     /**
-     * @var Rules
+     * @var null|Rules
      */
     protected $rules;
 
-    public function __construct()
+    /**
+     * @var null|Shell
+     */
+    protected $shell;
+
+    /**
+     * @param Rules $rules
+     *
+     * @return $this
+     */
+    public function setRules(Rules $rules)
     {
-        $this->rules = new InMemoryRules();
+        $this->rules = $rules;
+
+        return $this;
     }
 
     /**
-     * @return bool
+     * @return Rules
      */
-    public function getLogPath()
+    public function getRules()
     {
-        return $this->logPath;
+        if ($this->rules === null) {
+            $this->rules = new InMemoryRules();
+        }
+
+        return $this->rules;
+    }
+
+    /**
+     * @param Shell $shell
+     *
+     * @return $this
+     */
+    public function setShell(Shell $shell)
+    {
+        $this->shell = $shell;
+
+        return $this;
+    }
+
+    /**
+     * @return Shell
+     */
+    public function getShell()
+    {
+        if ($this->shell === null) {
+            $this->shell = new BashShell();
+        }
+
+        return $this->shell;
     }
 
     /**
@@ -55,6 +97,14 @@ class ProcessManager implements Manager
         $this->logPath = $logPath;
 
         return $this;
+    }
+
+    /**
+     * @return bool
+     */
+    public function getLogPath()
+    {
+        return $this->logPath;
     }
 
     /**
@@ -87,9 +137,14 @@ class ProcessManager implements Manager
                 continue;
             }
 
-            $command = $this->getCommandForTask($task);
+            $binary = $this->getBinary();
+            $worker = $this->getWorker();
+            $stdout = $this->getStdOut();
+            $stderr = $this->getStdErr();
 
-            $pid = exec($command);
+            $pid = $this->getShell()->exec("{$binary} {$worker} %s {$stdout} {$stderr} & echo $!", array(
+                $this->getTaskString($task),
+            ));
 
             if ($task instanceof Process) {
                 $task->setId($pid);
@@ -111,8 +166,6 @@ class ProcessManager implements Manager
     }
 
     /**
-     * Checks whether another task can be run at this time.
-     *
      * @param Task $task
      *
      * @return bool
@@ -159,13 +212,11 @@ class ProcessManager implements Manager
         $profile->setSiblingProcessorLoad($siblingProcessor);
         $profile->setSiblingMemoryLoad($siblingMemory);
 
-        return $this->rules->canRunTask($task, $profile);
+        return $this->getRules()->canRunTask($task, $profile);
     }
 
     /**
-     * Gets the statistics for all running processes.
-     *
-     * @param array $processes
+     * @param Process[] $processes
      *
      * @return array
      */
@@ -174,9 +225,9 @@ class ProcessManager implements Manager
         $stats = array();
 
         foreach ($processes as $process) {
-            $command = $this->getCommandForStats($process);
-
-            $result = exec($command);
+            $result = $this->getShell()->exec("ps -o pid,%%cpu,%%mem,state,start -p %s", array(
+                $process->getId()
+            ));
 
             if (empty($result)) {
                 continue;
@@ -189,51 +240,14 @@ class ProcessManager implements Manager
     }
 
     /**
-     * Gets the command for process statistics.
-     *
-     * @param Process $process
-     *
      * @return string
      */
-    protected function getCommandForStats(Process $process)
-    {
-        return sprintf("ps -o %s -p %s",
-            "pid,%cpu,%mem,state,start",
-            $process->getId()
-        );
-    }
-
-    /**
-     * Generate a worker command for a task.
-     *
-     * @param Task $task
-     *
-     * @return string
-     */
-    protected function getCommandForTask(Task $task)
-    {
-        return sprintf("%s %s %s %s %s & echo $!",
-            $this->getExecutable(),
-            $this->getWorker(),
-            $this->getTaskString($task),
-            $this->getStdOut(),
-            $this->getStdErr()
-        );
-    }
-
-    /**
-     * Get the PHP binary executing the current request.
-     *
-     * @return string
-     */
-    protected function getExecutable()
+    protected function getBinary()
     {
         return PHP_BINDIR . "/php";
     }
 
     /**
-     * Get the worker script, to execute in parallel.
-     *
      * @return string
      */
     protected function getWorker()
@@ -242,8 +256,6 @@ class ProcessManager implements Manager
     }
 
     /**
-     * Encodes the task into a single line.
-     *
      * @param Task $task
      *
      * @return string
@@ -258,8 +270,8 @@ class ProcessManager implements Manager
      */
     protected function getStdOut()
     {
-        if ($this->logPath) {
-            return ">> " . $this->logPath . "/stdout.log";
+        if ($this->getLogPath()) {
+            return ">> " . $this->getLogPath() . "/stdout.log";
         }
 
         return "> /dev/null";
@@ -270,16 +282,14 @@ class ProcessManager implements Manager
      */
     protected function getStdErr()
     {
-        if ($this->logPath) {
-            return "2>> " . $this->logPath . "/stderr.log";
+        if ($this->getLogPath()) {
+            return "2>> " . $this->getLogPath() . "/stderr.log";
         }
 
         return "2> /dev/null";
     }
 
     /**
-     * Checks whether a running process can be removed (has stopped running).
-     *
      * @param Task $task
      *
      * @return bool
@@ -317,7 +327,7 @@ class ProcessManager implements Manager
      */
     public function addRule(Rule $rule)
     {
-        $this->rules->addRule($rule);
+        $this->getRules()->addRule($rule);
 
         return $this;
     }
@@ -329,7 +339,7 @@ class ProcessManager implements Manager
      */
     public function removeRule(Rule $rule)
     {
-        $this->rules->removeRule($rule);
+        $this->getRules()->removeRule($rule);
 
         return $this;
     }

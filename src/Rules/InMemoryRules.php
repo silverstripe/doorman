@@ -103,7 +103,7 @@ class InMemoryRules implements Rules
 
         $maximumProcessor = 100;
 
-        if ($rule->getMinimumProcessorUsage()) {
+        if ($rule->getMaximumProcessorUsage()) {
             $maximumProcessor = $rule->getMaximumProcessorUsage();
         }
         $minimumMemory = 0;
@@ -114,7 +114,7 @@ class InMemoryRules implements Rules
 
         $maximumMemory = 100;
 
-        if ($rule->getMinimumMemoryUsage()) {
+        if ($rule->getMaximumMemoryUsage()) {
             $maximumMemory = $rule->getMaximumMemoryUsage();
         }
 
@@ -141,7 +141,7 @@ class InMemoryRules implements Rules
 
         $maximumProcessor = 100;
 
-        if ($rule->getMinimumSiblingProcessorUsage()) {
+        if ($rule->getMaximumSiblingProcessorUsage()) {
             $maximumProcessor = $rule->getMaximumSiblingProcessorUsage();
         }
         $minimumMemory = 0;
@@ -152,7 +152,7 @@ class InMemoryRules implements Rules
 
         $maximumMemory = 100;
 
-        if ($rule->getMinimumSiblingMemoryUsage()) {
+        if ($rule->getMaximumSiblingMemoryUsage()) {
             $maximumMemory = $rule->getMaximumSiblingMemoryUsage();
         }
 
