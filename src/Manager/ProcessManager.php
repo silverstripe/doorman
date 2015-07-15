@@ -4,6 +4,7 @@ namespace AsyncPHP\Doorman\Manager;
 
 use AsyncPHP\Doorman\Manager;
 use AsyncPHP\Doorman\Process;
+use AsyncPHP\Doorman\Profile;
 use AsyncPHP\Doorman\Profile\InMemoryProfile;
 use AsyncPHP\Doorman\Rule;
 use AsyncPHP\Doorman\Rules;
@@ -40,74 +41,6 @@ class ProcessManager implements Manager
     protected $shell;
 
     /**
-     * @param Rules $rules
-     *
-     * @return $this
-     */
-    public function setRules(Rules $rules)
-    {
-        $this->rules = $rules;
-
-        return $this;
-    }
-
-    /**
-     * @return Rules
-     */
-    public function getRules()
-    {
-        if ($this->rules === null) {
-            $this->rules = new InMemoryRules();
-        }
-
-        return $this->rules;
-    }
-
-    /**
-     * @param Shell $shell
-     *
-     * @return $this
-     */
-    public function setShell(Shell $shell)
-    {
-        $this->shell = $shell;
-
-        return $this;
-    }
-
-    /**
-     * @return Shell
-     */
-    public function getShell()
-    {
-        if ($this->shell === null) {
-            $this->shell = new BashShell();
-        }
-
-        return $this->shell;
-    }
-
-    /**
-     * @param string $logPath
-     *
-     * @return $this
-     */
-    public function setLogPath($logPath)
-    {
-        $this->logPath = $logPath;
-
-        return $this;
-    }
-
-    /**
-     * @return bool
-     */
-    public function getLogPath()
-    {
-        return $this->logPath;
-    }
-
-    /**
      * @inheritdoc
      *
      * @param Task $task
@@ -135,6 +68,10 @@ class ProcessManager implements Manager
             if (!$this->canRunTask($task)) {
                 $waiting[] = $task;
                 continue;
+            }
+
+            if ($task->stopsSiblings()) {
+                $this->stopSiblingTasks($task);
             }
 
             $binary = $this->getBinary();
@@ -168,10 +105,34 @@ class ProcessManager implements Manager
     /**
      * @param Task $task
      *
+     * @return $this
+     */
+    protected function stopSiblingTasks(Task $task)
+    {
+        $handler = $task->getHandler();
+
+        foreach ($this->running as $task) {
+            if ($task->getHandler() === $handler && $task instanceof Process) {
+                $this->getShell()->exec("kill -9 %s", array(
+                    $task->getId(),
+                ));
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @param Task $task
+     *
      * @return bool
      */
     protected function canRunTask(Task $task)
     {
+        if ($task->ignoresRules()) {
+            return true;
+        }
+
         $processes = array_filter($this->running, function (Task $task) {
             return $task instanceof Process;
         });
@@ -180,39 +141,38 @@ class ProcessManager implements Manager
             return true;
         }
 
+        $profile = $this->getProfileForProcesses($task, $processes);
+
+        return $this->getRules()->canRunTask($task, $profile);
+    }
+
+    /**
+     * @param Task  $task
+     * @param array $processes
+     *
+     * @return Profile
+     */
+    protected function getProfileForProcesses(Task $task, array $processes)
+    {
         $stats = $this->getStatsForProcesses($processes);
 
-        $processor = (float) array_sum(array_map(function ($stat) {
-            return (float) $stat[1];
-        }, $stats));
-
-        $memory = (float) array_sum(array_map(function ($stat) {
-            return (float) $stat[2];
-        }, $stats));
-
-        $siblings = array_filter($processes, function (Task $next) use ($task) {
+        $siblingProcesses = array_filter($processes, function (Task $next) use ($task) {
             return $next->getHandler() === $task->getHandler();
         });
 
-        $siblingStats = $this->getStatsForProcesses($siblings);
+        $siblingStats = $this->getStatsForProcesses($siblingProcesses);
 
-        $siblingProcessor = (float) array_sum(array_map(function ($stat) {
-            return (float) $stat[1];
-        }, $siblingStats));
+        $profile = $this->newProfile();
 
-        $siblingMemory = (float) array_sum(array_map(function ($stat) {
-            return (float) $stat[2];
-        }, $siblingStats));
-
-        $profile = new InMemoryProfile();
         $profile->setProcesses($processes);
-        $profile->setProcessorLoad($processor);
-        $profile->setMemoryLoad($memory);
-        $profile->setSiblingProcesses($siblings);
-        $profile->setSiblingProcessorLoad($siblingProcessor);
-        $profile->setSiblingMemoryLoad($siblingMemory);
+        $profile->setProcessorLoad(array_sum(array_column($stats, 1)));
+        $profile->setMemoryLoad(array_sum(array_column($stats, 2)));
 
-        return $this->getRules()->canRunTask($task, $profile);
+        $profile->setSiblingProcesses($siblingProcesses);
+        $profile->setSiblingProcessorLoad(array_sum(array_column($siblingStats, 1)));
+        $profile->setSiblingMemoryLoad(array_sum(array_column($siblingStats, 2)));
+
+        return $profile;
     }
 
     /**
@@ -226,10 +186,10 @@ class ProcessManager implements Manager
 
         foreach ($processes as $process) {
             $result = $this->getShell()->exec("ps -o pid,%%cpu,%%mem,state,start -p %s", array(
-                $process->getId()
+                $process->getId(),
             ));
 
-            if (empty($result)) {
+            if (trim($result) === "") {
                 continue;
             }
 
@@ -237,6 +197,78 @@ class ProcessManager implements Manager
         }
 
         return $stats;
+    }
+
+    /**
+     * @return Shell
+     */
+    public function getShell()
+    {
+        if ($this->shell === null) {
+            $this->shell = $this->newShell();
+        }
+
+        return $this->shell;
+    }
+
+    /**
+     * @param Shell $shell
+     *
+     * @return $this
+     */
+    public function setShell(Shell $shell)
+    {
+        $this->shell = $shell;
+
+        return $this;
+    }
+
+    /**
+     * @return Shell
+     */
+    protected function newShell()
+    {
+        return new BashShell();
+    }
+
+    /**
+     * @return Profile
+     */
+    protected function newProfile()
+    {
+        return new InMemoryProfile();
+    }
+
+    /**
+     * @return Rules
+     */
+    public function getRules()
+    {
+        if ($this->rules === null) {
+            $this->rules = $this->newRules();
+        }
+
+        return $this->rules;
+    }
+
+    /**
+     * @param Rules $rules
+     *
+     * @return $this
+     */
+    public function setRules(Rules $rules)
+    {
+        $this->rules = $rules;
+
+        return $this;
+    }
+
+    /**
+     * @return Rules
+     */
+    protected function newRules()
+    {
+        return new InMemoryRules();
     }
 
     /**
@@ -256,16 +288,6 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @param Task $task
-     *
-     * @return string
-     */
-    protected function getTaskString(Task $task)
-    {
-        return base64_encode(serialize($task));
-    }
-
-    /**
      * @return string
      */
     protected function getStdOut()
@@ -278,6 +300,26 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @return bool
+     */
+    public function getLogPath()
+    {
+        return $this->logPath;
+    }
+
+    /**
+     * @param string $logPath
+     *
+     * @return $this
+     */
+    public function setLogPath($logPath)
+    {
+        $this->logPath = $logPath;
+
+        return $this;
+    }
+
+    /**
      * @return string
      */
     protected function getStdErr()
@@ -287,6 +329,16 @@ class ProcessManager implements Manager
         }
 
         return "2> /dev/null";
+    }
+
+    /**
+     * @param Task $task
+     *
+     * @return string
+     */
+    protected function getTaskString(Task $task)
+    {
+        return base64_encode(serialize($task));
     }
 
     /**

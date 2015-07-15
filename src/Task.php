@@ -15,4 +15,14 @@ interface Task extends Serializable
      * @return array
      */
     public function getData();
+
+    /**
+     * @return bool
+     */
+    public function ignoresRules();
+
+    /**
+     * @return bool
+     */
+    public function stopsSiblings();
 }

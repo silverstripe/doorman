@@ -48,6 +48,8 @@ class InMemoryProfile implements Profile
     }
 
     /**
+     * @inheritdoc
+     *
      * @param Process[] $processes
      *
      * @return $this
@@ -70,6 +72,8 @@ class InMemoryProfile implements Profile
     }
 
     /**
+     * @inheritdoc
+     *
      * @param float $processorLoad
      *
      * @return $this
@@ -92,6 +96,8 @@ class InMemoryProfile implements Profile
     }
 
     /**
+     * @inheritdoc
+     *
      * @param float $memoryLoad
      *
      * @return $this
@@ -114,6 +120,8 @@ class InMemoryProfile implements Profile
     }
 
     /**
+     * @inheritdoc
+     *
      * @param Process[] $siblingProcesses
      *
      * @return $this
@@ -136,6 +144,8 @@ class InMemoryProfile implements Profile
     }
 
     /**
+     * @inheritdoc
+     *
      * @param float $siblingProcessorLoad
      *
      * @return $this
@@ -158,6 +168,8 @@ class InMemoryProfile implements Profile
     }
 
     /**
+     * @inheritdoc
+     *
      * @param float $siblingMemoryLoad
      *
      * @return $this

@@ -69,4 +69,24 @@ class CallbackTask implements Task
     {
         return "AsyncPHP\\Doorman\\Handler\\CallbackHandler";
     }
+
+    /**
+     * @inheritdoc
+     *
+     * @return bool
+     */
+    public function ignoresRules()
+    {
+        return false;
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @return bool
+     */
+    public function stopsSiblings()
+    {
+        return false;
+    }
 }

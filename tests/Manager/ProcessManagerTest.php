@@ -7,6 +7,7 @@ use AsyncPHP\Doorman\Rule\InMemoryRule;
 use AsyncPHP\Doorman\Task\ProcessCallbackTask;
 use AsyncPHP\Doorman\Tests\Manager\Fixture\TestTask1;
 use AsyncPHP\Doorman\Tests\Manager\Fixture\TestTask2;
+use AsyncPHP\Doorman\Tests\Manager\Fixture\TestTask3;
 use AsyncPHP\Doorman\Tests\Test;
 use Exception;
 
@@ -216,5 +217,43 @@ class ProcessManagerTest extends Test
 
         @unlink(__DIR__ . "/stdout.log");
         @unlink(__DIR__ . "/stderr.log");
+    }
+
+    /**
+     * @test
+     */
+    public function allowsTasksToStopSiblings()
+    {
+        $task1 = new TestTask3(function () {
+            for ($i = 0; $i < 10; $i++) {
+                @unlink(__DIR__ . "/allows-tasks-to-stop-siblings.tmp");
+
+                usleep(250);
+            }
+        });
+
+        $this->manager->addTask($task1);
+
+        @unlink(__DIR__ . "/allows-tasks-to-stop-siblings.tmp");
+
+        $added = false;
+
+        while ($this->manager->tick()) {
+            usleep(250);
+
+            if (!$added) {
+                $task2 = new TestTask3(function () {
+                    touch(__DIR__ . "/allows-tasks-to-stop-siblings.tmp");
+                });
+
+                $this->manager->addTask($task2);
+
+                $added = true;
+            }
+        }
+
+        $this->assertFileExists(__DIR__ . "/allows-tasks-to-stop-siblings.tmp");
+
+        @unlink(__DIR__ . "/allows-tasks-to-stop-siblings.tmp");
     }
 }
