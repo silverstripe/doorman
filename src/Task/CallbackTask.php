@@ -14,6 +14,8 @@ class CallbackTask implements Task
     protected $callback;
 
     /**
+     * @todo description
+     *
      * @param callable $callback
      */
     public function __construct($callback)
@@ -23,16 +25,6 @@ class CallbackTask implements Task
         }
 
         $this->callback = $callback;
-    }
-
-    /**
-     * @return array
-     */
-    public function getData()
-    {
-        return array(
-            "callback" => $this->callback,
-        );
     }
 
     /**
@@ -58,6 +50,18 @@ class CallbackTask implements Task
         $closure = unserialize($serialized);
 
         $this->callback = $closure->getClosure();
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @return array
+     */
+    public function getData()
+    {
+        return array(
+            "callback" => $this->callback,
+        );
     }
 
     /**

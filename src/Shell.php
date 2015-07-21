@@ -5,6 +5,8 @@ namespace AsyncPHP\Doorman;
 interface Shell
 {
     /**
+     * @todo description
+     *
      * @param string $command
      * @param array  $parameters
      *

@@ -2,6 +2,7 @@
 
 namespace AsyncPHP\Doorman\Manager;
 
+use AsyncPHP\Doorman\Expires;
 use AsyncPHP\Doorman\Manager;
 use AsyncPHP\Doorman\Process;
 use AsyncPHP\Doorman\Profile;
@@ -12,6 +13,7 @@ use AsyncPHP\Doorman\Rules\InMemoryRules;
 use AsyncPHP\Doorman\Shell;
 use AsyncPHP\Doorman\Shell\BashShell;
 use AsyncPHP\Doorman\Task;
+use SplObjectStorage;
 
 class ProcessManager implements Manager
 {
@@ -24,6 +26,11 @@ class ProcessManager implements Manager
      * @var Task[]
      */
     protected $running = array();
+
+    /**
+     * @var null|SplObjectStorage
+     */
+    protected $timings = null;
 
     /**
      * @var null|string
@@ -61,6 +68,10 @@ class ProcessManager implements Manager
      */
     public function tick()
     {
+        if (!$this->timings instanceof SplObjectStorage) {
+            $this->timings = new SplObjectStorage();
+        }
+
         $waiting = array();
         $running = array();
 
@@ -78,6 +89,10 @@ class ProcessManager implements Manager
             $worker = $this->getWorker();
             $stdout = $this->getStdOut();
             $stderr = $this->getStdErr();
+
+            if ($task instanceof Expires) {
+                $this->timings[$task] = time();
+            }
 
             $pid = $this->getShell()->exec("{$binary} {$worker} %s {$stdout} {$stderr} & echo $!", array(
                 $this->getTaskString($task),
@@ -103,6 +118,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @param Task $task
      *
      * @return $this
@@ -123,6 +140,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @param Task $task
      *
      * @return bool
@@ -147,6 +166,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @param Task  $task
      * @param array $processes
      *
@@ -176,6 +197,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @param Process[] $processes
      *
      * @return array
@@ -200,6 +223,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @return Shell
      */
     public function getShell()
@@ -212,6 +237,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @param Shell $shell
      *
      * @return $this
@@ -224,6 +251,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @return Shell
      */
     protected function newShell()
@@ -232,6 +261,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @return Profile
      */
     protected function newProfile()
@@ -240,6 +271,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @return Rules
      */
     public function getRules()
@@ -252,6 +285,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @param Rules $rules
      *
      * @return $this
@@ -264,6 +299,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @return Rules
      */
     protected function newRules()
@@ -272,6 +309,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @return string
      */
     protected function getBinary()
@@ -280,6 +319,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @return string
      */
     protected function getWorker()
@@ -288,6 +329,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @return string
      */
     protected function getStdOut()
@@ -300,6 +343,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @return bool
      */
     public function getLogPath()
@@ -308,6 +353,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @param string $logPath
      *
      * @return $this
@@ -320,6 +367,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @return string
      */
     protected function getStdErr()
@@ -332,6 +381,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @param Task $task
      *
      * @return string
@@ -342,6 +393,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @param Task $task
      *
      * @return bool
@@ -350,6 +403,23 @@ class ProcessManager implements Manager
     {
         if (!$task instanceof Process) {
             return true;
+        }
+
+        if ($task instanceof Expires) {
+            $expiresIn = $task->getExpiresIn();
+            $startedAt = $this->timings[$task];
+
+            if ($expiresIn > 0 && (time() - $startedAt) >= $expiresIn) {
+                if ($task->shouldExpire($startedAt)) {
+                    if ($task instanceof Process) {
+                        $this->getShell()->exec("kill -9 %s", array(
+                            $task->getId(),
+                        ));
+                    }
+
+                    return true;
+                }
+            }
         }
 
         $processes = array_filter($this->running, function (Task $task) {
@@ -373,6 +443,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @param Rule $rule
      *
      * @return $this
@@ -385,6 +457,8 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @todo description
+     *
      * @param Rule $rule
      *
      * @return $this

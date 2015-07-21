@@ -2,19 +2,21 @@
 
 namespace AsyncPHP\Doorman;
 
-interface Manager
+interface Expires
 {
     /**
      * @todo description
      *
-     * @param Task $task
+     * @return int
      */
-    public function addTask(Task $task);
+    public function getExpiresIn();
 
     /**
      * @todo description
      *
+     * @param int $startedAt
+     *
      * @return bool
      */
-    public function tick();
+    public function shouldExpire($startedAt);
 }

@@ -8,6 +8,7 @@ use AsyncPHP\Doorman\Task\ProcessCallbackTask;
 use AsyncPHP\Doorman\Tests\Manager\Fixture\TestTask1;
 use AsyncPHP\Doorman\Tests\Manager\Fixture\TestTask2;
 use AsyncPHP\Doorman\Tests\Manager\Fixture\TestTask3;
+use AsyncPHP\Doorman\Tests\Manager\Fixture\TestTask4;
 use AsyncPHP\Doorman\Tests\Test;
 use Exception;
 
@@ -255,5 +256,29 @@ class ProcessManagerTest extends Test
         $this->assertFileExists(__DIR__ . "/allows-tasks-to-stop-siblings.tmp");
 
         @unlink(__DIR__ . "/allows-tasks-to-stop-siblings.tmp");
+    }
+
+    /**
+     * @test
+     */
+    public function expiresTasks()
+    {
+        $task1 = new TestTask4(function () {
+            while(true) {
+                sleep(1);
+            }
+        });
+
+        $this->manager->addTask($task1);
+
+        $start = time();
+
+        while($this->manager->tick()) {
+            usleep(250);
+
+            if (time() - $start > 5) {
+                $this->fail();
+            }
+        }
     }
 }

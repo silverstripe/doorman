@@ -5,12 +5,16 @@ namespace AsyncPHP\Doorman;
 interface Process
 {
     /**
-     * @return null|int
-     */
-    public function getId();
-
-    /**
+     * @todo description
+     *
      * @param int $id
      */
     public function setId($id);
+
+    /**
+     * @todo description
+     *
+     * @return null|int
+     */
+    public function getId();
 }
