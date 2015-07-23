@@ -184,6 +184,8 @@ class ProcessManagerTest extends Test
             }
         }
 
+        sleep(1);
+
         $this->assertFileNotExists(__DIR__ . "/fail-handles-rules.tmp");
         $this->assertFileExists(__DIR__ . "/pass-handles-rules.tmp");
 

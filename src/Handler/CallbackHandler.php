@@ -16,9 +16,9 @@ class CallbackHandler implements Handler
     {
         $data = $task->getData();
 
-        if (isset($data["callback"])) {
-            $callback = $data["callback"];
-            $callback();
+        if (isset($data["closure"])) {
+            $closure = $data["closure"];
+            $closure();
         }
     }
 }

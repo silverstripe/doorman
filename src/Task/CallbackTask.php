@@ -3,6 +3,7 @@
 namespace AsyncPHP\Doorman\Task;
 
 use AsyncPHP\Doorman\Task;
+use Closure;
 use InvalidArgumentException;
 use Jeremeamia\SuperClosure\SerializableClosure;
 
@@ -11,20 +12,16 @@ class CallbackTask implements Task
     /**
      * @var callable
      */
-    protected $callback;
+    protected $closure;
 
     /**
      * @todo description
      *
-     * @param callable $callback
+     * @param Closure $closure
      */
-    public function __construct($callback)
+    public function __construct(Closure $closure)
     {
-        if (!is_callable($callback)) {
-            throw new InvalidArgumentException("Invalid callable");
-        }
-
-        $this->callback = $callback;
+        $this->closure = $closure;
     }
 
     /**
@@ -34,7 +31,7 @@ class CallbackTask implements Task
      */
     public function serialize()
     {
-        $closure = new SerializableClosure($this->callback);
+        $closure = new SerializableClosure($this->closure);
 
         return serialize($closure);
     }
@@ -49,7 +46,7 @@ class CallbackTask implements Task
         /** @var SerializableClosure $closure */
         $closure = unserialize($serialized);
 
-        $this->callback = $closure->getClosure();
+        $this->closure = $closure->getClosure();
     }
 
     /**
@@ -60,7 +57,7 @@ class CallbackTask implements Task
     public function getData()
     {
         return array(
-            "callback" => $this->callback,
+            "closure" => $this->closure,
         );
     }
 

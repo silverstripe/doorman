@@ -42,16 +42,6 @@ class CallbackTaskTest extends Test
     /**
      * @test
      */
-    public function throwsExceptionsForInvalidCallable()
-    {
-        $this->setExpectedException("InvalidArgumentException");
-
-        new CallbackTask("foo");
-    }
-
-    /**
-     * @test
-     */
     public function taskCanBeSerializedAndUnserialized()
     {
         // tasks should be able to serialize
@@ -63,8 +53,8 @@ class CallbackTaskTest extends Test
         $task = unserialize($serialized);
         $data = $task->getData();
 
-        $callback = $data["callback"];
+        $closure = $data["closure"];
 
-        $this->assertEquals("hello world", $callback());
+        $this->assertEquals("hello world", $closure());
     }
 }

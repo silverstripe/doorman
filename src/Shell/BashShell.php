@@ -9,7 +9,7 @@ class BashShell implements Shell
     /**
      * @inheritdoc
      *
-     * @param string $command
+     * @param string $format
      * @param array  $parameters
      *
      * @return string

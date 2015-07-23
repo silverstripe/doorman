@@ -335,7 +335,7 @@ class ProcessManager implements Manager
      */
     protected function getStdOut()
     {
-        if ($this->getLogPath()) {
+        if ($this->getLogPath() !== null) {
             return ">> " . $this->getLogPath() . "/stdout.log";
         }
 
@@ -345,7 +345,7 @@ class ProcessManager implements Manager
     /**
      * @todo description
      *
-     * @return bool
+     * @return null|string
      */
     public function getLogPath()
     {
@@ -373,7 +373,7 @@ class ProcessManager implements Manager
      */
     protected function getStdErr()
     {
-        if ($this->getLogPath()) {
+        if ($this->getLogPath() !== null) {
             return "2>> " . $this->getLogPath() . "/stderr.log";
         }
 
