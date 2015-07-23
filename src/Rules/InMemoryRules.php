@@ -65,17 +65,17 @@ class InMemoryRules implements Rules
         }
 
         foreach ($rules as $rule) {
-            $withinConstraints = $this->withinConstraints($rule, $profile) or  $this->withinSiblingConstraints($rule, $profile);
-
             if ($rule->getProcesses() === null) {
                 continue;
             }
 
-            if ($rule->getHandler() === null and $withinConstraints and count($profile->getProcesses()) >= $rule->getProcesses()) {
+            $withinConstraints = $this->withinConstraints($rule, $profile) || $this->withinSiblingConstraints($rule, $profile);
+
+            if ($rule->getHandler() === null && count($profile->getProcesses()) >= $rule->getProcesses() && $withinConstraints) {
                 return false;
             }
 
-            if ($rule->getHandler() === $task->getHandler() and $withinConstraints and count($profile->getSiblingProcesses()) >= $rule->getProcesses()) {
+            if ($rule->getHandler() === $task->getHandler() && count($profile->getSiblingProcesses()) >= $rule->getProcesses() && $withinConstraints) {
                 return false;
             }
         }
@@ -93,7 +93,7 @@ class InMemoryRules implements Rules
     protected function getRulesForTask(Task $task)
     {
         return array_filter($this->rules, function (Rule $rule) use ($task) {
-            return $rule->getHandler() === null or $rule->getHandler() === $task->getHandler();
+            return $rule->getHandler() === null || $rule->getHandler() === $task->getHandler();
         });
     }
 
@@ -134,7 +134,7 @@ class InMemoryRules implements Rules
 
         $memory = $profile->getMemoryLoad();
 
-        return $processor >= $minimumProcessor and $processor <= $maximumProcessor and $memory >= $minimumMemory and $memory <= $maximumMemory;
+        return $processor >= $minimumProcessor && $processor <= $maximumProcessor && $memory >= $minimumMemory && $memory <= $maximumMemory;
     }
 
     /**
@@ -174,6 +174,6 @@ class InMemoryRules implements Rules
 
         $memory = $profile->getSiblingMemoryLoad();
 
-        return $processor >= $minimumProcessor and $processor <= $maximumProcessor and $memory >= $minimumMemory and $memory <= $maximumMemory;
+        return $processor >= $minimumProcessor && $processor <= $maximumProcessor && $memory >= $minimumMemory && $memory <= $maximumMemory;
     }
 }

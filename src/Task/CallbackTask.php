@@ -9,7 +9,7 @@ use Jeremeamia\SuperClosure\SerializableClosure;
 class CallbackTask implements Task
 {
     /**
-     * @var callable
+     * @var Closure
      */
     protected $closure;
 

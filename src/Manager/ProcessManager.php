@@ -114,7 +114,7 @@ class ProcessManager implements Manager
         $this->waiting = $waiting;
         $this->running = $running;
 
-        return count($this->waiting) > 0 or count($this->running) > 0;
+        return count($this->waiting) > 0 || count($this->running) > 0;
     }
 
     /**
@@ -129,7 +129,7 @@ class ProcessManager implements Manager
         $handler = $task->getHandler();
 
         foreach ($this->running as $task) {
-            if ($task->getHandler() === $handler and $task instanceof Process) {
+            if ($task->getHandler() === $handler && $task instanceof Process) {
                 $this->getShell()->exec("kill -9 %s", array(
                     $task->getId(),
                 ));
@@ -409,7 +409,7 @@ class ProcessManager implements Manager
             $expiresIn = $task->getExpiresIn();
             $startedAt = $this->timings[$task];
 
-            if ($expiresIn > 0 and (time() - $startedAt) >= $expiresIn) {
+            if ($expiresIn > 0 && (time() - $startedAt) >= $expiresIn) {
                 if ($task->shouldExpire($startedAt)) {
                     if ($task instanceof Process) {
                         $this->getShell()->exec("kill -9 %s", array(
