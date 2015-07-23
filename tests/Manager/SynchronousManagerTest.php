@@ -24,17 +24,8 @@ class SynchronousManagerTest extends Test
     }
 
     /**
-     * @inheritdoc
-     */
-    public function tearDown()
-    {
-        $this->manager = null;
-
-        parent::tearDown();
-    }
-
-    /**
      * @test
+     * @covers AsyncPHP\Doorman\Manager\SynchronousManager
      */
     public function handlesCallbackTasks()
     {
@@ -49,8 +40,8 @@ class SynchronousManagerTest extends Test
         $this->manager->addTask($task1);
         $this->manager->addTask($task2);
 
-        @unlink(__DIR__ . "/task1.tmp");
-        @unlink(__DIR__ . "/task2.tmp");
+        $this->unlink(__DIR__ . "/task1.tmp");
+        $this->unlink(__DIR__ . "/task2.tmp");
 
         while ($this->manager->tick()) {
             usleep(250);
@@ -59,7 +50,7 @@ class SynchronousManagerTest extends Test
         $this->assertFileExists(__DIR__ . "/task1.tmp");
         $this->assertFileExists(__DIR__ . "/task2.tmp");
 
-        @unlink(__DIR__ . "/task1.tmp");
-        @unlink(__DIR__ . "/task2.tmp");
+        $this->unlink(__DIR__ . "/task1.tmp");
+        $this->unlink(__DIR__ . "/task2.tmp");
     }
 }

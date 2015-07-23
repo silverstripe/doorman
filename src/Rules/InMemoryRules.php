@@ -60,15 +60,23 @@ class InMemoryRules implements Rules
     {
         $rules = $this->getRulesForTask($task);
 
-        if (count($rules) > 0) {
-            foreach ($rules as $rule) {
-                if ($rule->getHandler() === null && $this->withinConstraints($rule, $profile) && $this->withinSiblingConstraints($rule, $profile) && count($profile->getProcesses()) >= $rule->getProcesses()) {
-                    return false;
-                }
+        if (count($rules) === 0) {
+            return true;
+        }
 
-                if ($rule->getHandler() === $task->getHandler() && $this->withinConstraints($rule, $profile) && $this->withinSiblingConstraints($rule, $profile) && count($profile->getSiblingProcesses()) >= $rule->getProcesses()) {
-                    return false;
-                }
+        foreach ($rules as $rule) {
+            $withinConstraints = $this->withinConstraints($rule, $profile) or  $this->withinSiblingConstraints($rule, $profile);
+
+            if ($rule->getProcesses() === null) {
+                continue;
+            }
+
+            if ($rule->getHandler() === null and $withinConstraints and count($profile->getProcesses()) >= $rule->getProcesses()) {
+                return false;
+            }
+
+            if ($rule->getHandler() === $task->getHandler() and $withinConstraints and count($profile->getSiblingProcesses()) >= $rule->getProcesses()) {
+                return false;
             }
         }
 
@@ -85,7 +93,7 @@ class InMemoryRules implements Rules
     protected function getRulesForTask(Task $task)
     {
         return array_filter($this->rules, function (Rule $rule) use ($task) {
-            return $rule->getHandler() === null || $rule->getHandler() === $task->getHandler();
+            return $rule->getHandler() === null or $rule->getHandler() === $task->getHandler();
         });
     }
 
@@ -101,24 +109,24 @@ class InMemoryRules implements Rules
     {
         $minimumProcessor = 0;
 
-        if ($rule->getMinimumProcessorUsage()) {
+        if ($rule->getMinimumProcessorUsage() !== null) {
             $minimumProcessor = $rule->getMinimumProcessorUsage();
         }
 
         $maximumProcessor = 100;
 
-        if ($rule->getMaximumProcessorUsage()) {
+        if ($rule->getMaximumProcessorUsage() !== null) {
             $maximumProcessor = $rule->getMaximumProcessorUsage();
         }
         $minimumMemory = 0;
 
-        if ($rule->getMinimumMemoryUsage()) {
+        if ($rule->getMinimumMemoryUsage() !== null) {
             $minimumMemory = $rule->getMinimumMemoryUsage();
         }
 
         $maximumMemory = 100;
 
-        if ($rule->getMaximumMemoryUsage()) {
+        if ($rule->getMaximumMemoryUsage() !== null) {
             $maximumMemory = $rule->getMaximumMemoryUsage();
         }
 
@@ -126,7 +134,7 @@ class InMemoryRules implements Rules
 
         $memory = $profile->getMemoryLoad();
 
-        return $processor >= $minimumProcessor && $processor <= $maximumProcessor && $memory >= $minimumMemory && $memory <= $maximumMemory;
+        return $processor >= $minimumProcessor and $processor <= $maximumProcessor and $memory >= $minimumMemory and $memory <= $maximumMemory;
     }
 
     /**
@@ -141,24 +149,24 @@ class InMemoryRules implements Rules
     {
         $minimumProcessor = 0;
 
-        if ($rule->getMinimumSiblingProcessorUsage()) {
+        if ($rule->getMinimumSiblingProcessorUsage() !== null) {
             $minimumProcessor = $rule->getMinimumSiblingProcessorUsage();
         }
 
         $maximumProcessor = 100;
 
-        if ($rule->getMaximumSiblingProcessorUsage()) {
+        if ($rule->getMaximumSiblingProcessorUsage() !== null) {
             $maximumProcessor = $rule->getMaximumSiblingProcessorUsage();
         }
         $minimumMemory = 0;
 
-        if ($rule->getMinimumSiblingMemoryUsage()) {
+        if ($rule->getMinimumSiblingMemoryUsage() !== null) {
             $minimumMemory = $rule->getMinimumSiblingMemoryUsage();
         }
 
         $maximumMemory = 100;
 
-        if ($rule->getMaximumSiblingMemoryUsage()) {
+        if ($rule->getMaximumSiblingMemoryUsage() !== null) {
             $maximumMemory = $rule->getMaximumSiblingMemoryUsage();
         }
 
@@ -166,6 +174,6 @@ class InMemoryRules implements Rules
 
         $memory = $profile->getSiblingMemoryLoad();
 
-        return $processor >= $minimumProcessor && $processor <= $maximumProcessor && $memory >= $minimumMemory && $memory <= $maximumMemory;
+        return $processor >= $minimumProcessor and $processor <= $maximumProcessor and $memory >= $minimumMemory and $memory <= $maximumMemory;
     }
 }

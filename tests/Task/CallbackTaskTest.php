@@ -30,25 +30,11 @@ class CallbackTaskTest extends Test
     }
 
     /**
-     * @inheritdoc
-     */
-    public function tearDown()
-    {
-        $this->task = null;
-
-        parent::tearDown();
-    }
-
-    /**
      * @test
      */
     public function taskCanBeSerializedAndUnserialized()
     {
-        // tasks should be able to serialize
-
         $serialized = serialize($this->task);
-
-        // and, when unserialized, function as normal
 
         $task = unserialize($serialized);
         $data = $task->getData();
@@ -56,5 +42,24 @@ class CallbackTaskTest extends Test
         $closure = $data["closure"];
 
         $this->assertEquals("hello world", $closure());
+    }
+
+    /**
+     * @test
+     */
+    public function taskReturnsValidHandlerClass()
+    {
+        $class = $this->task->getHandler();
+
+        $this->assertInstanceOf("AsyncPHP\\Doorman\\Handler", new $class);
+    }
+
+    /**
+     * @test
+     */
+    public function taskAdheresToRulesAndAllowsSiblings()
+    {
+        $this->assertFalse($this->task->ignoresRules());
+        $this->assertFalse($this->task->stopsSiblings());
     }
 }

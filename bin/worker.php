@@ -1,6 +1,15 @@
 <?php
 
-require __DIR__ . "/../vendor/autoload.php";
+$paths = array(
+    __DIR__ . "/../vendor/autoload.php",
+    __DIR__ . "/../../../autoload.php",
+);
+
+foreach ($paths as $path) {
+    if (file_exists($path)) {
+        require $path;
+    }
+}
 
 use AsyncPHP\Doorman\Handler;
 use AsyncPHP\Doorman\Task;

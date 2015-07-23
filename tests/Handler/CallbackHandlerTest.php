@@ -24,17 +24,8 @@ class CallbackHandlerTest extends Test
     }
 
     /**
-     * @inheritdoc
-     */
-    public function tearDown()
-    {
-        $this->handler = null;
-
-        parent::tearDown();
-    }
-
-    /**
      * @test
+     * @covers AsyncPHP\Doorman\Handler\CallbackHandler
      */
     public function handlesCallbackTasks()
     {
