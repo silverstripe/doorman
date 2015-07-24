@@ -48,6 +48,16 @@ class ProcessManager implements Manager
     protected $shell;
 
     /**
+     * @var null|string
+     */
+    protected $binary;
+
+    /**
+     * @var null|string
+     */
+    protected $worker;
+
+    /**
      * @inheritdoc
      *
      * @param Task $task
@@ -305,13 +315,41 @@ class ProcessManager implements Manager
     }
 
     /**
+     * @param string $binary
+     *
+     * @return $this
+     */
+    public function setBinary($binary)
+    {
+        $this->binary = $binary;
+
+        return $this;
+    }
+
+    /**
      * Gets the path of the PHP runtime.
      *
      * @return string
      */
-    protected function getBinary()
+    public function getBinary()
     {
-        return PHP_BINDIR . "/php";
+        if ($this->binary === null) {
+            $this->binary = PHP_BINDIR . "/php";
+        }
+
+        return $this->binary;
+    }
+
+    /**
+     * @param string $worker
+     *
+     * @return $this
+     */
+    public function setWorker($worker)
+    {
+        $this->worker = $worker;
+
+        return $this;
     }
 
     /**
@@ -319,9 +357,13 @@ class ProcessManager implements Manager
      *
      * @return string
      */
-    protected function getWorker()
+    public function getWorker()
     {
-        return realpath(__DIR__ . "/../../bin/worker.php");
+        if ($this->worker === null) {
+            $this->worker = realpath(__DIR__ . "/../../bin/worker.php");
+        }
+
+        return $this->worker;
     }
 
     /**
