@@ -34,6 +34,8 @@ while ($manager->tick()) {
 
 You can find more in-depth documentation in [docs/en](docs/en/introduction.md).
 
+Want to know how it works, without digging through the code? [Read this](https://medium.com/@assertchris/multi-process-php-94a4e5a4be05)...
+
 ## Motivation
 
 There are many great libraries that do something similar to this. They usually require PHP `5.4` or additional extensions. This library aims to make child process management simple, and supported everywhere.
