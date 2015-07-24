@@ -5,7 +5,7 @@ namespace AsyncPHP\Doorman;
 interface Handler
 {
     /**
-     * @todo description
+     * Handles a task.
      *
      * @param Task $task
      */

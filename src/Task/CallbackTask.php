@@ -14,8 +14,6 @@ class CallbackTask implements Task
     protected $closure;
 
     /**
-     * @todo description
-     *
      * @param Closure $closure
      */
     public function __construct(Closure $closure)

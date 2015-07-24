@@ -5,14 +5,14 @@ namespace AsyncPHP\Doorman;
 interface Expires
 {
     /**
-     * @todo description
+     * Gets the number of seconds until this task or process expires.
      *
      * @return int
      */
     public function getExpiresIn();
 
     /**
-     * @todo description
+     * Checks whether a task or process should expire. This is called when a manager thinks a task or process should expire.
      *
      * @param int $startedAt
      *

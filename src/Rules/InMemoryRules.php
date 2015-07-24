@@ -78,7 +78,7 @@ class InMemoryRules implements Rules
     }
 
     /**
-     * @todo description
+     * Gets all the rules that apply to a task.
      *
      * @param Task $task
      *
@@ -92,7 +92,7 @@ class InMemoryRules implements Rules
     }
 
     /**
-     * @todo description
+     * Checks whether there are too many processes running to start a new one.
      *
      * @param Rule    $rule
      * @param Profile $profile
@@ -105,7 +105,7 @@ class InMemoryRules implements Rules
     }
 
     /**
-     * @todo description
+     * Checks whether the current profile is within the constraints of a rule.
      *
      * @param Rule    $rule
      * @param Profile $profile
@@ -118,7 +118,7 @@ class InMemoryRules implements Rules
     }
 
     /**
-     * @todo description
+     * Checks whether the current profile is within the processor constraints of a rule.
      *
      * @param Rule    $rule
      * @param Profile $profile
@@ -135,7 +135,7 @@ class InMemoryRules implements Rules
     }
 
     /**
-     * @todo description
+     * Checks whether the current profile is within the memory constraints of a rule.
      *
      * @param Rule    $rule
      * @param Profile $profile
@@ -152,7 +152,7 @@ class InMemoryRules implements Rules
     }
 
     /**
-     * @todo description
+     * Checks whether there are too many sibling processes running to start a new one.
      *
      * @param Rule    $rule
      * @param Profile $profile
@@ -165,7 +165,7 @@ class InMemoryRules implements Rules
     }
 
     /**
-     * @todo description
+     * Checks whether the profile or sibling processes is within the constraints of a rule.
      *
      * @param Rule    $rule
      * @param Profile $profile
@@ -178,7 +178,7 @@ class InMemoryRules implements Rules
     }
 
     /**
-     * @todo description
+     * Checks whether the profile or sibling processes is within the processor constraints of a rule.
      *
      * @param Rule    $rule
      * @param Profile $profile
@@ -195,7 +195,7 @@ class InMemoryRules implements Rules
     }
 
     /**
-     * @todo description
+     * Checks whether the profile or sibling processes is within the memory constraints of a rule.
      *
      * @param Rule    $rule
      * @param Profile $profile

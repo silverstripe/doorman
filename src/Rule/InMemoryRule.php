@@ -67,8 +67,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * @todo description
-     *
      * @param int|null $processes
      *
      * @return $this
@@ -91,8 +89,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * @todo description
-     *
      * @param null|string $handler
      *
      * @return $this
@@ -115,8 +111,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * @todo description
-     *
      * @param null|float $minimumProcessorUsage
      *
      * @return $this
@@ -139,8 +133,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * @todo description
-     *
      * @param null|float $maximumProcessorUsage
      *
      * @return $this
@@ -163,8 +155,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * @todo description
-     *
      * @param null|float $minimumMemoryUsage
      *
      * @return $this
@@ -187,8 +177,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * @todo description
-     *
      * @param null|float $maximumMemoryUsage
      *
      * @return $this
@@ -211,8 +199,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * @todo description
-     *
      * @param null|float $minimumSiblingProcessorUsage
      *
      * @return $this
@@ -235,8 +221,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * @todo description
-     *
      * @param null|float $maximumSiblingProcessorUsage
      *
      * @return $this
@@ -259,8 +243,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * @todo description
-     *
      * @param null|float $minimumSiblingMemoryUsage
      *
      * @return $this
@@ -283,8 +265,6 @@ class InMemoryRule implements Rule
     }
 
     /**
-     * @todo description
-     *
      * @param null|float $maximumSiblingMemoryUsage
      *
      * @return $this

@@ -5,12 +5,12 @@ namespace AsyncPHP\Doorman;
 interface Shell
 {
     /**
-     * @todo description
+     * Executes a command after filtering all parameters.
      *
-     * @param string $command
+     * @param string $format
      * @param array  $parameters
      *
      * @return string
      */
-    public function exec($command, array $parameters = array());
+    public function exec($format, array $parameters = array());
 }

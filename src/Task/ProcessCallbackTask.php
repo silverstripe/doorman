@@ -71,7 +71,7 @@ class ProcessCallbackTask extends CallbackTask implements Expires, Process
     }
 
     /**
-     * @todo description
+     * Checks whether this task has expired.
      *
      * @return bool
      */

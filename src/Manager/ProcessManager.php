@@ -118,7 +118,7 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
+     * Stops sibling processes of a task.
      *
      * @param Task $task
      *
@@ -140,7 +140,7 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
+     * Checks whether a new task can be run.
      *
      * @param Task $task
      *
@@ -166,7 +166,7 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
+     * Gets the load profile related to a task.
      *
      * @param Task  $task
      * @param array $processes
@@ -197,7 +197,7 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
+     * Gets processor and memory stats for a list of processes.
      *
      * @param Process[] $processes
      *
@@ -223,7 +223,7 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
+     * Gets or creates a Shell instance.
      *
      * @return Shell
      */
@@ -237,8 +237,6 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
-     *
      * @param Shell $shell
      *
      * @return $this
@@ -251,7 +249,7 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
+     * Creates a new Shell instance.
      *
      * @return Shell
      */
@@ -261,7 +259,7 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
+     * Creates a new Profile instance.
      *
      * @return Profile
      */
@@ -271,7 +269,7 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
+     * Gets or creates a new Rules instance.
      *
      * @return Rules
      */
@@ -285,8 +283,6 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
-     *
      * @param Rules $rules
      *
      * @return $this
@@ -299,7 +295,7 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
+     * Creates a new Rules instance.
      *
      * @return Rules
      */
@@ -309,7 +305,7 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
+     * Gets the path of the PHP runtime.
      *
      * @return string
      */
@@ -319,7 +315,7 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
+     * Gets the path of the worker script.
      *
      * @return string
      */
@@ -329,7 +325,7 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
+     * Gets the path to write stdout to.
      *
      * @return string
      */
@@ -343,8 +339,6 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
-     *
      * @return null|string
      */
     public function getLogPath()
@@ -353,8 +347,6 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
-     *
      * @param string $logPath
      *
      * @return $this
@@ -367,7 +359,7 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
+     * Gets the path to write stderr to.
      *
      * @return string
      */
@@ -381,7 +373,7 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
+     * Gets a string representation of a task, to pass to the worker script.
      *
      * @param Task $task
      *
@@ -393,7 +385,7 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
+     * Checks whether a task can be removed from the list of running processes.
      *
      * @param Task $task
      *
@@ -443,8 +435,6 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
-     *
      * @param Rule $rule
      *
      * @return $this
@@ -457,8 +447,6 @@ class ProcessManager implements Manager
     }
 
     /**
-     * @todo description
-     *
      * @param Rule $rule
      *
      * @return $this
