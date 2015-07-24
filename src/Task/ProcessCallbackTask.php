@@ -25,6 +25,16 @@ class ProcessCallbackTask extends CallbackTask implements Expires, Process
     /**
      * @inheritdoc
      *
+     * @return null|int
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+
+    /**
+     * @inheritdoc
+     *
      * @param int $id
      *
      * @return $this
@@ -34,16 +44,6 @@ class ProcessCallbackTask extends CallbackTask implements Expires, Process
         $this->id = $id;
 
         return $this;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @return null|int
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**
@@ -61,7 +61,7 @@ class ProcessCallbackTask extends CallbackTask implements Expires, Process
      *
      * @param int $startedAt
      *
-     * @return $this
+     * @return bool
      */
     public function shouldExpire($startedAt)
     {

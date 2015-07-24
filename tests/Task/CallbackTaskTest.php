@@ -5,6 +5,9 @@ namespace AsyncPHP\Doorman\Tests\Task;
 use AsyncPHP\Doorman\Task\CallbackTask;
 use AsyncPHP\Doorman\Tests\Test;
 
+/**
+ * @covers AsyncPHP\Doorman\Task\CallbackTask
+ */
 class CallbackTaskTest extends Test
 {
     /**

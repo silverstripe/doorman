@@ -69,13 +69,7 @@ class InMemoryRules implements Rules
                 continue;
             }
 
-            $withinConstraints = $this->withinConstraints($rule, $profile) || $this->withinSiblingConstraints($rule, $profile);
-
-            if ($rule->getHandler() === null && count($profile->getProcesses()) >= $rule->getProcesses() && $withinConstraints) {
-                return false;
-            }
-
-            if ($rule->getHandler() === $task->getHandler() && count($profile->getSiblingProcesses()) >= $rule->getProcesses() && $withinConstraints) {
+            if (($rule->getHandler() === null || $rule->getHandler() === $task->getHandler()) && ($this->hasTooManyProcessesRunning($rule, $profile) || $this->hasTooManySiblingProcessesRunning($rule, $profile))) {
                 return false;
             }
         }
@@ -105,36 +99,69 @@ class InMemoryRules implements Rules
      *
      * @return bool
      */
+    protected function hasTooManyProcessesRunning(Rule $rule, Profile $profile)
+    {
+        return $this->withinConstraints($rule, $profile) && count($profile->getProcesses()) >= $rule->getProcesses();
+    }
+
+    /**
+     * @todo description
+     *
+     * @param Rule    $rule
+     * @param Profile $profile
+     *
+     * @return bool
+     */
     protected function withinConstraints(Rule $rule, Profile $profile)
     {
-        $minimumProcessor = 0;
+        return $this->withinProcessorConstraints($rule, $profile) || $this->withinMemoryConstraints($rule, $profile);
+    }
 
-        if ($rule->getMinimumProcessorUsage() !== null) {
-            $minimumProcessor = $rule->getMinimumProcessorUsage();
+    /**
+     * @todo description
+     *
+     * @param Rule    $rule
+     * @param Profile $profile
+     *
+     * @return bool
+     */
+    protected function withinProcessorConstraints(Rule $rule, Profile $profile)
+    {
+        if ($rule->getMinimumProcessorUsage() !== null && $rule->getMaximumProcessorUsage() !== null) {
+            return $profile->getProcessorLoad() >= $rule->getMinimumProcessorUsage() && $profile->getProcessorLoad() <= $rule->getMaximumProcessorUsage();
         }
 
-        $maximumProcessor = 100;
+        return false;
+    }
 
-        if ($rule->getMaximumProcessorUsage() !== null) {
-            $maximumProcessor = $rule->getMaximumProcessorUsage();
+    /**
+     * @todo description
+     *
+     * @param Rule    $rule
+     * @param Profile $profile
+     *
+     * @return bool
+     */
+    protected function withinMemoryConstraints(Rule $rule, Profile $profile)
+    {
+        if ($rule->getMinimumMemoryUsage() !== null && $rule->getMaximumMemoryUsage() !== null) {
+            return $profile->getMemoryLoad() >= $rule->getMinimumMemoryUsage() && $profile->getMemoryLoad() <= $rule->getMaximumMemoryUsage();
         }
-        $minimumMemory = 0;
 
-        if ($rule->getMinimumMemoryUsage() !== null) {
-            $minimumMemory = $rule->getMinimumMemoryUsage();
-        }
+        return false;
+    }
 
-        $maximumMemory = 100;
-
-        if ($rule->getMaximumMemoryUsage() !== null) {
-            $maximumMemory = $rule->getMaximumMemoryUsage();
-        }
-
-        $processor = $profile->getProcessorLoad();
-
-        $memory = $profile->getMemoryLoad();
-
-        return $processor >= $minimumProcessor && $processor <= $maximumProcessor && $memory >= $minimumMemory && $memory <= $maximumMemory;
+    /**
+     * @todo description
+     *
+     * @param Rule    $rule
+     * @param Profile $profile
+     *
+     * @return bool
+     */
+    protected function hasTooManySiblingProcessesRunning(Rule $rule, Profile $profile)
+    {
+        return $this->withinSiblingConstraints($rule, $profile) && count($profile->getSiblingProcesses()) >= $rule->getProcesses();
     }
 
     /**
@@ -147,33 +174,40 @@ class InMemoryRules implements Rules
      */
     protected function withinSiblingConstraints(Rule $rule, Profile $profile)
     {
-        $minimumProcessor = 0;
+        return $this->withinSiblingProcessorConstraints($rule, $profile) || $this->withinSiblingMemoryConstraints($rule, $profile);
+    }
 
-        if ($rule->getMinimumSiblingProcessorUsage() !== null) {
-            $minimumProcessor = $rule->getMinimumSiblingProcessorUsage();
+    /**
+     * @todo description
+     *
+     * @param Rule    $rule
+     * @param Profile $profile
+     *
+     * @return bool
+     */
+    protected function withinSiblingProcessorConstraints(Rule $rule, Profile $profile)
+    {
+        if ($rule->getMinimumSiblingProcessorUsage() !== null && $rule->getMaximumSiblingProcessorUsage() !== null) {
+            return $profile->getSiblingProcessorLoad() >= $rule->getMinimumSiblingProcessorUsage() && $profile->getSiblingProcessorLoad() <= $rule->getMaximumSiblingProcessorUsage();
         }
 
-        $maximumProcessor = 100;
+        return false;
+    }
 
-        if ($rule->getMaximumSiblingProcessorUsage() !== null) {
-            $maximumProcessor = $rule->getMaximumSiblingProcessorUsage();
+    /**
+     * @todo description
+     *
+     * @param Rule    $rule
+     * @param Profile $profile
+     *
+     * @return bool
+     */
+    protected function withinSiblingMemoryConstraints(Rule $rule, Profile $profile)
+    {
+        if ($rule->getMinimumSiblingMemoryUsage() !== null && $rule->getMaximumSiblingMemoryUsage() !== null) {
+            return $profile->getSiblingMemoryLoad() >= $rule->getMinimumSiblingMemoryUsage() && $profile->getSiblingMemoryLoad() <= $rule->getMaximumSiblingMemoryUsage();
         }
-        $minimumMemory = 0;
 
-        if ($rule->getMinimumSiblingMemoryUsage() !== null) {
-            $minimumMemory = $rule->getMinimumSiblingMemoryUsage();
-        }
-
-        $maximumMemory = 100;
-
-        if ($rule->getMaximumSiblingMemoryUsage() !== null) {
-            $maximumMemory = $rule->getMaximumSiblingMemoryUsage();
-        }
-
-        $processor = $profile->getSiblingProcessorLoad();
-
-        $memory = $profile->getSiblingMemoryLoad();
-
-        return $processor >= $minimumProcessor && $processor <= $maximumProcessor && $memory >= $minimumMemory && $memory <= $maximumMemory;
+        return false;
     }
 }

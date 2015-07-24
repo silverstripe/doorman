@@ -6,6 +6,9 @@ use AsyncPHP\Doorman\Handler\CallbackHandler;
 use AsyncPHP\Doorman\Task\CallbackTask;
 use AsyncPHP\Doorman\Tests\Test;
 
+/**
+ * @covers AsyncPHP\Doorman\Handler\CallbackHandler
+ */
 class CallbackHandlerTest extends Test
 {
     /**
@@ -25,7 +28,6 @@ class CallbackHandlerTest extends Test
 
     /**
      * @test
-     * @covers AsyncPHP\Doorman\Handler\CallbackHandler
      */
     public function handlesCallbackTasks()
     {
@@ -41,8 +43,6 @@ class CallbackHandlerTest extends Test
 
         $this->handler->handle($task1);
         $this->handler->handle($task2);
-
-        // tasks should have added 3 to store
 
         $this->assertEquals(3, $store);
     }

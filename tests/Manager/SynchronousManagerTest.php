@@ -6,6 +6,9 @@ use AsyncPHP\Doorman\Manager\SynchronousManager;
 use AsyncPHP\Doorman\Task\CallbackTask;
 use AsyncPHP\Doorman\Tests\Test;
 
+/**
+ * @covers AsyncPHP\Doorman\Manager\SynchronousManager
+ */
 class SynchronousManagerTest extends Test
 {
     /**
@@ -25,7 +28,6 @@ class SynchronousManagerTest extends Test
 
     /**
      * @test
-     * @covers AsyncPHP\Doorman\Manager\SynchronousManager
      */
     public function handlesCallbackTasks()
     {
