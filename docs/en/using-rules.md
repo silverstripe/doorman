@@ -40,6 +40,10 @@ $manager->addTask($task1);
 $manager->addTask($task2);
 $manager->addTask($task3);
 
+$manager->addRule($rule1);
+$manager->addRule($rule2);
+$manager->addRule($rule3);
+
 while ($manager->tick()) {
     usleep(250);
 }
