@@ -6,7 +6,7 @@
 [![Version](http://img.shields.io/packagist/v/asyncphp/doorman.svg?style=flat-square)](https://packagist.org/packages/asyncphp/doorman)
 [![License](http://img.shields.io/packagist/l/asyncphp/doorman.svg?style=flat-square)](license.md)
 
-Child process management.
+Child process management. Compatible from PHP 5.3 to PHP 7. Needs no extensions.
 
 ## Usage
 
@@ -31,3 +31,16 @@ while ($manager->tick()) {
     usleep(250);
 }
 ```
+
+## Motivation
+
+There are many great libraries that do something similar to this. They usually require PHP ^5.4 or additional extensions. This library aims to make child process management simple, and supported everywhere.
+
+Other great libraries that do similar stuff:
+
+- [React](https://github.com/reactphp/child-process)
+- [Icicle](https://github.com/icicleio/concurrent)
+
+## Thanks
+
+I'd like to thank [SilverStripe](http://www.silverstripe.com) for letting me work on fun projects like this. Feel free to talk to me about using the [framework and CMS](http://www.silverstripe.org) or [working at SilverStripe](http://www.silverstripe.com/who-we-are/#careers).
