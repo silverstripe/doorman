@@ -1,5 +1,7 @@
 {
     "name": "asyncphp/doorman",
+    "description": "Child process management",
+    "license": "MIT",
     "require": {
         "php": ">=5.3.3",
         "ramsey/array_column": "^1.1",

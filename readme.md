@@ -1,5 +1,11 @@
 # Doorman
 
+[![Build Status](http://img.shields.io/travis/asyncphp/doorman.svg?style=flat-square)](https://travis-ci.org/asyncphp/doorman)
+[![Code Quality](http://img.shields.io/scrutinizer/g/asyncphp/doorman.svg?style=flat-square)](https://scrutinizer-ci.com/g/asyncphp/doorman)
+[![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/asyncphp/doorman.svg?style=flat-square)](http://doorman.asyncphp.com/master)
+[![Version](http://img.shields.io/packagist/v/asyncphp/doorman.svg?style=flat-square)](https://packagist.org/packages/asyncphp/doorman)
+[![License](http://img.shields.io/packagist/l/asyncphp/doorman.svg?style=flat-square)](license.md)
+
 Child process management.
 
 ## Examples
