@@ -36,9 +36,7 @@ class ProcessCallbackTaskTest extends Test
 
         $this->assertEquals(3, $this->task->getId());
 
-
         $this->assertEquals(-1, $this->task->getExpiresIn());
-
 
         $this->assertFalse($this->task->hasExpired());
 

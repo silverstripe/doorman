@@ -334,7 +334,7 @@ class ProcessManager implements Manager
     public function getBinary()
     {
         if ($this->binary === null) {
-            $this->binary = PHP_BINDIR . "/php";
+            $this->binary = PHP_BINDIR."/php";
         }
 
         return $this->binary;
@@ -360,7 +360,7 @@ class ProcessManager implements Manager
     public function getWorker()
     {
         if ($this->worker === null) {
-            $this->worker = realpath(__DIR__ . "/../../bin/worker.php");
+            $this->worker = realpath(__DIR__."/../../bin/worker.php");
         }
 
         return $this->worker;
@@ -374,7 +374,7 @@ class ProcessManager implements Manager
     protected function getStdOut()
     {
         if ($this->getLogPath() !== null) {
-            return ">> " . $this->getLogPath() . "/stdout.log";
+            return ">> ".$this->getLogPath()."/stdout.log";
         }
 
         return "> /dev/null";
@@ -408,7 +408,7 @@ class ProcessManager implements Manager
     protected function getStdErr()
     {
         if ($this->getLogPath() !== null) {
-            return "2>> " . $this->getLogPath() . "/stderr.log";
+            return "2>> ".$this->getLogPath()."/stderr.log";
         }
 
         return "2> /dev/null";

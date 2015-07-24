@@ -38,7 +38,6 @@ class ProcessManagerTest extends Test
 
         $this->assertEquals(__DIR__, $this->manager->getLogPath());
 
-
         $this->assertInstanceOf("AsyncPHP\\Doorman\\Shell", $this->manager->getShell());
 
         $shell = new BashShell();
@@ -46,7 +45,6 @@ class ProcessManagerTest extends Test
         $this->manager->setShell($shell);
 
         $this->assertEquals($shell, $this->manager->getShell());
-
 
         $this->assertInstanceOf("AsyncPHP\\Doorman\\Rules", $this->manager->getRules());
 
@@ -63,30 +61,29 @@ class ProcessManagerTest extends Test
     public function basicRulesAndTasksWork()
     {
         $task1 = new ProcessCallbackTask(function () {
-            touch(__DIR__ . "/task1.temp");
+            touch(__DIR__."/task1.temp");
 
             for ($i = 0; $i < 10; $i++) {
                 usleep(50000);
             }
 
-            unlink(__DIR__ . "/task1.temp");
+            unlink(__DIR__."/task1.temp");
         });
 
         $task2 = new ProcessCallbackTask(function () {
-            touch(__DIR__ . "/task2.temp");
+            touch(__DIR__."/task2.temp");
 
             for ($i = 0; $i < 10; $i++) {
                 usleep(50000);
             }
 
-            unlink(__DIR__ . "/task2.temp");
+            unlink(__DIR__."/task2.temp");
         });
 
         $rule = new InMemoryRule();
         $rule->setProcesses(1);
         $rule->setMinimumProcessorUsage(0);
         $rule->setMaximumProcessorUsage(100);
-
 
         $added = false;
 
@@ -101,11 +98,10 @@ class ProcessManagerTest extends Test
                 $added = true;
             }
 
-            if (file_exists(__DIR__ . "/task1.temp") && file_exists(__DIR__ . "/task2.temp")) {
+            if (file_exists(__DIR__."/task1.temp") && file_exists(__DIR__."/task2.temp")) {
                 $this->fail("Tasks should not be run concurrently");
             }
         }
-
 
         $this->manager->removeRule($rule);
         $this->manager->addTask($task1);
@@ -114,7 +110,7 @@ class ProcessManagerTest extends Test
         if ($this->manager->tick()) {
             usleep(50000);
 
-            if (!file_exists(__DIR__ . "/task1.temp") || !file_exists(__DIR__ . "/task2.temp")) {
+            if (!file_exists(__DIR__."/task1.temp") || !file_exists(__DIR__."/task2.temp")) {
                 $this->fail("Tasks should be run concurrently");
             }
         }

@@ -2,11 +2,9 @@
 
 namespace AsyncPHP\Doorman\Tests\Rules;
 
-use AsyncPHP\Doorman\Profile;
 use AsyncPHP\Doorman\Profile\InMemoryProfile;
 use AsyncPHP\Doorman\Rule\InMemoryRule;
 use AsyncPHP\Doorman\Rules\InMemoryRules;
-use AsyncPHP\Doorman\Task;
 use AsyncPHP\Doorman\Task\ProcessCallbackTask;
 use AsyncPHP\Doorman\Tests\Test;
 
@@ -51,7 +49,6 @@ class InMemoryRulesTest extends Test
 
         $this->assertTrue($this->rules->canRunTask($task2, $profile2));
 
-
         $rule1 = new InMemoryRule();
         $rule1->setProcesses(null);
         $rule1->setMinimumProcessorUsage(0);
@@ -63,7 +60,6 @@ class InMemoryRulesTest extends Test
 
         $this->assertTrue($this->rules->canRunTask($task2, $profile1));
 
-
         $rule2 = new InMemoryRule();
         $rule2->setProcesses(1);
         $rule2->setMinimumProcessorUsage(0);
@@ -72,7 +68,6 @@ class InMemoryRulesTest extends Test
         $this->rules->removeRule($rule1)->addRule($rule2);
 
         $this->assertFalse($this->rules->canRunTask($task2, $profile2));
-
 
         $rule3 = new InMemoryRule();
         $rule3->setProcesses(2);
@@ -108,7 +103,6 @@ class InMemoryRulesTest extends Test
 
         $this->assertFalse($this->rules->addRule($rule1)->canRunTask($task2, $profile1));
 
-
         $rule2 = new InMemoryRule();
         $rule2->setProcesses(1);
         $rule2->setMinimumMemoryUsage(50);
@@ -120,7 +114,6 @@ class InMemoryRulesTest extends Test
 
         $this->assertFalse($this->rules->removeRule($rule1)->addRule($rule2)->canRunTask($task2, $profile2));
 
-
         $rule3 = new InMemoryRule();
         $rule3->setProcesses(1);
         $rule3->setMinimumSiblingProcessorUsage(50);
@@ -131,7 +124,6 @@ class InMemoryRulesTest extends Test
         $profile3->setSiblingProcessorLoad(75);
 
         $this->assertFalse($this->rules->removeRule($rule2)->addRule($rule3)->canRunTask($task2, $profile3));
-
 
         $rule4 = new InMemoryRule();
         $rule4->setProcesses(1);

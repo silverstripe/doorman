@@ -54,7 +54,7 @@ class CallbackTaskTest extends Test
     {
         $class = $this->task->getHandler();
 
-        $this->assertInstanceOf("AsyncPHP\\Doorman\\Handler", new $class);
+        $this->assertInstanceOf("AsyncPHP\\Doorman\\Handler", new $class());
     }
 
     /**
