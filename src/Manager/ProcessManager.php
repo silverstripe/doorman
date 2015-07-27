@@ -196,12 +196,12 @@ class ProcessManager implements Manager
         $profile = $this->newProfile();
 
         $profile->setProcesses($processes);
-        $profile->setProcessorLoad(array_sum(array_column($stats, 1)));
-        $profile->setMemoryLoad(array_sum(array_column($stats, 2)));
+        $profile->setProcessorLoad(min(100, array_sum(array_column($stats, 1))));
+        $profile->setMemoryLoad(min(100, array_sum(array_column($stats, 2))));
 
         $profile->setSiblingProcesses($siblingProcesses);
-        $profile->setSiblingProcessorLoad(array_sum(array_column($siblingStats, 1)));
-        $profile->setSiblingMemoryLoad(array_sum(array_column($siblingStats, 2)));
+        $profile->setSiblingProcessorLoad(min(100, array_sum(array_column($siblingStats, 1))));
+        $profile->setSiblingMemoryLoad(min(100, array_sum(array_column($siblingStats, 2))));
 
         return $profile;
     }
