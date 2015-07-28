@@ -87,4 +87,15 @@ class CallbackTask implements Task
     {
         return false;
     }
+
+    /**
+     * @inheritdoc
+     * 
+     * @return bool
+     */
+    public function canRunTask()
+    {
+        return true;
+    }
+
 }

@@ -33,4 +33,11 @@ interface Task extends Serializable
      * @return bool
      */
     public function stopsSiblings();
+
+    /**
+     * Check if this task is able to be run
+     *
+     * @return bool
+     */
+    public function canRunTask();
 }

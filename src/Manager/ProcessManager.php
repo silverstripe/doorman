@@ -2,6 +2,7 @@
 
 namespace AsyncPHP\Doorman\Manager;
 
+use AsyncPHP\Doorman\Cancellable;
 use AsyncPHP\Doorman\Expires;
 use AsyncPHP\Doorman\Manager;
 use AsyncPHP\Doorman\Process;
@@ -86,6 +87,10 @@ class ProcessManager implements Manager
         $running = array();
 
         foreach ($this->waiting as $task) {
+            if ($this->isTaskCancelled($task)) {
+                continue;
+            }
+            
             if (!$this->canRunTask($task)) {
                 $waiting[] = $task;
                 continue;
@@ -158,6 +163,10 @@ class ProcessManager implements Manager
      */
     protected function canRunTask(Task $task)
     {
+        if(!$task->canRunTask()) {
+            return false;
+        }
+
         if ($task->ignoresRules()) {
             return true;
         }
@@ -438,22 +447,10 @@ class ProcessManager implements Manager
         if (!$task instanceof Process) {
             return true;
         }
-
-        if ($task instanceof Expires) {
-            $expiresIn = $task->getExpiresIn();
-            $startedAt = $this->timings[$task];
-
-            if ($expiresIn > 0 && (time() - $startedAt) >= $expiresIn) {
-                if ($task->shouldExpire($startedAt)) {
-                    if ($task instanceof Process) {
-                        $this->getShell()->exec("kill -9 %s", array(
-                            $task->getId(),
-                        ));
-                    }
-
-                    return true;
-                }
-            }
+        
+        if ($this->isTaskExpired($task) || $this->isTaskCancelled($task)) {
+            $this->killTask($task);
+            return true;
         }
 
         $processes = array_filter($this->running, function (Task $task) {
@@ -474,6 +471,55 @@ class ProcessManager implements Manager
         }
 
         return !$found;
+    }
+
+    /**
+     * Check if the given task is expired
+     *
+     * @param Task $task
+     * @return boolean
+     */
+    protected function isTaskExpired(Task $task) {
+        if ($task instanceof Expires) {
+            $expiresIn = $task->getExpiresIn();
+            $startedAt = $this->timings[$task];
+
+            if($expiresIn > 0 && (time() - $startedAt) >= $expiresIn) {
+                return $task->shouldExpire($startedAt);
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Check if the given task is cancelled
+     * 
+     * @param Task $task
+     * @return bool
+     */
+    protected function isTaskCancelled(Task $task)
+    {
+        if ($task instanceof Cancellable) {
+            return $task->isCancelled();
+        }
+        return false;
+    }
+
+    /**
+     * Revoke any background processes attached to this task
+     *
+     * @param Task $task
+     * @return bool If the process was killed
+     */
+    protected function killTask(Task $task)
+    {
+        if ($task instanceof Process) {
+            $this->getShell()->exec("kill -9 %s", array(
+                $task->getId(),
+            ));
+            return true;
+        }
+        return false;
     }
 
     /**
