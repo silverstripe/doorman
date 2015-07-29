@@ -12,6 +12,8 @@ There are many great libraries that do something similar to this. They usually r
 - [Getting Started](getting-started.md)
 - [Using Rules](using-rules.md)
 - [Extending Tasks](extending-tasks.md)
+- [Communicating Between Processes](communicating-between-processes.md)
+- [Guarantee Process Identity](guarantee-process-identity.md)
 
 ## Questions
 
