@@ -14,6 +14,7 @@ There are many great libraries that do something similar to this. They usually r
 - [Extending Tasks](extending-tasks.md)
 - [Communicating Between Processes](communicating-between-processes.md)
 - [Guarantee Process Identity](guarantee-process-identity.md)
+- [Grouping tasks](grouping-tasks.md)
 
 ## Questions
 

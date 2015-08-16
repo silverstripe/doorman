@@ -129,7 +129,7 @@ class ProcessManager implements Manager
         $this->waiting = $waiting;
         $this->running = $running;
 
-        return count($this->waiting) > 0 || count($this->running) > 0;
+        return !empty($this->waiting) || !empty($this->running);
     }
 
     /**
