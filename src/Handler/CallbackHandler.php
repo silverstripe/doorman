@@ -18,7 +18,7 @@ class CallbackHandler implements Handler
 
         if (isset($data["closure"])) {
             $closure = $data["closure"];
-            $closure();
+            $closure($this, $task);
         }
     }
 }
