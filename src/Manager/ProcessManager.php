@@ -109,12 +109,12 @@ class ProcessManager implements Manager
                 $this->timings[$task] = time();
             }
 
-            $pid = $this->getShell()->exec("{$binary} {$worker} %s {$stdout} {$stderr} & echo $!", array(
+            $output = $this->getShell()->exec("{$binary} {$worker} %s {$stdout} {$stderr} & echo $!", array(
                 $this->getTaskString($task),
             ));
 
             if ($task instanceof Process) {
-                $task->setId($pid);
+                $task->setId($output[0]);
             }
 
             $this->running[] = $task;
@@ -129,7 +129,7 @@ class ProcessManager implements Manager
         $this->waiting = $waiting;
         $this->running = $running;
 
-        return !empty($this->waiting) || !empty($this->running);
+        return !empty($waiting) || !empty($running);
     }
 
     /**
@@ -227,15 +227,29 @@ class ProcessManager implements Manager
         $stats = array();
 
         foreach ($processes as $process) {
-            $result = $this->getShell()->exec("ps -o pid,%%cpu,%%mem,state,start -p %s", array(
+            $output = $this->getShell()->exec("ps -o pid,%%cpu,%%mem,state,start -p %s | sed 1d", array(
                 $process->getId(),
             ));
 
-            if (trim($result) === "") {
+            if (count($output) < 1) {
                 continue;
             }
 
-            $stats[] = preg_split("/\s+/", trim($result));
+            $last = $output[count($output) - 1];
+
+            if (trim($last) === "") {
+                continue;
+            }
+
+            $parts = preg_split("/\s+/", trim($last));
+
+            $pid = intval($parts[0]);
+
+            if ("{$pid}" !== $parts[0]) {
+                continue;
+            }
+
+            $stats[] = $parts;
         }
 
         return $stats;
@@ -488,13 +502,15 @@ class ProcessManager implements Manager
                 return $task->shouldExpire($startedAt);
             }
         }
+
         return false;
     }
 
     /**
-     * Check if the given task is cancelled
+     * Check if the given task is cancelled.
      * 
      * @param Task $task
+     *
      * @return bool
      */
     protected function isTaskCancelled(Task $task)
@@ -502,14 +518,16 @@ class ProcessManager implements Manager
         if ($task instanceof Cancellable) {
             return $task->isCancelled();
         }
+
         return false;
     }
 
     /**
-     * Revoke any background processes attached to this task
+     * Revoke any background processes attached to this task.
      *
      * @param Task $task
-     * @return bool If the process was killed
+     *
+     * @return bool
      */
     protected function killTask(Task $task)
     {
@@ -517,8 +535,10 @@ class ProcessManager implements Manager
             $this->getShell()->exec("kill -9 %s", array(
                 $task->getId(),
             ));
+
             return true;
         }
+
         return false;
     }
 

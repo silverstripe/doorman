@@ -12,7 +12,7 @@ class BashShell implements Shell
      * @param string $format
      * @param array  $parameters
      *
-     * @return string
+     * @return array
      */
     public function exec($format, array $parameters = array())
     {
@@ -22,6 +22,8 @@ class BashShell implements Shell
 
         $command = call_user_func_array("sprintf", $parameters);
 
-        return exec($command);
+        exec($command, $output);
+
+        return $output;
     }
 }

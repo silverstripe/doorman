@@ -30,6 +30,6 @@ class BashShellTest extends Test
      */
     public function executesShellCommands()
     {
-        $this->assertEquals("hello world", $this->shell->exec("echo %s", array("hello world")));
+        $this->assertEquals(array("hello world"), $this->shell->exec("echo %s", array("hello world")));
     }
 }
