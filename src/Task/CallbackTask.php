@@ -4,7 +4,7 @@ namespace AsyncPHP\Doorman\Task;
 
 use AsyncPHP\Doorman\Task;
 use Closure;
-use Jeremeamia\SuperClosure\SerializableClosure;
+use SuperClosure\SerializableClosure;
 
 class CallbackTask implements Task
 {
@@ -90,7 +90,7 @@ class CallbackTask implements Task
 
     /**
      * @inheritdoc
-     * 
+     *
      * @return bool
      */
     public function canRunTask()

@@ -3,9 +3,8 @@
     "description": "Child process management",
     "license": "MIT",
     "require": {
-        "php": ">=5.3.3",
-        "ramsey/array_column": "^1.1",
-        "jeremeamia/SuperClosure": "^1.0"
+        "php": ">=5.5.9",
+        "jeremeamia/SuperClosure": "^2.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.7"
