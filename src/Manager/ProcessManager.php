@@ -567,4 +567,11 @@ final class ProcessManager implements Manager
 
         return $this;
     }
+
+    public function __destruct()
+    {
+        foreach ($this->running as $task) {
+            $this->killTask($task);
+        }
+    }
 }
