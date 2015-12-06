@@ -4,17 +4,17 @@ namespace AsyncPHP\Doorman\Shell;
 
 use AsyncPHP\Doorman\Shell;
 
-class BashShell implements Shell
+final class BashShell implements Shell
 {
     /**
      * @inheritdoc
      *
      * @param string $format
-     * @param array  $parameters
+     * @param array $parameters
      *
      * @return array
      */
-    public function exec($format, array $parameters = array())
+    public function exec($format, array $parameters = [])
     {
         $parameters = array_map("escapeshellarg", $parameters);
 

@@ -12,7 +12,8 @@ interface Manager
     public function addTask(Task $task);
 
     /**
-     * Executes a single processing cycle. This should be run repeatedly, and will return false when there are no more running or waiting processes.
+     * Executes a single processing cycle. This should be run repeatedly, and will return false
+     * when there are no more running or waiting processes.
      *
      * @return bool
      */

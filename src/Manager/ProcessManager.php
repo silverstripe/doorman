@@ -16,32 +16,32 @@ use AsyncPHP\Doorman\Shell\BashShell;
 use AsyncPHP\Doorman\Task;
 use SplObjectStorage;
 
-class ProcessManager implements Manager
+final class ProcessManager implements Manager
 {
     /**
      * @var Task[]
      */
-    protected $waiting = array();
+    private $waiting = [];
 
     /**
      * @var Task[]
      */
-    protected $running = array();
+    private $running = [];
 
     /**
      * @var null|SplObjectStorage
      */
-    protected $timings = null;
+    private $timings = null;
 
     /**
      * @var null|string
      */
-    protected $logPath;
+    private $logPath;
 
     /**
      * @var null|Rules
      */
-    protected $rules;
+    private $rules;
 
     /**
      * @var null|Shell
@@ -51,12 +51,12 @@ class ProcessManager implements Manager
     /**
      * @var null|string
      */
-    protected $binary;
+    private $binary;
 
     /**
      * @var null|string
      */
-    protected $worker;
+    private $worker;
 
     /**
      * @inheritdoc
@@ -83,14 +83,14 @@ class ProcessManager implements Manager
             $this->timings = new SplObjectStorage();
         }
 
-        $waiting = array();
-        $running = array();
+        $waiting = [];
+        $running = [];
 
         foreach ($this->waiting as $task) {
             if ($this->isTaskCancelled($task)) {
                 continue;
             }
-            
+
             if (!$this->canRunTask($task)) {
                 $waiting[] = $task;
                 continue;
@@ -109,9 +109,9 @@ class ProcessManager implements Manager
                 $this->timings[$task] = time();
             }
 
-            $output = $this->getShell()->exec("{$binary} {$worker} %s {$stdout} {$stderr} & echo $!", array(
+            $output = $this->getShell()->exec("{$binary} {$worker} %s {$stdout} {$stderr} & echo $!", [
                 $this->getTaskString($task),
-            ));
+            ]);
 
             if ($task instanceof Process) {
                 $task->setId($output[0]);
@@ -139,15 +139,15 @@ class ProcessManager implements Manager
      *
      * @return $this
      */
-    protected function stopSiblingTasks(Task $task)
+    private function stopSiblingTasks(Task $task)
     {
         $handler = $task->getHandler();
 
         foreach ($this->running as $task) {
             if ($task->getHandler() === $handler && $task instanceof Process) {
-                $this->getShell()->exec("kill -9 %s", array(
+                $this->getShell()->exec("kill -9 %s", [
                     $task->getId(),
-                ));
+                ]);
             }
         }
 
@@ -161,9 +161,9 @@ class ProcessManager implements Manager
      *
      * @return bool
      */
-    protected function canRunTask(Task $task)
+    private function canRunTask(Task $task)
     {
-        if(!$task->canRunTask()) {
+        if (!$task->canRunTask()) {
             return false;
         }
 
@@ -187,12 +187,12 @@ class ProcessManager implements Manager
     /**
      * Gets the load profile related to a task.
      *
-     * @param Task  $task
+     * @param Task $task
      * @param array $processes
      *
      * @return Profile
      */
-    protected function getProfileForProcesses(Task $task, array $processes)
+    private function getProfileForProcesses(Task $task, array $processes)
     {
         $stats = $this->getStatsForProcesses($processes);
 
@@ -222,14 +222,14 @@ class ProcessManager implements Manager
      *
      * @return array
      */
-    protected function getStatsForProcesses(array $processes)
+    private function getStatsForProcesses(array $processes)
     {
-        $stats = array();
+        $stats = [];
 
         foreach ($processes as $process) {
-            $output = $this->getShell()->exec("ps -o pid,%%cpu,%%mem,state,start -p %s | sed 1d", array(
+            $output = $this->getShell()->exec("ps -o pid,%%cpu,%%mem,state,start -p %s | sed 1d", [
                 $process->getId(),
-            ));
+            ]);
 
             if (count($output) < 1) {
                 continue;
@@ -286,7 +286,7 @@ class ProcessManager implements Manager
      *
      * @return Shell
      */
-    protected function newShell()
+    private function newShell()
     {
         return new BashShell();
     }
@@ -296,7 +296,7 @@ class ProcessManager implements Manager
      *
      * @return Profile
      */
-    protected function newProfile()
+    private function newProfile()
     {
         return new InMemoryProfile();
     }
@@ -332,7 +332,7 @@ class ProcessManager implements Manager
      *
      * @return Rules
      */
-    protected function newRules()
+    private function newRules()
     {
         return new InMemoryRules();
     }
@@ -357,7 +357,7 @@ class ProcessManager implements Manager
     public function getBinary()
     {
         if ($this->binary === null) {
-            $this->binary = PHP_BINDIR."/php";
+            $this->binary = PHP_BINDIR . "/php";
         }
 
         return $this->binary;
@@ -383,7 +383,7 @@ class ProcessManager implements Manager
     public function getWorker()
     {
         if ($this->worker === null) {
-            $this->worker = realpath(__DIR__."/../../bin/worker.php");
+            $this->worker = realpath(__DIR__ . "/../../bin/worker.php");
         }
 
         return $this->worker;
@@ -394,10 +394,10 @@ class ProcessManager implements Manager
      *
      * @return string
      */
-    protected function getStdOut()
+    private function getStdOut()
     {
         if ($this->getLogPath() !== null) {
-            return ">> ".$this->getLogPath()."/stdout.log";
+            return ">> " . $this->getLogPath() . "/stdout.log";
         }
 
         return "> /dev/null";
@@ -428,10 +428,10 @@ class ProcessManager implements Manager
      *
      * @return string
      */
-    protected function getStdErr()
+    private function getStdErr()
     {
         if ($this->getLogPath() !== null) {
-            return "2>> ".$this->getLogPath()."/stderr.log";
+            return "2>> " . $this->getLogPath() . "/stderr.log";
         }
 
         return "2> /dev/null";
@@ -444,7 +444,7 @@ class ProcessManager implements Manager
      *
      * @return string
      */
-    protected function getTaskString(Task $task)
+    private function getTaskString(Task $task)
     {
         return base64_encode(serialize($task));
     }
@@ -456,12 +456,12 @@ class ProcessManager implements Manager
      *
      * @return bool
      */
-    protected function canRemoveTask(Task $task)
+    private function canRemoveTask(Task $task)
     {
         if (!$task instanceof Process) {
             return true;
         }
-        
+
         if ($this->isTaskExpired($task) || $this->isTaskCancelled($task)) {
             $this->killTask($task);
             return true;
@@ -491,14 +491,16 @@ class ProcessManager implements Manager
      * Check if the given task is expired
      *
      * @param Task $task
+     *
      * @return boolean
      */
-    protected function isTaskExpired(Task $task) {
+    private function isTaskExpired(Task $task)
+    {
         if ($task instanceof Expires) {
             $expiresIn = $task->getExpiresIn();
             $startedAt = $this->timings[$task];
 
-            if($expiresIn > 0 && (time() - $startedAt) >= $expiresIn) {
+            if ($expiresIn > 0 && (time() - $startedAt) >= $expiresIn) {
                 return $task->shouldExpire($startedAt);
             }
         }
@@ -508,12 +510,12 @@ class ProcessManager implements Manager
 
     /**
      * Check if the given task is cancelled.
-     * 
+     *
      * @param Task $task
      *
      * @return bool
      */
-    protected function isTaskCancelled(Task $task)
+    private function isTaskCancelled(Task $task)
     {
         if ($task instanceof Cancellable) {
             return $task->isCancelled();
@@ -529,12 +531,12 @@ class ProcessManager implements Manager
      *
      * @return bool
      */
-    protected function killTask(Task $task)
+    private function killTask(Task $task)
     {
         if ($task instanceof Process) {
-            $this->getShell()->exec("kill -9 %s", array(
+            $this->getShell()->exec("kill -9 %s", [
                 $task->getId(),
-            ));
+            ]);
 
             return true;
         }

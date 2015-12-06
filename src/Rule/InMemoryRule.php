@@ -4,57 +4,57 @@ namespace AsyncPHP\Doorman\Rule;
 
 use AsyncPHP\Doorman\Rule;
 
-class InMemoryRule implements Rule
+final class InMemoryRule implements Rule
 {
     /**
      * @var null|int
      */
-    protected $processes;
+    private $processes;
 
     /**
      * @var null|string
      */
-    protected $handler;
+    private $handler;
 
     /**
      * @var null|float
      */
-    protected $minimumProcessorUsage;
+    private $minimumProcessorUsage;
 
     /**
      * @var null|float
      */
-    protected $maximumProcessorUsage;
+    private $maximumProcessorUsage;
 
     /**
      * @var null|float
      */
-    protected $minimumMemoryUsage;
+    private $minimumMemoryUsage;
 
     /**
      * @var null|float
      */
-    protected $maximumMemoryUsage;
+    private $maximumMemoryUsage;
 
     /**
      * @var null|float
      */
-    protected $minimumSiblingProcessorUsage;
+    private $minimumSiblingProcessorUsage;
 
     /**
      * @var null|float
      */
-    protected $maximumSiblingProcessorUsage;
+    private $maximumSiblingProcessorUsage;
 
     /**
      * @var null|float
      */
-    protected $minimumSiblingMemoryUsage;
+    private $minimumSiblingMemoryUsage;
 
     /**
      * @var null|float
      */
-    protected $maximumSiblingMemoryUsage;
+    private $maximumSiblingMemoryUsage;
 
     /**
      * @inheritdoc

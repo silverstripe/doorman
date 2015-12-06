@@ -5,22 +5,22 @@ namespace AsyncPHP\Doorman\Manager;
 use AsyncPHP\Doorman\Manager;
 use AsyncPHP\Doorman\Task;
 
-class GroupProcessManager implements Manager
+final class GroupProcessManager implements Manager
 {
     /**
      * @var Manager
      */
-    protected $manager;
+    private $manager;
 
     /**
      * @var Task[][]
      */
-    protected $waiting = array();
+    private $waiting = [];
 
     /**
      * @var Task[][]
      */
-    protected $queuing = array();
+    private $queuing = [];
 
     /**
      * @param Manager $manager
@@ -39,7 +39,7 @@ class GroupProcessManager implements Manager
      */
     public function addTask(Task $task)
     {
-        array_push($this->waiting, array($task));
+        array_push($this->waiting, [$task]);
 
         return $this;
     }
@@ -90,12 +90,12 @@ class GroupProcessManager implements Manager
      * Passes missing method calls to the decorated manager.
      *
      * @param string $method
-     * @param array  $parameters
+     * @param array $parameters
      *
      * @return mixed
      */
     public function __call($method, array $parameters)
     {
-        return call_user_func_array(array($this->manager, $method), $parameters);
+        return call_user_func_array([$this->manager, $method], $parameters);
     }
 }

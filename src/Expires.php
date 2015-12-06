@@ -12,7 +12,8 @@ interface Expires
     public function getExpiresIn();
 
     /**
-     * Checks whether a task or process should expire. This is called when a manager thinks a task or process should expire.
+     * Checks whether a task or process should expire. This is called when a manager thinks a task
+     * or process should expire.
      *
      * @param int $startedAt
      *

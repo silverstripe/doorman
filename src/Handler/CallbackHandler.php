@@ -5,7 +5,7 @@ namespace AsyncPHP\Doorman\Handler;
 use AsyncPHP\Doorman\Handler;
 use AsyncPHP\Doorman\Task;
 
-class CallbackHandler implements Handler
+final class CallbackHandler implements Handler
 {
     /**
      * @inheritdoc

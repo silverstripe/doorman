@@ -5,22 +5,17 @@ namespace AsyncPHP\Doorman\Task;
 use AsyncPHP\Doorman\Expires;
 use AsyncPHP\Doorman\Process;
 
-class ProcessCallbackTask extends CallbackTask implements Expires, Process
+final class ProcessCallbackTask extends CallbackTask implements Expires, Process
 {
     /**
      * @var null|int
      */
-    protected $id;
+    private $id;
 
     /**
      * @var null|int
      */
-    protected $startTime;
-
-    /**
-     * @var null|int
-     */
-    protected $expiredAt;
+    private $expiredAt;
 
     /**
      * @inheritdoc

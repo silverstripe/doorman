@@ -6,12 +6,12 @@ use AsyncPHP\Doorman\Handler;
 use AsyncPHP\Doorman\Manager;
 use AsyncPHP\Doorman\Task;
 
-class SynchronousManager implements Manager
+final class SynchronousManager implements Manager
 {
     /**
      * @var Task[]
      */
-    protected $waiting = array();
+    private $waiting = [];
 
     /**
      * @inheritdoc

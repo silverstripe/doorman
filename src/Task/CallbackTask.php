@@ -11,7 +11,7 @@ class CallbackTask implements Task
     /**
      * @var Closure
      */
-    protected $closure;
+    private $closure;
 
     /**
      * @param Closure $closure
@@ -53,9 +53,9 @@ class CallbackTask implements Task
      */
     public function getData()
     {
-        return array(
+        return [
             "closure" => $this->closure,
-        );
+        ];
     }
 
     /**
@@ -97,5 +97,4 @@ class CallbackTask implements Task
     {
         return true;
     }
-
 }

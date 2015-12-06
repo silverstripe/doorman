@@ -21,7 +21,8 @@ interface Task extends Serializable
     public function getData();
 
     /**
-     * Instructs a manager to ignore any rules that would prevent this task from being immediately handled.
+     * Instructs a manager to ignore any rules that would prevent this task from being immediately
+     * handled.
      *
      * @return bool
      */

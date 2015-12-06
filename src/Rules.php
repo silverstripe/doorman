@@ -21,7 +21,7 @@ interface Rules
     /**
      * Instructs a manager whether a task can be handled, given the current rules and load profile.
      *
-     * @param Task    $task
+     * @param Task $task
      * @param Profile $profile
      *
      * @return bool

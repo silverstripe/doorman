@@ -5,37 +5,37 @@ namespace AsyncPHP\Doorman\Profile;
 use AsyncPHP\Doorman\Process;
 use AsyncPHP\Doorman\Profile;
 
-class InMemoryProfile implements Profile
+final class InMemoryProfile implements Profile
 {
     /**
      * @var Process[]
      */
-    protected $processes = array();
+    private $processes = [];
 
     /**
      * @var float
      */
-    protected $processorLoad = 0.0;
+    private $processorLoad = 0.0;
 
     /**
      * @var float
      */
-    protected $memoryLoad = 0.0;
+    private $memoryLoad = 0.0;
 
     /**
      * @var Process[]
      */
-    protected $siblingProcesses = array();
+    private $siblingProcesses = [];
 
     /**
      * @var float
      */
-    protected $siblingProcessorLoad = 0.0;
+    private $siblingProcessorLoad = 0.0;
 
     /**
      * @var float
      */
-    protected $siblingMemoryLoad = 0.0;
+    private $siblingMemoryLoad = 0.0;
 
     /**
      * @inheritdoc

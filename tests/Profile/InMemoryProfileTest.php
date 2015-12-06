@@ -33,7 +33,7 @@ class InMemoryProfileTest extends Test
      *
      * @param string $getter
      * @param string $setter
-     * @param mixed  $value
+     * @param mixed $value
      */
     public function gettersAndSettersWork($getter, $setter, $value)
     {
