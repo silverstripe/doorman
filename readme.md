@@ -34,7 +34,7 @@ while ($manager->tick()) {
 }
 ```
 
-You can find more in-depth documentation in [docs/en](docs/en/introduction.md).
+You can find more in-depth documentation in [docs/en/3.x](docs/en/3.x/introduction.md).
 
 Want to know how it works, without digging through the code? [Read this](https://medium.com/@assertchris/multi-process-php-94a4e5a4be05)...
 
