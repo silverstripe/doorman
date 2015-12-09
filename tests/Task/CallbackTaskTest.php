@@ -4,21 +4,17 @@ namespace AsyncPHP\Doorman\Tests\Task;
 
 use AsyncPHP\Doorman\Task\CallbackTask;
 use AsyncPHP\Doorman\Tests\Test;
+use AsyncPHP\Doorman\Handler;
 
 /**
  * @covers AsyncPHP\Doorman\Task\CallbackTask
  */
-class CallbackTaskTest extends Test
+final class CallbackTaskTest extends Test
 {
     /**
      * @var CallbackTask
      */
-    protected $task;
-
-    /**
-     * @var callable
-     */
-    protected $callback;
+    private $task;
 
     /**
      * @inheritdoc
@@ -54,7 +50,7 @@ class CallbackTaskTest extends Test
     {
         $class = $this->task->getHandler();
 
-        $this->assertInstanceOf("AsyncPHP\\Doorman\\Handler", new $class());
+        $this->assertInstanceOf(Handler::class, new $class());
     }
 
     /**

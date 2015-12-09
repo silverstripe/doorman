@@ -12,12 +12,12 @@ use AsyncPHP\Doorman\Tests\Test;
 /**
  * @covers AsyncPHP\Doorman\Manager\ProcessManager
  */
-class ProcessManagerTest extends Test
+final class ProcessManagerTest extends Test
 {
     /**
      * @var ProcessManager
      */
-    protected $manager;
+    private $manager;
 
     /**
      * @inheritdoc
@@ -80,10 +80,15 @@ class ProcessManagerTest extends Test
             unlink(__DIR__ . "/task2.temp");
         });
 
-        $rule = new InMemoryRule();
-        $rule->setProcesses(1);
-        $rule->setMinimumProcessorUsage(0);
-        $rule->setMaximumProcessorUsage(100);
+        $rule = new InMemoryRule([
+            "processes" => 1,
+            "handlers" => [
+                "processor" => [
+                    "minimum" => 0,
+                    "maximum" => 0,
+                ],
+            ],
+        ]);
 
         $added = false;
 
@@ -114,5 +119,8 @@ class ProcessManagerTest extends Test
                 $this->fail("Tasks should be run concurrently");
             }
         }
+
+        $this->unlink(__DIR__ . "/task1.temp");
+        $this->unlink(__DIR__ . "/task2.temp");
     }
 }

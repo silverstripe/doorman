@@ -8,12 +8,12 @@ use AsyncPHP\Doorman\Tests\Test;
 /**
  * @covers AsyncPHP\Doorman\Shell\BashShell
  */
-class BashShellTest extends Test
+final class BashShellTest extends Test
 {
     /**
      * @var BashShell
      */
-    protected $shell;
+    private $shell;
 
     /**
      * @inheritdoc

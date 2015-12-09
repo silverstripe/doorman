@@ -65,7 +65,7 @@ final class InMemoryRules implements Rules
         }
 
         foreach ($rules as $rule) {
-            if ($rule->getProcesses() === null) {
+            if ($rule->getProcesses() === -1) {
                 continue;
             }
 

@@ -492,7 +492,7 @@ final class ProcessManager implements Manager
      *
      * @param Task $task
      *
-     * @return boolean
+     * @return bool
      */
     private function isTaskExpired(Task $task)
     {

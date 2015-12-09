@@ -5,6 +5,7 @@ namespace AsyncPHP\Doorman\Task;
 use AsyncPHP\Doorman\Task;
 use Closure;
 use SuperClosure\SerializableClosure;
+use AsyncPHP\Doorman\Handler\CallbackHandler;
 
 class CallbackTask implements Task
 {
@@ -65,7 +66,7 @@ class CallbackTask implements Task
      */
     public function getHandler()
     {
-        return "AsyncPHP\\Doorman\\Handler\\CallbackHandler";
+        return CallbackHandler::class;
     }
 
     /**

@@ -9,12 +9,12 @@ use AsyncPHP\Doorman\Tests\Test;
 /**
  * @covers AsyncPHP\Doorman\Manager\SynchronousManager
  */
-class SynchronousManagerTest extends Test
+final class SynchronousManagerTest extends Test
 {
     /**
      * @var SynchronousManager
      */
-    protected $manager;
+    private $manager;
 
     /**
      * @inheritdoc

@@ -8,55 +8,40 @@ use AsyncPHP\Doorman\Tests\Test;
 /**
  * @covers AsyncPHP\Doorman\Rule\InMemoryRule
  */
-class InMemoryRuleTest extends Test
+final class InMemoryRuleTest extends Test
 {
-    /**
-     * @var InMemoryRule
-     */
-    protected $rule;
-
-    /**
-     * @inheritdoc
-     */
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->rule = new InMemoryRule();
-    }
-
     /**
      * @test
      *
-     * @dataProvider gettersAndSettersProvider
+     * @dataProvider ruleProvider
      *
+     * @param array $parameters
      * @param string $getter
-     * @param string $setter
      * @param mixed $value
      */
-    public function gettersAndSettersWork($getter, $setter, $value)
+    public function gettersWork(array $parameters, $getter, $value)
     {
-        $this->rule->$setter($value);
+        $rule = new InMemoryRule($parameters);
 
-        $this->assertSame($value, $this->rule->$getter());
+        $this->assertSame($value, $rule->$getter());
     }
 
     /**
      * @return array
      */
-    public function gettersAndSettersProvider()
+    public function ruleProvider()
     {
-        return array(
-            array("getProcesses", "setProcesses", 3),
-            array("getHandler", "setHandler", "Three"),
-            array("getMinimumProcessorUsage", "setMinimumProcessorUsage", 33.0),
-            array("getMaximumProcessorUsage", "setMaximumProcessorUsage", 33.0),
-            array("getMinimumMemoryUsage", "setMinimumMemoryUsage", 33.0),
-            array("getMaximumMemoryUsage", "setMaximumMemoryUsage", 33.0),
-            array("getMinimumSiblingProcessorUsage", "setMinimumSiblingProcessorUsage", 33.0),
-            array("getMaximumSiblingProcessorUsage", "setMaximumSiblingProcessorUsage", 33.0),
-            array("getMinimumSiblingMemoryUsage", "setMinimumSiblingMemoryUsage", 33.0),
-            array("getMaximumSiblingMemoryUsage", "setMaximumSiblingMemoryUsage", 33.0),
-        );
+        return [
+            [["processes" => 3], "getProcesses", 3],
+            [["handler" => "Three"], "getHandler", "Three"],
+            [["handlers" => ["processor" => ["minimum" => 33.0]]], "getMinimumProcessorUsage", 33.0],
+            [["handlers" => ["processor" => ["maximum" => 33.0]]], "getMaximumProcessorUsage", 33.0],
+            [["handlers" => ["memory" => ["minimum" => 33.0]]], "getMinimumMemoryUsage", 33.0],
+            [["handlers" => ["memory" => ["maximum" => 33.0]]], "getMaximumMemoryUsage", 33.0],
+            [["siblings" => ["processor" => ["minimum" => 33.0]]], "getMinimumSiblingProcessorUsage", 33.0],
+            [["siblings" => ["processor" => ["maximum" => 33.0]]], "getMaximumSiblingProcessorUsage", 33.0],
+            [["siblings" => ["memory" => ["minimum" => 33.0]]], "getMinimumSiblingMemoryUsage", 33.0],
+            [["siblings" => ["memory" => ["maximum" => 33.0]]], "getMaximumSiblingMemoryUsage", 33.0],
+        ];
     }
 }

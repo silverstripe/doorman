@@ -9,12 +9,12 @@ use AsyncPHP\Doorman\Tests\Test;
 /**
  * @covers AsyncPHP\Doorman\Handler\CallbackHandler
  */
-class CallbackHandlerTest extends Test
+final class CallbackHandlerTest extends Test
 {
     /**
      * @var CallbackHandler
      */
-    protected $handler;
+    private $handler;
 
     /**
      * @inheritdoc

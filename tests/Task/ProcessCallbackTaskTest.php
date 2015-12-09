@@ -8,12 +8,12 @@ use AsyncPHP\Doorman\Tests\Test;
 /**
  * @covers AsyncPHP\Doorman\Task\ProcessCallbackTask
  */
-class ProcessCallbackTaskTest extends Test
+final class ProcessCallbackTaskTest extends Test
 {
     /**
      * @var ProcessCallbackTask
      */
-    protected $task;
+    private $task;
 
     /**
      * @inheritdoc
@@ -35,13 +35,9 @@ class ProcessCallbackTaskTest extends Test
         $this->task->setId(3);
 
         $this->assertEquals(3, $this->task->getId());
-
         $this->assertEquals(-1, $this->task->getExpiresIn());
-
         $this->assertFalse($this->task->hasExpired());
-
         $this->assertTrue($this->task->shouldExpire(time()));
-
         $this->assertTrue($this->task->hasExpired());
     }
 }
