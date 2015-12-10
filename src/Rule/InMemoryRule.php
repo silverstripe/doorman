@@ -3,79 +3,73 @@
 namespace AsyncPHP\Doorman\Rule;
 
 use AsyncPHP\Doorman\Rule;
+use Symfony\Component\OptionsResolver\OptionsResolver;
 
 final class InMemoryRule implements Rule
 {
     /**
-     * @var null|int
+     * @var array
      */
-    private $processes;
+    private $options;
 
     /**
-     * @var null|string
+     * @var array
      */
-    private $handler;
+    private $defaults = [
+        Rule::LIMIT => 0,
+        Rule::HANDLER => null,
+        Rule::MINIMUM_GLOBAL_PROCESSOR_USAGE => null,
+        Rule::MAXIMUM_GLOBAL_PROCESSOR_USAGE => null,
+        Rule::MINIMUM_GLOBAL_MEMORY_USAGE => null,
+        Rule::MAXIMUM_GLOBAL_MEMORY_USAGE => null,
+        Rule::MINIMUM_SIBLING_PROCESSOR_USAGE => null,
+        Rule::MAXIMUM_SIBLING_PROCESSOR_USAGE => null,
+        Rule::MINIMUM_SIBLING_MEMORY_USAGE => null,
+        Rule::MAXIMUM_SIBLING_MEMORY_USAGE => null,
+    ];
 
     /**
-     * @var null|float
+     * @var array
      */
-    private $minimumProcessorUsage;
+    private $types = [
+        Rule::LIMIT => ["int"],
+        Rule::HANDLER => ["null", "string"],
+        Rule::MINIMUM_GLOBAL_PROCESSOR_USAGE => ["null", "int"],
+        Rule::MAXIMUM_GLOBAL_PROCESSOR_USAGE => ["null", "int"],
+        Rule::MINIMUM_GLOBAL_MEMORY_USAGE => ["null", "int"],
+        Rule::MAXIMUM_GLOBAL_MEMORY_USAGE => ["null", "int"],
+        Rule::MINIMUM_SIBLING_PROCESSOR_USAGE => ["null", "int"],
+        Rule::MAXIMUM_SIBLING_PROCESSOR_USAGE => ["null", "int"],
+        Rule::MINIMUM_SIBLING_MEMORY_USAGE => ["null", "int"],
+        Rule::MAXIMUM_SIBLING_MEMORY_USAGE => ["null", "int"],
+    ];
 
     /**
-     * @var null|float
+     * @param array $options
      */
-    private $maximumProcessorUsage;
+    public function __construct(array $options = [])
+    {
+        $resolver = new OptionsResolver();
 
-    /**
-     * @var null|float
-     */
-    private $minimumMemoryUsage;
+        foreach ($this->defaults as $option => $default) {
+            $resolver->setDefault($option, $default);
+        }
 
-    /**
-     * @var null|float
-     */
-    private $maximumMemoryUsage;
+        foreach ($this->types as $option => $types) {
+            $resolver->setAllowedTypes($option, $types);
+        }
 
-    /**
-     * @var null|float
-     */
-    private $minimumSiblingProcessorUsage;
-
-    /**
-     * @var null|float
-     */
-    private $maximumSiblingProcessorUsage;
-
-    /**
-     * @var null|float
-     */
-    private $minimumSiblingMemoryUsage;
-
-    /**
-     * @var null|float
-     */
-    private $maximumSiblingMemoryUsage;
+        $this->options = $resolver->resolve($options);
+    }
 
     /**
      * @inheritdoc
      *
-     * @return int|null
+     * @return int
      */
-    public function getProcesses()
+    public function getLimit()
     {
-        return $this->processes;
-    }
-
-    /**
-     * @param int|null $processes
-     *
-     * @return $this
-     */
-    public function setProcesses($processes)
-    {
-        $this->processes = $processes;
-
-        return $this;
+        return $this->options[Rule::LIMIT];
     }
 
     /**
@@ -85,194 +79,86 @@ final class InMemoryRule implements Rule
      */
     public function getHandler()
     {
-        return $this->handler;
-    }
-
-    /**
-     * @param null|string $handler
-     *
-     * @return $this
-     */
-    public function setHandler($handler)
-    {
-        $this->handler = $handler;
-
-        return $this;
+        return $this->options[Rule::HANDLER];
     }
 
     /**
      * @inheritdoc
      *
-     * @return null|float
+     * @return null|int
      */
-    public function getMinimumProcessorUsage()
+    public function getMinimumGlobalProcessorUsage()
     {
-        return $this->minimumProcessorUsage;
-    }
-
-    /**
-     * @param null|float $minimumProcessorUsage
-     *
-     * @return $this
-     */
-    public function setMinimumProcessorUsage($minimumProcessorUsage)
-    {
-        $this->minimumProcessorUsage = $minimumProcessorUsage;
-
-        return $this;
+        return $this->options[Rule::MINIMUM_GLOBAL_PROCESSOR_USAGE];
     }
 
     /**
      * @inheritdoc
      *
-     * @return null|float
+     * @return null|int
      */
-    public function getMaximumProcessorUsage()
+    public function getMaximumGlobalProcessorUsage()
     {
-        return $this->maximumProcessorUsage;
-    }
-
-    /**
-     * @param null|float $maximumProcessorUsage
-     *
-     * @return $this
-     */
-    public function setMaximumProcessorUsage($maximumProcessorUsage)
-    {
-        $this->maximumProcessorUsage = $maximumProcessorUsage;
-
-        return $this;
+        return $this->options[Rule::MAXIMUM_GLOBAL_PROCESSOR_USAGE];
     }
 
     /**
      * @inheritdoc
      *
-     * @return null|float
+     * @return null|int
      */
-    public function getMinimumMemoryUsage()
+    public function getMinimumGlobalMemoryUsage()
     {
-        return $this->minimumMemoryUsage;
-    }
-
-    /**
-     * @param null|float $minimumMemoryUsage
-     *
-     * @return $this
-     */
-    public function setMinimumMemoryUsage($minimumMemoryUsage)
-    {
-        $this->minimumMemoryUsage = $minimumMemoryUsage;
-
-        return $this;
+        return $this->options[Rule::MINIMUM_GLOBAL_MEMORY_USAGE];
     }
 
     /**
      * @inheritdoc
      *
-     * @return null|float
+     * @return null|int
      */
-    public function getMaximumMemoryUsage()
+    public function getMaximumGlobalMemoryUsage()
     {
-        return $this->maximumMemoryUsage;
-    }
-
-    /**
-     * @param null|float $maximumMemoryUsage
-     *
-     * @return $this
-     */
-    public function setMaximumMemoryUsage($maximumMemoryUsage)
-    {
-        $this->maximumMemoryUsage = $maximumMemoryUsage;
-
-        return $this;
+        return $this->options[Rule::MAXIMUM_GLOBAL_MEMORY_USAGE];
     }
 
     /**
      * @inheritdoc
      *
-     * @return null|float
+     * @return null|int
      */
     public function getMinimumSiblingProcessorUsage()
     {
-        return $this->minimumSiblingProcessorUsage;
-    }
-
-    /**
-     * @param null|float $minimumSiblingProcessorUsage
-     *
-     * @return $this
-     */
-    public function setMinimumSiblingProcessorUsage($minimumSiblingProcessorUsage)
-    {
-        $this->minimumSiblingProcessorUsage = $minimumSiblingProcessorUsage;
-
-        return $this;
+        return $this->options[Rule::MINIMUM_SIBLING_PROCESSOR_USAGE];
     }
 
     /**
      * @inheritdoc
      *
-     * @return null|float
+     * @return null|int
      */
     public function getMaximumSiblingProcessorUsage()
     {
-        return $this->maximumSiblingProcessorUsage;
-    }
-
-    /**
-     * @param null|float $maximumSiblingProcessorUsage
-     *
-     * @return $this
-     */
-    public function setMaximumSiblingProcessorUsage($maximumSiblingProcessorUsage)
-    {
-        $this->maximumSiblingProcessorUsage = $maximumSiblingProcessorUsage;
-
-        return $this;
+        return $this->options[Rule::MAXIMUM_SIBLING_PROCESSOR_USAGE];
     }
 
     /**
      * @inheritdoc
      *
-     * @return null|float
+     * @return null|int
      */
     public function getMinimumSiblingMemoryUsage()
     {
-        return $this->minimumSiblingMemoryUsage;
-    }
-
-    /**
-     * @param null|float $minimumSiblingMemoryUsage
-     *
-     * @return $this
-     */
-    public function setMinimumSiblingMemoryUsage($minimumSiblingMemoryUsage)
-    {
-        $this->minimumSiblingMemoryUsage = $minimumSiblingMemoryUsage;
-
-        return $this;
+        return $this->options[Rule::MINIMUM_SIBLING_MEMORY_USAGE];
     }
 
     /**
      * @inheritdoc
      *
-     * @return null|float
+     * @return null|int
      */
     public function getMaximumSiblingMemoryUsage()
     {
-        return $this->maximumSiblingMemoryUsage;
-    }
-
-    /**
-     * @param null|float $maximumSiblingMemoryUsage
-     *
-     * @return $this
-     */
-    public function setMaximumSiblingMemoryUsage($maximumSiblingMemoryUsage)
-    {
-        $this->maximumSiblingMemoryUsage = $maximumSiblingMemoryUsage;
-
-        return $this;
+        return $this->options[Rule::MAXIMUM_SIBLING_MEMORY_USAGE];
     }
 }

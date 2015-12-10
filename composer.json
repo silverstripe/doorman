@@ -4,7 +4,8 @@
     "license": "MIT",
     "require": {
         "php": ">=5.5.9",
-        "jeremeamia/SuperClosure": "^2.0"
+        "jeremeamia/SuperClosure": "^2.0",
+        "symfony/options-resolver": "^3.0"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.7"

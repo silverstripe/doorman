@@ -2,61 +2,47 @@
 
 namespace AsyncPHP\Doorman\Tests\Rule;
 
+use AsyncPHP\Doorman\Rule;
 use AsyncPHP\Doorman\Rule\InMemoryRule;
 use AsyncPHP\Doorman\Tests\Test;
 
 /**
  * @covers AsyncPHP\Doorman\Rule\InMemoryRule
  */
-class InMemoryRuleTest extends Test
+final class InMemoryRuleTest extends Test
 {
-    /**
-     * @var InMemoryRule
-     */
-    protected $rule;
-
-    /**
-     * @inheritdoc
-     */
-    public function setUp()
-    {
-        parent::setUp();
-
-        $this->rule = new InMemoryRule();
-    }
-
     /**
      * @test
      *
-     * @dataProvider gettersAndSettersProvider
+     * @dataProvider dataProvider
      *
+     * @param string $option
      * @param string $getter
-     * @param string $setter
      * @param mixed $value
      */
-    public function gettersAndSettersWork($getter, $setter, $value)
+    public function optionsCorrectlyResolved($option, $getter, $value)
     {
-        $this->rule->$setter($value);
+        $rule = new InMemoryRule([$option => $value]);
 
-        $this->assertSame($value, $this->rule->$getter());
+        $this->assertSame($value, $rule->$getter());
     }
 
     /**
      * @return array
      */
-    public function gettersAndSettersProvider()
+    public function dataProvider()
     {
-        return array(
-            array("getProcesses", "setProcesses", 3),
-            array("getHandler", "setHandler", "Three"),
-            array("getMinimumProcessorUsage", "setMinimumProcessorUsage", 33.0),
-            array("getMaximumProcessorUsage", "setMaximumProcessorUsage", 33.0),
-            array("getMinimumMemoryUsage", "setMinimumMemoryUsage", 33.0),
-            array("getMaximumMemoryUsage", "setMaximumMemoryUsage", 33.0),
-            array("getMinimumSiblingProcessorUsage", "setMinimumSiblingProcessorUsage", 33.0),
-            array("getMaximumSiblingProcessorUsage", "setMaximumSiblingProcessorUsage", 33.0),
-            array("getMinimumSiblingMemoryUsage", "setMinimumSiblingMemoryUsage", 33.0),
-            array("getMaximumSiblingMemoryUsage", "setMaximumSiblingMemoryUsage", 33.0),
-        );
+        return [
+            [Rule::LIMIT, "getLimit", 3],
+            [Rule::HANDLER, "getHandler", "Three"],
+            [Rule::MINIMUM_GLOBAL_PROCESSOR_USAGE, "getMinimumGlobalProcessorUsage", 33],
+            [Rule::MAXIMUM_GLOBAL_PROCESSOR_USAGE, "getMaximumGlobalProcessorUsage", 33],
+            [Rule::MINIMUM_GLOBAL_MEMORY_USAGE, "getMinimumGlobalMemoryUsage", 33],
+            [Rule::MAXIMUM_GLOBAL_MEMORY_USAGE, "getMaximumGlobalMemoryUsage", 33],
+            [Rule::MINIMUM_SIBLING_PROCESSOR_USAGE, "getMinimumSiblingProcessorUsage", 33],
+            [Rule::MAXIMUM_SIBLING_PROCESSOR_USAGE, "getMaximumSiblingProcessorUsage", 33],
+            [Rule::MINIMUM_SIBLING_MEMORY_USAGE, "getMinimumSiblingMemoryUsage", 33],
+            [Rule::MAXIMUM_SIBLING_MEMORY_USAGE, "getMaximumSiblingMemoryUsage", 33],
+        ];
     }
 }

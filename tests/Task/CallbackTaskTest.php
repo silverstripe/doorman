@@ -8,17 +8,12 @@ use AsyncPHP\Doorman\Tests\Test;
 /**
  * @covers AsyncPHP\Doorman\Task\CallbackTask
  */
-class CallbackTaskTest extends Test
+final class CallbackTaskTest extends Test
 {
     /**
      * @var CallbackTask
      */
-    protected $task;
-
-    /**
-     * @var callable
-     */
-    protected $callback;
+    private $task;
 
     /**
      * @inheritdoc
