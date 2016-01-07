@@ -40,7 +40,7 @@ Want to know how it works, without digging through the code? [Read this](https:/
 
 ## Motivation
 
-There are many great libraries that do something similar to this. They usually require PHP `5.4` or additional extensions. This library aims to make child process management simple, and supported everywhere.
+There are many great libraries that do something similar to this. They usually require additional extensions. This library aims to make child process management simple, and supported everywhere.
 
 Other great libraries that do similar stuff:
 
