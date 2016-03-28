@@ -57,6 +57,26 @@ final class ProcessManager implements Manager
      * @var null|string
      */
     private $worker;
+    
+    /**
+     * Get a list of the waiting tasks.
+     * 
+     * @return array
+     */
+    public function getWaiting()
+    {
+        return $this->waiting;
+    }
+    
+    /**
+     * Get a list of the running tasks.
+     * 
+     * @return array
+     */
+    public function getRunning()
+    {
+        return $this->running;
+    }
 
     /**
      * @inheritdoc
