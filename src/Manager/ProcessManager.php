@@ -562,7 +562,7 @@ final class ProcessManager implements Manager
             
             $this->getShell()->exec("kill -9 %s {$stdout} {$stderr} &", [
                 $task->getId(),
-            ]);`
+            ]);
 
             return true;
         }
