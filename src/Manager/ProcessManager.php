@@ -162,10 +162,13 @@ final class ProcessManager implements Manager
     private function stopSiblingTasks(Task $task)
     {
         $handler = $task->getHandler();
+        
+        $stdout = $this->getStdOut();
+        $stderr = $this->getStdErr();
 
         foreach ($this->running as $task) {
             if ($task->getHandler() === $handler && $task instanceof Process) {
-                $this->getShell()->exec("kill -9 %s", [
+                $this->getShell()->exec("kill -9 %s {$stdout} {$stderr} &", [
                     $task->getId(),
                 ]);
             }
