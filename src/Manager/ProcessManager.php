@@ -557,9 +557,12 @@ final class ProcessManager implements Manager
     private function killTask(Task $task)
     {
         if ($task instanceof Process) {
-            $this->getShell()->exec("kill -9 %s", [
+            $stdout = $this->getStdOut();
+            $stderr = $this->getStdErr();
+            
+            $this->getShell()->exec("kill -9 %s {$stdout} {$stderr} &", [
                 $task->getId(),
-            ]);
+            ]);`
 
             return true;
         }
