@@ -10,12 +10,12 @@ use AsyncPHP\Doorman\Tests\Test;
 /**
  * @covers AsyncPHP\Doorman\Manager\GroupProcessManager
  */
-class GroupProcessManagerTest extends Test
+final class GroupProcessManagerTest extends Test
 {
     /**
      * @var GroupProcessManager
      */
-    protected $manager;
+    private $manager;
 
     /**
      * @inheritdoc
@@ -34,36 +34,36 @@ class GroupProcessManagerTest extends Test
      */
     public function groupsExecuteInPredictableOrder()
     {
-        $this->unlink("task1");
-        $this->unlink("task2");
-        $this->unlink("task3");
-        $this->unlink("task4");
+        $this->unlink(__DIR__ . "/task1.temp");
+        $this->unlink(__DIR__ . "/task2.temp");
+        $this->unlink(__DIR__ . "/task3.temp");
+        $this->unlink(__DIR__ . "/task4.temp");
 
         $task1 = new ProcessCallbackTask(function () {
-            GroupProcessManagerTest::dawdle("task1");
+            (new GroupProcessManagerTest)->dawdle(__DIR__ . "/task1.temp");
         });
 
         $task2 = new ProcessCallbackTask(function () {
-            GroupProcessManagerTest::dawdle("task2");
+            (new GroupProcessManagerTest)->dawdle(__DIR__ . "/task2.temp");
         });
 
         $task3 = new ProcessCallbackTask(function () {
-            GroupProcessManagerTest::dawdle("task3");
+            (new GroupProcessManagerTest)->dawdle(__DIR__ . "/task3.temp");
         });
 
         $task4 = new ProcessCallbackTask(function () {
-            GroupProcessManagerTest::dawdle("task4");
+            (new GroupProcessManagerTest)->dawdle(__DIR__ . "/task4.temp");
         });
 
         $this->manager->addTask($task1);
-        $this->manager->addTaskGroup(array($task2, $task3));
+        $this->manager->addTaskGroup([$task2, $task3]);
         $this->manager->addTask($task4);
 
         while ($this->manager->tick()) {
-            $exists1 = $this->exists("task1");
-            $exists2 = $this->exists("task2");
-            $exists3 = $this->exists("task3");
-            $exists4 = $this->exists("task4");
+            $exists1 = file_exists(__DIR__ . "/task1.temp");
+            $exists2 = file_exists(__DIR__ . "/task2.temp");
+            $exists3 = file_exists(__DIR__ . "/task3.temp");
+            $exists4 = file_exists(__DIR__ . "/task4.temp");
 
             if ($exists1 && ($exists2 || $exists3)) {
                 $this->fail("task1 should not run at the same time as task2 and/or task3");
@@ -78,36 +78,16 @@ class GroupProcessManagerTest extends Test
     }
 
     /**
-     * @param string $name
+     * @param string $file
      */
-    protected function unlink($name)
+    public function dawdle($file)
     {
-        if ($this->exists($name)) {
-            unlink(__DIR__ . "/{$name}.temp");
-        }
-    }
-
-    /**
-     * @param string $name
-     *
-     * @return bool
-     */
-    protected function exists($name)
-    {
-        return file_exists(__DIR__ . "/{$name}.temp");
-    }
-
-    /**
-     * @param string $name
-     */
-    public static function dawdle($name)
-    {
-        touch(__DIR__ . "/{$name}.temp");
+        touch($file);
 
         for ($i = 0; $i < 5; $i++) {
             usleep(25000);
         }
 
-        unlink(__DIR__ . "/{$name}.temp");
+        $this->unlink($file);
     }
 }

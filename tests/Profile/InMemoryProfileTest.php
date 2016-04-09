@@ -9,12 +9,12 @@ use AsyncPHP\Doorman\Tests\Test;
 /**
  * @covers AsyncPHP\Doorman\Profile\InMemoryProfile
  */
-class InMemoryProfileTest extends Test
+final class InMemoryProfileTest extends Test
 {
     /**
      * @var InMemoryProfile
      */
-    protected $rule;
+    private $rule;
 
     /**
      * @inheritdoc
@@ -51,13 +51,13 @@ class InMemoryProfileTest extends Test
             return;
         });
 
-        return array(
-            array("getProcesses", "setProcesses", array($task)),
-            array("getProcessorLoad", "setProcessorLoad", 33.0),
-            array("getMemoryLoad", "setMemoryLoad", 33.0),
-            array("getSiblingProcesses", "setSiblingProcesses", array($task)),
-            array("getSiblingProcessorLoad", "setSiblingProcessorLoad", 33.0),
-            array("getSiblingMemoryLoad", "setSiblingMemoryLoad", 33.0),
-        );
+        return [
+            ["getProcesses", "setProcesses", [$task]],
+            ["getProcessorLoad", "setProcessorLoad", 33.0],
+            ["getMemoryLoad", "setMemoryLoad", 33.0],
+            ["getSiblingProcesses", "setSiblingProcesses", [$task]],
+            ["getSiblingProcessorLoad", "setSiblingProcessorLoad", 33.0],
+            ["getSiblingMemoryLoad", "setSiblingMemoryLoad", 33.0],
+        ];
     }
 }

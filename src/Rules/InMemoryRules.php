@@ -65,7 +65,7 @@ final class InMemoryRules implements Rules
         }
 
         foreach ($rules as $rule) {
-            if ($rule->getProcesses() === null) {
+            if ($rule->getLimit() === null) {
                 continue;
             }
 
@@ -101,7 +101,7 @@ final class InMemoryRules implements Rules
      */
     private function hasTooManyProcessesRunning(Rule $rule, Profile $profile)
     {
-        return $this->withinConstraints($rule, $profile) && count($profile->getProcesses()) >= $rule->getProcesses();
+        return $rule->getLimit() > 0 && $this->withinConstraints($rule, $profile) && count($profile->getProcesses()) >= $rule->getLimit();
     }
 
     /**
@@ -127,8 +127,8 @@ final class InMemoryRules implements Rules
      */
     private function withinProcessorConstraints(Rule $rule, Profile $profile)
     {
-        if ($rule->getMinimumProcessorUsage() !== null && $rule->getMaximumProcessorUsage() !== null) {
-            return $profile->getProcessorLoad() >= $rule->getMinimumProcessorUsage() && $profile->getProcessorLoad() <= $rule->getMaximumProcessorUsage();
+        if ($rule->getMinimumGlobalProcessorUsage() !== null && $rule->getMaximumGlobalProcessorUsage() !== null) {
+            return $profile->getProcessorLoad() >= $rule->getMinimumGlobalProcessorUsage() && $profile->getProcessorLoad() <= $rule->getMaximumGlobalProcessorUsage();
         }
 
         return false;
@@ -144,8 +144,8 @@ final class InMemoryRules implements Rules
      */
     private function withinMemoryConstraints(Rule $rule, Profile $profile)
     {
-        if ($rule->getMinimumMemoryUsage() !== null && $rule->getMaximumMemoryUsage() !== null) {
-            return $profile->getMemoryLoad() >= $rule->getMinimumMemoryUsage() && $profile->getMemoryLoad() <= $rule->getMaximumMemoryUsage();
+        if ($rule->getMinimumGlobalMemoryUsage() !== null && $rule->getMaximumGlobalMemoryUsage() !== null) {
+            return $profile->getMemoryLoad() >= $rule->getMinimumGlobalMemoryUsage() && $profile->getMemoryLoad() <= $rule->getMaximumGlobalMemoryUsage();
         }
 
         return false;
@@ -161,7 +161,7 @@ final class InMemoryRules implements Rules
      */
     private function hasTooManySiblingProcessesRunning(Rule $rule, Profile $profile)
     {
-        return $this->withinSiblingConstraints($rule, $profile) && count($profile->getSiblingProcesses()) >= $rule->getProcesses();
+        return $rule->getLimit() > 0 && $this->withinSiblingConstraints($rule, $profile) && count($profile->getSiblingProcesses()) >= $rule->getLimit();
     }
 
     /**
