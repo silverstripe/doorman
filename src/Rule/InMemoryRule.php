@@ -3,59 +3,11 @@
 namespace AsyncPHP\Doorman\Rule;
 
 use AsyncPHP\Doorman\Rule;
+use Concat\Config\Container\AbstractContainer;
+use Concat\Config\Container\Value;
 
-final class InMemoryRule implements Rule
+final class InMemoryRule extends AbstractContainer implements Rule
 {
-    /**
-     * @var null|int
-     */
-    private $processes;
-
-    /**
-     * @var null|string
-     */
-    private $handler;
-
-    /**
-     * @var null|float
-     */
-    private $minimumProcessorUsage;
-
-    /**
-     * @var null|float
-     */
-    private $maximumProcessorUsage;
-
-    /**
-     * @var null|float
-     */
-    private $minimumMemoryUsage;
-
-    /**
-     * @var null|float
-     */
-    private $maximumMemoryUsage;
-
-    /**
-     * @var null|float
-     */
-    private $minimumSiblingProcessorUsage;
-
-    /**
-     * @var null|float
-     */
-    private $maximumSiblingProcessorUsage;
-
-    /**
-     * @var null|float
-     */
-    private $minimumSiblingMemoryUsage;
-
-    /**
-     * @var null|float
-     */
-    private $maximumSiblingMemoryUsage;
-
     /**
      * @inheritdoc
      *
@@ -63,19 +15,7 @@ final class InMemoryRule implements Rule
      */
     public function getProcesses()
     {
-        return $this->processes;
-    }
-
-    /**
-     * @param int|null $processes
-     *
-     * @return $this
-     */
-    public function setProcesses($processes)
-    {
-        $this->processes = $processes;
-
-        return $this;
+        return $this->get("processes");
     }
 
     /**
@@ -85,19 +25,7 @@ final class InMemoryRule implements Rule
      */
     public function getHandler()
     {
-        return $this->handler;
-    }
-
-    /**
-     * @param null|string $handler
-     *
-     * @return $this
-     */
-    public function setHandler($handler)
-    {
-        $this->handler = $handler;
-
-        return $this;
+        return $this->get("handler");
     }
 
     /**
@@ -107,19 +35,7 @@ final class InMemoryRule implements Rule
      */
     public function getMinimumProcessorUsage()
     {
-        return $this->minimumProcessorUsage;
-    }
-
-    /**
-     * @param null|float $minimumProcessorUsage
-     *
-     * @return $this
-     */
-    public function setMinimumProcessorUsage($minimumProcessorUsage)
-    {
-        $this->minimumProcessorUsage = $minimumProcessorUsage;
-
-        return $this;
+        return $this->get("handlers.processor.minimum");
     }
 
     /**
@@ -129,19 +45,7 @@ final class InMemoryRule implements Rule
      */
     public function getMaximumProcessorUsage()
     {
-        return $this->maximumProcessorUsage;
-    }
-
-    /**
-     * @param null|float $maximumProcessorUsage
-     *
-     * @return $this
-     */
-    public function setMaximumProcessorUsage($maximumProcessorUsage)
-    {
-        $this->maximumProcessorUsage = $maximumProcessorUsage;
-
-        return $this;
+        return $this->get("handlers.processor.maximum");
     }
 
     /**
@@ -151,19 +55,7 @@ final class InMemoryRule implements Rule
      */
     public function getMinimumMemoryUsage()
     {
-        return $this->minimumMemoryUsage;
-    }
-
-    /**
-     * @param null|float $minimumMemoryUsage
-     *
-     * @return $this
-     */
-    public function setMinimumMemoryUsage($minimumMemoryUsage)
-    {
-        $this->minimumMemoryUsage = $minimumMemoryUsage;
-
-        return $this;
+        return $this->get("handlers.memory.minimum");
     }
 
     /**
@@ -173,19 +65,7 @@ final class InMemoryRule implements Rule
      */
     public function getMaximumMemoryUsage()
     {
-        return $this->maximumMemoryUsage;
-    }
-
-    /**
-     * @param null|float $maximumMemoryUsage
-     *
-     * @return $this
-     */
-    public function setMaximumMemoryUsage($maximumMemoryUsage)
-    {
-        $this->maximumMemoryUsage = $maximumMemoryUsage;
-
-        return $this;
+        return $this->get("handlers.memory.maximum");
     }
 
     /**
@@ -195,19 +75,7 @@ final class InMemoryRule implements Rule
      */
     public function getMinimumSiblingProcessorUsage()
     {
-        return $this->minimumSiblingProcessorUsage;
-    }
-
-    /**
-     * @param null|float $minimumSiblingProcessorUsage
-     *
-     * @return $this
-     */
-    public function setMinimumSiblingProcessorUsage($minimumSiblingProcessorUsage)
-    {
-        $this->minimumSiblingProcessorUsage = $minimumSiblingProcessorUsage;
-
-        return $this;
+        return $this->get("siblings.processor.minimum");
     }
 
     /**
@@ -217,19 +85,7 @@ final class InMemoryRule implements Rule
      */
     public function getMaximumSiblingProcessorUsage()
     {
-        return $this->maximumSiblingProcessorUsage;
-    }
-
-    /**
-     * @param null|float $maximumSiblingProcessorUsage
-     *
-     * @return $this
-     */
-    public function setMaximumSiblingProcessorUsage($maximumSiblingProcessorUsage)
-    {
-        $this->maximumSiblingProcessorUsage = $maximumSiblingProcessorUsage;
-
-        return $this;
+        return $this->get("siblings.processor.maximum");
     }
 
     /**
@@ -239,19 +95,7 @@ final class InMemoryRule implements Rule
      */
     public function getMinimumSiblingMemoryUsage()
     {
-        return $this->minimumSiblingMemoryUsage;
-    }
-
-    /**
-     * @param null|float $minimumSiblingMemoryUsage
-     *
-     * @return $this
-     */
-    public function setMinimumSiblingMemoryUsage($minimumSiblingMemoryUsage)
-    {
-        $this->minimumSiblingMemoryUsage = $minimumSiblingMemoryUsage;
-
-        return $this;
+        return $this->get("siblings.memory.minimum");
     }
 
     /**
@@ -261,18 +105,80 @@ final class InMemoryRule implements Rule
      */
     public function getMaximumSiblingMemoryUsage()
     {
-        return $this->maximumSiblingMemoryUsage;
+        return $this->get("siblings.memory.maximum");
     }
 
     /**
-     * @param null|float $maximumSiblingMemoryUsage
-     *
-     * @return $this
+     * @param array $parameters
      */
-    public function setMaximumSiblingMemoryUsage($maximumSiblingMemoryUsage)
+    public function __construct(array $parameters = [])
     {
-        $this->maximumSiblingMemoryUsage = $maximumSiblingMemoryUsage;
+        parent::__construct($parameters);
+    }
 
-        return $this;
+    /**
+     * @inheritdoc
+     *
+     * @return array
+     */
+    protected function getExpectedTypes()
+    {
+        return [
+            "handler" => [null, Value::TYPE_STRING],
+            "processes" => Value::TYPE_INTEGER,
+            "handlers" => [
+                "processor" => [
+                    "minimum" => Value::TYPE_FLOAT,
+                    "maximum" => Value::TYPE_FLOAT,
+                ],
+                "memory" => [
+                    "minimum" => Value::TYPE_FLOAT,
+                    "maximum" => Value::TYPE_FLOAT,
+                ],
+            ],
+            "siblings" => [
+                "processor" => [
+                    "minimum" => Value::TYPE_FLOAT,
+                    "maximum" => Value::TYPE_FLOAT,
+                ],
+                "memory" => [
+                    "minimum" => Value::TYPE_FLOAT,
+                    "maximum" => Value::TYPE_FLOAT,
+                ],
+            ],
+        ];
+    }
+
+    /**
+     * @inheritdoc
+     *
+     * @return array
+     */
+    protected function getDefaultValues()
+    {
+        return [
+            "handler" => null,
+            "processes" => -1,
+            "handlers" => [
+                "processor" => [
+                    "minimum" => 0,
+                    "maximum" => 100,
+                ],
+                "memory" => [
+                    "minimum" => 0,
+                    "maximum" => 100,
+                ],
+            ],
+            "siblings" => [
+                "processor" => [
+                    "minimum" => 0,
+                    "maximum" => 100,
+                ],
+                "memory" => [
+                    "minimum" => 0,
+                    "maximum" => 100,
+                ],
+            ],
+        ];
     }
 }
