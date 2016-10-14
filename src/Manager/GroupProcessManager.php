@@ -5,7 +5,7 @@ namespace AsyncPHP\Doorman\Manager;
 use AsyncPHP\Doorman\Manager;
 use AsyncPHP\Doorman\Task;
 
-final class GroupProcessManager implements Manager
+class GroupProcessManager implements Manager
 {
     /**
      * @var Manager
