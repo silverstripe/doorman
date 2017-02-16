@@ -1,5 +1,8 @@
 <?php
 
+# This file is generated, changes you make will be lost.
+# Make your changes in /Users/assertchris/Source/asyncphp/doorman/src/Profile/InMemoryProfile.pre instead.
+
 namespace AsyncPHP\Doorman\Profile;
 
 use AsyncPHP\Doorman\Process;
@@ -10,174 +13,90 @@ final class InMemoryProfile implements Profile
     /**
      * @var Process[]
      */
-    private $processes = [];
+    private $processes;
+
+    public function getProcesses(): array
+    {
+        return $this->processes ?: [];
+    }
+
+    public function setProcesses(array $value)
+    {
+        $this->processes = $value;
+    }
 
     /**
      * @var float
      */
     private $processorLoad;
 
+    public function getProcessorLoad(): float
+    {
+        return $this->processorLoad ?: 0.0;
+    }
+
+    public function setProcessorLoad(float $value)
+    {
+        $this->processorLoad = $value;
+    }
+
     /**
      * @var float
      */
     private $memoryLoad;
 
+    public function getMemoryLoad(): float
+    {
+        return $this->memoryLoad ?: 0.0;
+    }
+
+    public function setMemoryLoad(float $value)
+    {
+        $this->memoryLoad = $value;
+    }
+
     /**
      * @var Process[]
      */
-    private $siblingProcesses = [];
+    private $siblingProcesses;
+
+    public function getSiblingProcesses(): array
+    {
+        return $this->siblingProcesses ?: [];
+    }
+
+    public function setSiblingProcesses(array $value)
+    {
+        $this->siblingProcesses = $value;
+    }
 
     /**
      * @var float
      */
     private $siblingProcessorLoad;
 
+    public function getSiblingProcessorLoad(): float
+    {
+        return $this->siblingProcessorLoad ?: [];
+    }
+
+    public function setSiblingProcessorLoad(float $value)
+    {
+        $this->siblingProcessorLoad = $value;
+    }
+
     /**
      * @var float
      */
     private $siblingMemoryLoad;
 
-    /**
-     * @inheritdoc
-     *
-     * @return Process[]
-     */
-    public function getProcesses(): array
+    public function getSiblingMemoryLoad(): float
     {
-        return $this->processes;
+        return $this->siblingMemoryLoad ?: 0.0;
     }
 
-    /**
-     * @inheritdoc
-     *
-     * @param Process[] $processes
-     *
-     * @return $this
-     */
-    public function setProcesses(array $processes)
+    public function setSiblingMemoryLoad(float $value)
     {
-        $this->processes = $processes;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @return null|float
-     */
-    public function getProcessorLoad()
-    {
-        return $this->processorLoad;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @param float $processorLoad
-     *
-     * @return $this
-     */
-    public function setProcessorLoad(float $processorLoad)
-    {
-        $this->processorLoad = $processorLoad;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @return null|float
-     */
-    public function getMemoryLoad()
-    {
-        return $this->memoryLoad;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @param float $memoryLoad
-     *
-     * @return $this
-     */
-    public function setMemoryLoad(float $memoryLoad)
-    {
-        $this->memoryLoad = $memoryLoad;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @return Process[]
-     */
-    public function getSiblingProcesses(): array
-    {
-        return $this->siblingProcesses;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @param Process[] $siblingProcesses
-     *
-     * @return $this
-     */
-    public function setSiblingProcesses(array $siblingProcesses)
-    {
-        $this->siblingProcesses = $siblingProcesses;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @return null|float
-     */
-    public function getSiblingProcessorLoad()
-    {
-        return $this->siblingProcessorLoad;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @param float $siblingProcessorLoad
-     *
-     * @return $this
-     */
-    public function setSiblingProcessorLoad(float $siblingProcessorLoad)
-    {
-        $this->siblingProcessorLoad = $siblingProcessorLoad;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @return null|float
-     */
-    public function getSiblingMemoryLoad()
-    {
-        return $this->siblingMemoryLoad;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @param float $siblingMemoryLoad
-     *
-     * @return $this
-     */
-    public function setSiblingMemoryLoad(float $siblingMemoryLoad)
-    {
-        $this->siblingMemoryLoad = $siblingMemoryLoad;
-
-        return $this;
+        $this->siblingMemoryLoad = $value;
     }
 }

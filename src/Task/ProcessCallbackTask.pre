@@ -1,8 +1,5 @@
 <?php
 
-# This file is generated, changes you make will be lost.
-# Make your changes in /Users/assertchris/Source/asyncphp/doorman/src/Task/ProcessCallbackTask.pre instead.
-
 namespace AsyncPHP\Doorman\Task;
 
 use AsyncPHP\Doorman\Expires;
@@ -13,16 +10,14 @@ final class ProcessCallbackTask extends CallbackTask implements Expires, Process
     /**
      * @var int
      */
-    private $id;
+    private int $id {
+        get {
+            return $this->id ?: -1;
+        }
 
-    public function getId(): int
-    {
-        return $this->id ?: -1;
-    }
-
-    public function setId(int $value)
-    {
-        $this->id = $value;
+        set {
+            $this->id = $value;
+        }
     }
 
     /**

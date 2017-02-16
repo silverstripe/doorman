@@ -1,5 +1,8 @@
 <?php
 
+# This file is generated, changes you make will be lost.
+# Make your changes in /Users/assertchris/Source/asyncphp/doorman/src/Rule/InMemoryRule.pre instead.
+
 namespace AsyncPHP\Doorman\Rule;
 
 use AsyncPHP\Doorman\Rule;
@@ -11,268 +14,148 @@ final class InMemoryRule implements Rule
      */
     private $processes;
 
+    public function getProcesses()
+    {
+        return $this->processes;
+    }
+
+    public function setProcesses($value)
+    {
+        $this->processes = $value;
+    }
+
     /**
      * @var null|string
      */
     private $handler;
+
+    public function getHandler()
+    {
+        return $this->handler;
+    }
+
+    public function setHandler($value)
+    {
+        $this->handler = $value;
+    }
 
     /**
      * @var null|float
      */
     private $minimumProcessorUsage;
 
+    public function getMinimumProcessorUsage()
+    {
+        return $this->minimumProcessorUsage;
+    }
+
+    public function setMinimumProcessorUsage($value)
+    {
+        $this->minimumProcessorUsage = $value;
+    }
+
     /**
      * @var null|float
      */
     private $maximumProcessorUsage;
+
+    public function getMaximumProcessorUsage()
+    {
+        return $this->maximumProcessorUsage;
+    }
+
+    public function setMaximumProcessorUsage($value)
+    {
+        $this->maximumProcessorUsage = $value;
+    }
 
     /**
      * @var null|float
      */
     private $minimumMemoryUsage;
 
+    public function getMinimumMemoryUsage()
+    {
+        return $this->minimumMemoryUsage;
+    }
+
+    public function setMinimumMemoryUsage($value)
+    {
+        $this->minimumMemoryUsage = $value;
+    }
+
     /**
      * @var null|float
      */
     private $maximumMemoryUsage;
+
+    public function getMaximumMemoryUsage()
+    {
+        return $this->maximumMemoryUsage;
+    }
+
+    public function setMaximumMemoryUsage($value)
+    {
+        $this->maximumMemoryUsage = $value;
+    }
 
     /**
      * @var null|float
      */
     private $minimumSiblingProcessorUsage;
 
+    public function getMinimumSiblingProcessorUsage()
+    {
+        return $this->minimumSiblingProcessorUsage;
+    }
+
+    public function setMinimumSiblingProcessorUsage($value)
+    {
+        $this->minimumSiblingProcessorUsage = $value;
+    }
+
     /**
      * @var null|float
      */
     private $maximumSiblingProcessorUsage;
+
+    public function getMaximumSiblingProcessorUsage()
+    {
+        return $this->maximumSiblingProcessorUsage;
+    }
+
+    public function setMaximumSiblingProcessorUsage($value)
+    {
+        $this->maximumSiblingProcessorUsage = $value;
+    }
 
     /**
      * @var null|float
      */
     private $minimumSiblingMemoryUsage;
 
-    /**
-     * @var null|float
-     */
-    private $maximumSiblingMemoryUsage;
-
-    /**
-     * @inheritdoc
-     *
-     * @return null|int
-     */
-    public function getProcesses()
-    {
-        return $this->processes;
-    }
-
-    /**
-     * @param int $processes
-     *
-     * @return $this
-     */
-    public function setProcesses(int $processes)
-    {
-        $this->processes = $processes;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @return null|string
-     */
-    public function getHandler()
-    {
-        return $this->handler;
-    }
-
-    /**
-     * @param string $handler
-     *
-     * @return $this
-     */
-    public function setHandler(string $handler)
-    {
-        $this->handler = $handler;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @return null|float
-     */
-    public function getMinimumProcessorUsage()
-    {
-        return $this->minimumProcessorUsage;
-    }
-
-    /**
-     * @param float $minimumProcessorUsage
-     *
-     * @return $this
-     */
-    public function setMinimumProcessorUsage(float $minimumProcessorUsage)
-    {
-        $this->minimumProcessorUsage = $minimumProcessorUsage;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @return null|float
-     */
-    public function getMaximumProcessorUsage()
-    {
-        return $this->maximumProcessorUsage;
-    }
-
-    /**
-     * @param float $maximumProcessorUsage
-     *
-     * @return $this
-     */
-    public function setMaximumProcessorUsage(float $maximumProcessorUsage)
-    {
-        $this->maximumProcessorUsage = $maximumProcessorUsage;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @return null|float
-     */
-    public function getMinimumMemoryUsage()
-    {
-        return $this->minimumMemoryUsage;
-    }
-
-    /**
-     * @param float $minimumMemoryUsage
-     *
-     * @return $this
-     */
-    public function setMinimumMemoryUsage(float $minimumMemoryUsage)
-    {
-        $this->minimumMemoryUsage = $minimumMemoryUsage;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @return null|float
-     */
-    public function getMaximumMemoryUsage()
-    {
-        return $this->maximumMemoryUsage;
-    }
-
-    /**
-     * @param float $maximumMemoryUsage
-     *
-     * @return $this
-     */
-    public function setMaximumMemoryUsage(float $maximumMemoryUsage)
-    {
-        $this->maximumMemoryUsage = $maximumMemoryUsage;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @return null|float
-     */
-    public function getMinimumSiblingProcessorUsage()
-    {
-        return $this->minimumSiblingProcessorUsage;
-    }
-
-    /**
-     * @param float $minimumSiblingProcessorUsage
-     *
-     * @return $this
-     */
-    public function setMinimumSiblingProcessorUsage(float $minimumSiblingProcessorUsage)
-    {
-        $this->minimumSiblingProcessorUsage = $minimumSiblingProcessorUsage;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @return null|float
-     */
-    public function getMaximumSiblingProcessorUsage()
-    {
-        return $this->maximumSiblingProcessorUsage;
-    }
-
-    /**
-     * @param float $maximumSiblingProcessorUsage
-     *
-     * @return $this
-     */
-    public function setMaximumSiblingProcessorUsage(float $maximumSiblingProcessorUsage)
-    {
-        $this->maximumSiblingProcessorUsage = $maximumSiblingProcessorUsage;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @return null|float
-     */
     public function getMinimumSiblingMemoryUsage()
     {
         return $this->minimumSiblingMemoryUsage;
     }
 
-    /**
-     * @param float $minimumSiblingMemoryUsage
-     *
-     * @return $this
-     */
-    public function setMinimumSiblingMemoryUsage(float $minimumSiblingMemoryUsage)
+    public function setMinimumSiblingMemoryUsage($value)
     {
-        $this->minimumSiblingMemoryUsage = $minimumSiblingMemoryUsage;
-
-        return $this;
+        $this->minimumSiblingMemoryUsage = $value;
     }
 
     /**
-     * @inheritdoc
-     *
-     * @return null|float
+     * @var null|float
      */
+    private $maximumSiblingMemoryUsage;
+
     public function getMaximumSiblingMemoryUsage()
     {
         return $this->maximumSiblingMemoryUsage;
     }
 
-    /**
-     * @param float $maximumSiblingMemoryUsage
-     *
-     * @return $this
-     */
-    public function setMaximumSiblingMemoryUsage(float $maximumSiblingMemoryUsage)
+    public function setMaximumSiblingMemoryUsage($value)
     {
-        $this->maximumSiblingMemoryUsage = $maximumSiblingMemoryUsage;
-
-        return $this;
+        $this->maximumSiblingMemoryUsage = $value;
     }
 }

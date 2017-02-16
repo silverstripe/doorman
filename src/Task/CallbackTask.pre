@@ -1,8 +1,5 @@
 <?php
 
-# This file is generated, changes you make will be lost.
-# Make your changes in /Users/assertchris/Source/asyncphp/doorman/src/Task/CallbackTask.pre instead.
-
 namespace AsyncPHP\Doorman\Task;
 
 use AsyncPHP\Doorman\Task;

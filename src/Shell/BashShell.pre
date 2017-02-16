@@ -1,8 +1,5 @@
 <?php
 
-# This file is generated, changes you make will be lost.
-# Make your changes in /Users/assertchris/Source/asyncphp/doorman/src/Shell/BashShell.pre instead.
-
 namespace AsyncPHP\Doorman\Shell;
 
 use AsyncPHP\Doorman\Shell;

@@ -1,0 +1,87 @@
+<?php
+
+namespace AsyncPHP\Doorman\Profile;
+
+use AsyncPHP\Doorman\Process;
+use AsyncPHP\Doorman\Profile;
+
+final class InMemoryProfile implements Profile
+{
+    /**
+     * @var Process[]
+     */
+    private array $processes {
+        get {
+            return $this->processes ?: [];
+        }
+
+        set {
+            $this->processes = $value;
+        }
+    }
+
+    /**
+     * @var float
+     */
+    private float $processorLoad {
+        get {
+            return $this->processorLoad ?: 0.0;
+        }
+
+        set {
+            $this->processorLoad = $value;
+        }
+    }
+
+    /**
+     * @var float
+     */
+    private float $memoryLoad {
+        get {
+            return $this->memoryLoad ?: 0.0;
+        }
+
+        set {
+            $this->memoryLoad = $value;
+        }
+    }
+
+    /**
+     * @var Process[]
+     */
+    private array $siblingProcesses {
+        get {
+            return $this->siblingProcesses ?: [];
+        }
+
+        set {
+            $this->siblingProcesses = $value;
+        }
+    }
+
+    /**
+     * @var float
+     */
+    private float $siblingProcessorLoad {
+        get {
+            return $this->siblingProcessorLoad ?: [];
+        }
+
+        set {
+            $this->siblingProcessorLoad = $value;
+        }
+    }
+
+    /**
+     * @var float
+     */
+    private float $siblingMemoryLoad {
+        get {
+            return $this->siblingMemoryLoad ?: 0.0;
+        }
+
+        set {
+            $this->siblingMemoryLoad = $value;
+        }
+    }
+}

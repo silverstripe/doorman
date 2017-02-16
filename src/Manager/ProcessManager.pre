@@ -1,8 +1,5 @@
 <?php
 
-# This file is generated, changes you make will be lost.
-# Make your changes in /Users/assertchris/Source/asyncphp/doorman/src/Manager/ProcessManager.pre instead.
-
 namespace AsyncPHP\Doorman\Manager;
 
 use AsyncPHP\Doorman\Cancellable;
@@ -24,31 +21,27 @@ final class ProcessManager implements Manager
     /**
      * @var Task[]
      */
-    private $waiting;
+    private array $waiting {
+        get {
+            return $this->waiting ?: [];
+        }
 
-    public function getWaiting(): array
-    {
-        return $this->waiting ?: [];
-    }
-
-    public function setWaiting(array $value)
-    {
-        $this->waiting = $value;
+        set {
+            $this->waiting = $value;
+        }
     }
 
     /**
      * @var Task[]
      */
-    private $running;
+    private array $running {
+        get {
+            return $this->running ?: [];
+        }
 
-    public function getRunning(): array
-    {
-        return $this->running ?: [];
-    }
-
-    public function setRunning(array $value)
-    {
-        $this->running = $value;
+        set {
+            $this->running = $value;
+        }
     }
 
     /**
@@ -59,92 +52,82 @@ final class ProcessManager implements Manager
     /**
      * @var null|string
      */
-    private $logPath;
+    private $logPath {
+        get {
+            return $this->logPath;
+        }
 
-    public function getLogPath()
-    {
-        return $this->logPath;
-    }
-
-    public function setLogPath($value)
-    {
-        $this->logPath = $value;
+        set {
+            $this->logPath = $value;
+        }
     }
 
     /**
      * @var Rules
      */
-    private $rules;
+    private Rules $rules {
+        get {
+            if (is_null($this->rules)) {
+                $this->rules = $this->newRules();
+            }
 
-    public function getRules(): Rules
-    {
-        if (is_null($this->rules)) {
-            $this->rules = $this->newRules();
+            return $this->rules;
         }
 
-        return $this->rules;
-    }
-
-    public function setRules(Rules $value)
-    {
-        $this->rules = $value;
+        set {
+            $this->rules = $value;
+        }
     }
 
     /**
      * @var Shell
      */
-    private $shell;
+    private Shell $shell {
+        get {
+            if (is_null($this->shell)) {
+                $this->shell = $this->newShell();
+            }
 
-    public function getShell(): Shell
-    {
-        if (is_null($this->shell)) {
-            $this->shell = $this->newShell();
+            return $this->shell;
         }
 
-        return $this->shell;
-    }
-
-    public function setShell(Shell $value)
-    {
-        $this->shell = $value;
+        set {
+            $this->shell = $value;
+        }
     }
 
     /**
      * @var string
      */
-    private $binary;
+    private string $binary {
+        get {
+            if (is_null($this->binary)) {
+                $this->binary = PHP_BINDIR . "/php";
+            }
 
-    public function getBinary(): string
-    {
-        if (is_null($this->binary)) {
-            $this->binary = PHP_BINDIR . "/php";
+            return $this->binary;
         }
 
-        return $this->binary;
-    }
-
-    public function setBinary(string $value)
-    {
-        $this->binary = $value;
+        set {
+            $this->binary = $value;
+        }
     }
 
     /**
      * @var string
      */
-    private $worker;
+    private string $worker {
+        get {
+            if (is_null($this->worker)) {
+                $this->worker = realpath(.."/../../bin/worker.php");
+            }
 
-    public function getWorker(): string
-    {
-        if (is_null($this->worker)) {
-            $this->worker = realpath(__DIR__ ."/../../bin/worker.php");
+            return $this->worker;
         }
 
-        return $this->worker;
-    }
-
-    public function setWorker(string $value)
-    {
-        $this->worker = $valute;
+        set {
+            $this->worker = $valute;
+        }
     }
 
     /**
