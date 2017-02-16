@@ -246,7 +246,7 @@ final class ProcessManager implements Manager
             return true;
         }
 
-        $processes = array_filter($this->getRunning(), function (Task $task) {
+        $processes = array_filter($this->getRunning(), (Task $task) => {
             return $task instanceof Process;
         });
 
@@ -271,7 +271,7 @@ final class ProcessManager implements Manager
     {
         $stats = $this->getStatsForProcesses($processes);
 
-        $siblingProcesses = array_filter($processes, function (Task $next) use ($task) {
+        $siblingProcesses = array_filter($processes, (Task $next) => {
             return $next->getHandler() === $task->getHandler();
         });
 
@@ -418,7 +418,7 @@ final class ProcessManager implements Manager
             return true;
         }
 
-        $processes = array_filter($this->getRunning(), function (Task $task) {
+        $processes = array_filter($this->getRunning(), (Task $task) => {
             return $task instanceof Process;
         });
 

@@ -86,7 +86,7 @@ final class InMemoryRules implements Rules
      */
     private function getRulesForTask(Task $task): array
     {
-        return array_filter($this->rules, function (Rule $rule) use ($task) {
+        return array_filter($this->rules, (Rule $rule) => {
             return $rule->getHandler() === null || $rule->getHandler() === $task->getHandler();
         });
     }
