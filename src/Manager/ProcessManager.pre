@@ -21,12 +21,28 @@ final class ProcessManager implements Manager
     /**
      * @var Task[]
      */
-    private $waiting = [];
+    private array $waiting {
+        get {
+            return $this->waiting ?: [];
+        }
+
+        set {
+            $this->waiting = $value;
+        }
+    }
 
     /**
      * @var Task[]
      */
-    private $running = [];
+    private array $running {
+        get {
+            return $this->running ?: [];
+        }
+
+        set {
+            $this->running = $value;
+        }
+    }
 
     /**
      * @var null|SplObjectStorage
@@ -36,46 +52,82 @@ final class ProcessManager implements Manager
     /**
      * @var null|string
      */
-    private $logPath;
+    private $logPath {
+        get {
+            return $this->logPath;
+        }
 
-    /**
-     * @var null|Rules
-     */
-    private $rules;
-
-    /**
-     * @var null|Shell
-     */
-    protected $shell;
-
-    /**
-     * @var null|string
-     */
-    private $binary;
-
-    /**
-     * @var null|string
-     */
-    private $worker;
-    
-    /**
-     * Get a list of the waiting tasks.
-     * 
-     * @return array
-     */
-    public function getWaiting()
-    {
-        return $this->waiting;
+        set {
+            $this->logPath = $value;
+        }
     }
-    
+
     /**
-     * Get a list of the running tasks.
-     * 
-     * @return array
+     * @var Rules
      */
-    public function getRunning()
-    {
-        return $this->running;
+    private Rules $rules {
+        get {
+            if (is_null($this->rules)) {
+                $this->rules = $this->newRules();
+            }
+
+            return $this->rules;
+        }
+
+        set {
+            $this->rules = $value;
+        }
+    }
+
+    /**
+     * @var Shell
+     */
+    private Shell $shell {
+        get {
+            if (is_null($this->shell)) {
+                $this->shell = $this->newShell();
+            }
+
+            return $this->shell;
+        }
+
+        set {
+            $this->shell = $value;
+        }
+    }
+
+    /**
+     * @var string
+     */
+    private string $binary {
+        get {
+            if (is_null($this->binary)) {
+                $this->binary = PHP_BINDIR . "/php";
+            }
+
+            return $this->binary;
+        }
+
+        set {
+            $this->binary = $value;
+        }
+    }
+
+    /**
+     * @var string
+     */
+    private string $worker {
+        get {
+            if (is_null($this->worker)) {
+                $this->worker = realpath(.."/../../bin/worker.php");
+            }
+
+            return $this->worker;
+        }
+
+        set {
+            $this->worker = $valute;
+        }
     }
 
     /**
@@ -97,7 +149,7 @@ final class ProcessManager implements Manager
      *
      * @return bool
      */
-    public function tick()
+    public function tick(): bool
     {
         if (!$this->timings instanceof SplObjectStorage) {
             $this->timings = new SplObjectStorage();
@@ -106,7 +158,7 @@ final class ProcessManager implements Manager
         $waiting = [];
         $running = [];
 
-        foreach ($this->waiting as $task) {
+        foreach ($this->getWaiting() as $task) {
             if ($this->isTaskCancelled($task)) {
                 continue;
             }
@@ -140,7 +192,7 @@ final class ProcessManager implements Manager
             $this->running[] = $task;
         }
 
-        foreach ($this->running as $task) {
+        foreach ($this->getRunning() as $task) {
             if (!$this->canRemoveTask($task)) {
                 $running[] = $task;
             }
@@ -162,11 +214,11 @@ final class ProcessManager implements Manager
     private function stopSiblingTasks(Task $task)
     {
         $handler = $task->getHandler();
-        
+
         $stdout = $this->getStdOut();
         $stderr = $this->getStdErr();
 
-        foreach ($this->running as $task) {
+        foreach ($this->getRunning() as $task) {
             if ($task->getHandler() === $handler && $task instanceof Process) {
                 $this->getShell()->exec("kill -9 %s {$stdout} {$stderr} &", [
                     $task->getId(),
@@ -194,7 +246,7 @@ final class ProcessManager implements Manager
             return true;
         }
 
-        $processes = array_filter($this->running, function (Task $task) {
+        $processes = array_filter($this->getRunning(), (Task $task) => {
             return $task instanceof Process;
         });
 
@@ -219,7 +271,7 @@ final class ProcessManager implements Manager
     {
         $stats = $this->getStatsForProcesses($processes);
 
-        $siblingProcesses = array_filter($processes, function (Task $next) use ($task) {
+        $siblingProcesses = array_filter($processes, (Task $next) => {
             return $next->getHandler() === $task->getHandler();
         });
 
@@ -279,32 +331,6 @@ final class ProcessManager implements Manager
     }
 
     /**
-     * Gets or creates a Shell instance.
-     *
-     * @return Shell
-     */
-    public function getShell()
-    {
-        if ($this->shell === null) {
-            $this->shell = $this->newShell();
-        }
-
-        return $this->shell;
-    }
-
-    /**
-     * @param Shell $shell
-     *
-     * @return $this
-     */
-    public function setShell(Shell $shell)
-    {
-        $this->shell = $shell;
-
-        return $this;
-    }
-
-    /**
      * Creates a new Shell instance.
      *
      * @return Shell
@@ -325,32 +351,6 @@ final class ProcessManager implements Manager
     }
 
     /**
-     * Gets or creates a new Rules instance.
-     *
-     * @return Rules
-     */
-    public function getRules()
-    {
-        if ($this->rules === null) {
-            $this->rules = $this->newRules();
-        }
-
-        return $this->rules;
-    }
-
-    /**
-     * @param Rules $rules
-     *
-     * @return $this
-     */
-    public function setRules(Rules $rules)
-    {
-        $this->rules = $rules;
-
-        return $this;
-    }
-
-    /**
      * Creates a new Rules instance.
      *
      * @return Rules
@@ -358,58 +358,6 @@ final class ProcessManager implements Manager
     private function newRules()
     {
         return new InMemoryRules();
-    }
-
-    /**
-     * @param string $binary
-     *
-     * @return $this
-     */
-    public function setBinary($binary)
-    {
-        $this->binary = $binary;
-
-        return $this;
-    }
-
-    /**
-     * Gets the path of the PHP runtime.
-     *
-     * @return string
-     */
-    public function getBinary()
-    {
-        if ($this->binary === null) {
-            $this->binary = PHP_BINDIR . "/php";
-        }
-
-        return $this->binary;
-    }
-
-    /**
-     * @param string $worker
-     *
-     * @return $this
-     */
-    public function setWorker($worker)
-    {
-        $this->worker = $worker;
-
-        return $this;
-    }
-
-    /**
-     * Gets the path of the worker script.
-     *
-     * @return string
-     */
-    public function getWorker()
-    {
-        if ($this->worker === null) {
-            $this->worker = realpath(__DIR__ . "/../../bin/worker.php");
-        }
-
-        return $this->worker;
     }
 
     /**
@@ -424,26 +372,6 @@ final class ProcessManager implements Manager
         }
 
         return "> /dev/null";
-    }
-
-    /**
-     * @return null|string
-     */
-    public function getLogPath()
-    {
-        return $this->logPath;
-    }
-
-    /**
-     * @param string $logPath
-     *
-     * @return $this
-     */
-    public function setLogPath($logPath)
-    {
-        $this->logPath = $logPath;
-
-        return $this;
     }
 
     /**
@@ -490,7 +418,7 @@ final class ProcessManager implements Manager
             return true;
         }
 
-        $processes = array_filter($this->running, function (Task $task) {
+        $processes = array_filter($this->getRunning(), (Task $task) => {
             return $task instanceof Process;
         });
 
@@ -559,7 +487,7 @@ final class ProcessManager implements Manager
         if ($task instanceof Process) {
             $stdout = $this->getStdOut();
             $stderr = $this->getStdErr();
-            
+
             $this->getShell()->exec("kill -9 %s {$stdout} {$stderr} &", [
                 $task->getId(),
             ]);
@@ -596,7 +524,7 @@ final class ProcessManager implements Manager
 
     public function __destruct()
     {
-        foreach ($this->running as $task) {
+        foreach ($this->getRunning() as $task) {
             $this->killTask($task);
         }
     }

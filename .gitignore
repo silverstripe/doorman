@@ -2,3 +2,4 @@ vendor
 coverage
 composer.lock
 *.temp
+src/**/*.php

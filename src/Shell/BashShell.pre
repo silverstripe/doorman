@@ -14,7 +14,7 @@ final class BashShell implements Shell
      *
      * @return array
      */
-    public function exec($format, array $parameters = [])
+    public function exec($format, array $parameters = []): array
     {
         $parameters = array_map("escapeshellarg", $parameters);
 

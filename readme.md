@@ -8,7 +8,7 @@
 
 Child process management. Compatible from PHP `5.3` to PHP `7`. Needs no extensions.
 
-> `2.x` supports PHP `5.5.9` and upwards. If you need PHP `5.3/4` support, use a `1.x` release.
+> `3.x` supports PHP `7.0` and upwards. `2.x` supports PHP `5.5.9` and upwards. If you need PHP `5.4` support, use a `1.x` release.
 
 ## Usage
 
@@ -45,7 +45,7 @@ There are many great libraries that do something similar to this. They usually r
 Other great libraries that do similar stuff:
 
 - [React](https://github.com/reactphp/child-process)
-- [Icicle](https://github.com/icicleio/concurrent)
+- [Amp](https://github.com/amphp/parallel)
 
 ## Versioning
 

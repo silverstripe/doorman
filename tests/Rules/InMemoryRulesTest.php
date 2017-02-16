@@ -50,7 +50,6 @@ class InMemoryRulesTest extends Test
         $this->assertTrue($this->rules->canRunTask($task2, $profile2));
 
         $rule1 = new InMemoryRule();
-        $rule1->setProcesses(null);
         $rule1->setMinimumProcessorUsage(0);
         $rule1->setMaximumProcessorUsage(100);
 

@@ -1,0 +1,138 @@
+<?php
+
+namespace AsyncPHP\Doorman\Rule;
+
+use AsyncPHP\Doorman\Rule;
+
+final class InMemoryRule implements Rule
+{
+    /**
+     * @var null|int
+     */
+    private $processes {
+        get {
+            return $this->processes;
+        }
+
+        set {
+            $this->processes = $value;
+        }
+    }
+
+    /**
+     * @var null|string
+     */
+    private $handler {
+        get {
+            return $this->handler;
+        }
+
+        set {
+            $this->handler = $value;
+        }
+    }
+
+    /**
+     * @var null|float
+     */
+    private $minimumProcessorUsage {
+        get {
+            return $this->minimumProcessorUsage;
+        }
+
+        set {
+            $this->minimumProcessorUsage = $value;
+        }
+    }
+
+    /**
+     * @var null|float
+     */
+    private $maximumProcessorUsage {
+        get {
+            return $this->maximumProcessorUsage;
+        }
+
+        set {
+            $this->maximumProcessorUsage = $value;
+        }
+    }
+
+    /**
+     * @var null|float
+     */
+    private $minimumMemoryUsage {
+        get {
+            return $this->minimumMemoryUsage;
+        }
+
+        set {
+            $this->minimumMemoryUsage = $value;
+        }
+    }
+
+    /**
+     * @var null|float
+     */
+    private $maximumMemoryUsage {
+        get {
+            return $this->maximumMemoryUsage;
+        }
+
+        set {
+            $this->maximumMemoryUsage = $value;
+        }
+    }
+
+    /**
+     * @var null|float
+     */
+    private $minimumSiblingProcessorUsage {
+        get {
+            return $this->minimumSiblingProcessorUsage;
+        }
+
+        set {
+            $this->minimumSiblingProcessorUsage = $value;
+        }
+    }
+
+    /**
+     * @var null|float
+     */
+    private $maximumSiblingProcessorUsage {
+        get {
+            return $this->maximumSiblingProcessorUsage;
+        }
+
+        set {
+            $this->maximumSiblingProcessorUsage = $value;
+        }
+    }
+
+    /**
+     * @var null|float
+     */
+    private $minimumSiblingMemoryUsage {
+        get {
+            return $this->minimumSiblingMemoryUsage;
+        }
+
+        set {
+            $this->minimumSiblingMemoryUsage = $value;
+        }
+    }
+
+    /**
+     * @var null|float
+     */
+    private $maximumSiblingMemoryUsage {
+        get {
+            return $this->maximumSiblingMemoryUsage;
+        }
+
+        set {
+            $this->maximumSiblingMemoryUsage = $value;
+        }
+    }
+}

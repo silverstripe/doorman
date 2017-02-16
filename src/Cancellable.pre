@@ -9,5 +9,5 @@ interface Cancellable
      *
      * @return bool
      */
-    public function isCancelled();
+    public function isCancelled(): bool;
 }

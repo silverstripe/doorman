@@ -8,9 +8,17 @@ use AsyncPHP\Doorman\Process;
 final class ProcessCallbackTask extends CallbackTask implements Expires, Process
 {
     /**
-     * @var null|int
+     * @var int
      */
-    private $id;
+    private int $id {
+        get {
+            return $this->id ?: -1;
+        }
+
+        set {
+            $this->id = $value;
+        }
+    }
 
     /**
      * @var null|int
@@ -20,33 +28,9 @@ final class ProcessCallbackTask extends CallbackTask implements Expires, Process
     /**
      * @inheritdoc
      *
-     * @return null|int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * @inheritdoc
-     *
-     * @param int $id
-     *
-     * @return $this
-     */
-    public function setId($id)
-    {
-        $this->id = $id;
-
-        return $this;
-    }
-
-    /**
-     * @inheritdoc
-     *
      * @return int
      */
-    public function getExpiresIn()
+    public function getExpiresIn(): int
     {
         return -1;
     }
@@ -58,7 +42,7 @@ final class ProcessCallbackTask extends CallbackTask implements Expires, Process
      *
      * @return bool
      */
-    public function shouldExpire($startedAt)
+    public function shouldExpire(int $startedAt): bool
     {
         $this->expiredAt = time();
 
@@ -70,7 +54,7 @@ final class ProcessCallbackTask extends CallbackTask implements Expires, Process
      *
      * @return bool
      */
-    public function hasExpired()
+    public function hasExpired(): bool
     {
         return is_int($this->expiredAt);
     }

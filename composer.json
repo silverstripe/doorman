@@ -3,8 +3,11 @@
     "description": "Child process management",
     "license": "MIT",
     "require": {
-        "php": ">=5.5.9",
-        "jeremeamia/SuperClosure": "^2.0"
+        "php": "^7.0",
+        "jeremeamia/SuperClosure": "^2.0",
+        "pre/plugin": "^0.5.6",
+        "pre/class-accessors": "^0.3.4",
+        "pre/short-closures": "^0.3.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.7"
@@ -18,5 +21,7 @@
         "psr-4": {
             "AsyncPHP\\Doorman\\Tests\\": "tests"
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

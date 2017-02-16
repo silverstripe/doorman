@@ -7,7 +7,7 @@ interface Rule
     /**
      * Gets the number of processes that are allowed at once.
      *
-     * @return int
+     * @return null|int
      */
     public function getProcesses();
 

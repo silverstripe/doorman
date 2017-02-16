@@ -17,5 +17,5 @@ interface Manager
      *
      * @return bool
      */
-    public function tick();
+    public function tick(): bool;
 }

@@ -11,14 +11,14 @@ interface Task extends Serializable
      *
      * @return string
      */
-    public function getHandler();
+    public function getHandler(): string;
 
     /**
      * Gets the data collected in this task.
      *
      * @return array
      */
-    public function getData();
+    public function getData(): array;
 
     /**
      * Instructs a manager to ignore any rules that would prevent this task from being immediately
@@ -26,19 +26,19 @@ interface Task extends Serializable
      *
      * @return bool
      */
-    public function ignoresRules();
+    public function ignoresRules(): bool;
 
     /**
      * Instructs a manager to stop all tasks of the same type before running this task.
      *
      * @return bool
      */
-    public function stopsSiblings();
+    public function stopsSiblings(): bool;
 
     /**
      * Check if this task is able to be run
      *
      * @return bool
      */
-    public function canRunTask();
+    public function canRunTask(): bool;
 }

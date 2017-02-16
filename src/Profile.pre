@@ -12,25 +12,25 @@ interface Profile
     /**
      * @return Process[]
      */
-    public function getProcesses();
+    public function getProcesses(): array;
 
     /**
      * @param float $processorLoad
      */
-    public function setProcessorLoad($processorLoad);
+    public function setProcessorLoad(float $processorLoad);
 
     /**
-     * @return float
+     * @return null|float
      */
     public function getProcessorLoad();
 
     /**
      * @param float $memoryLoad
      */
-    public function setMemoryLoad($memoryLoad);
+    public function setMemoryLoad(float $memoryLoad);
 
     /**
-     * @return float
+     * @return null|float
      */
     public function getMemoryLoad();
 
@@ -42,25 +42,25 @@ interface Profile
     /**
      * @return Process[]
      */
-    public function getSiblingProcesses();
+    public function getSiblingProcesses(): array;
 
     /**
      * @param float $siblingProcessorLoad
      */
-    public function setSiblingProcessorLoad($siblingProcessorLoad);
+    public function setSiblingProcessorLoad(float $siblingProcessorLoad);
 
     /**
-     * @return float
+     * @return null|float
      */
     public function getSiblingProcessorLoad();
 
     /**
      * @param float $siblingMemoryLoad
      */
-    public function setSiblingMemoryLoad($siblingMemoryLoad);
+    public function setSiblingMemoryLoad(float $siblingMemoryLoad);
 
     /**
-     * @return float
+     * @return null|float
      */
     public function getSiblingMemoryLoad();
 }
