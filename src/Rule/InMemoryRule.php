@@ -59,7 +59,7 @@ final class InMemoryRule implements Rule
     /**
      * @inheritdoc
      *
-     * @return int|null
+     * @return null|int
      */
     public function getProcesses()
     {
@@ -67,11 +67,11 @@ final class InMemoryRule implements Rule
     }
 
     /**
-     * @param int|null $processes
+     * @param int $processes
      *
      * @return $this
      */
-    public function setProcesses($processes)
+    public function setProcesses(int $processes)
     {
         $this->processes = $processes;
 
@@ -89,11 +89,11 @@ final class InMemoryRule implements Rule
     }
 
     /**
-     * @param null|string $handler
+     * @param string $handler
      *
      * @return $this
      */
-    public function setHandler($handler)
+    public function setHandler(string $handler)
     {
         $this->handler = $handler;
 
@@ -111,11 +111,11 @@ final class InMemoryRule implements Rule
     }
 
     /**
-     * @param null|float $minimumProcessorUsage
+     * @param float $minimumProcessorUsage
      *
      * @return $this
      */
-    public function setMinimumProcessorUsage($minimumProcessorUsage)
+    public function setMinimumProcessorUsage(float $minimumProcessorUsage)
     {
         $this->minimumProcessorUsage = $minimumProcessorUsage;
 
@@ -133,11 +133,11 @@ final class InMemoryRule implements Rule
     }
 
     /**
-     * @param null|float $maximumProcessorUsage
+     * @param float $maximumProcessorUsage
      *
      * @return $this
      */
-    public function setMaximumProcessorUsage($maximumProcessorUsage)
+    public function setMaximumProcessorUsage(float $maximumProcessorUsage)
     {
         $this->maximumProcessorUsage = $maximumProcessorUsage;
 
@@ -155,11 +155,11 @@ final class InMemoryRule implements Rule
     }
 
     /**
-     * @param null|float $minimumMemoryUsage
+     * @param float $minimumMemoryUsage
      *
      * @return $this
      */
-    public function setMinimumMemoryUsage($minimumMemoryUsage)
+    public function setMinimumMemoryUsage(float $minimumMemoryUsage)
     {
         $this->minimumMemoryUsage = $minimumMemoryUsage;
 
@@ -177,11 +177,11 @@ final class InMemoryRule implements Rule
     }
 
     /**
-     * @param null|float $maximumMemoryUsage
+     * @param float $maximumMemoryUsage
      *
      * @return $this
      */
-    public function setMaximumMemoryUsage($maximumMemoryUsage)
+    public function setMaximumMemoryUsage(float $maximumMemoryUsage)
     {
         $this->maximumMemoryUsage = $maximumMemoryUsage;
 
@@ -199,11 +199,11 @@ final class InMemoryRule implements Rule
     }
 
     /**
-     * @param null|float $minimumSiblingProcessorUsage
+     * @param float $minimumSiblingProcessorUsage
      *
      * @return $this
      */
-    public function setMinimumSiblingProcessorUsage($minimumSiblingProcessorUsage)
+    public function setMinimumSiblingProcessorUsage(float $minimumSiblingProcessorUsage)
     {
         $this->minimumSiblingProcessorUsage = $minimumSiblingProcessorUsage;
 
@@ -221,11 +221,11 @@ final class InMemoryRule implements Rule
     }
 
     /**
-     * @param null|float $maximumSiblingProcessorUsage
+     * @param float $maximumSiblingProcessorUsage
      *
      * @return $this
      */
-    public function setMaximumSiblingProcessorUsage($maximumSiblingProcessorUsage)
+    public function setMaximumSiblingProcessorUsage(float $maximumSiblingProcessorUsage)
     {
         $this->maximumSiblingProcessorUsage = $maximumSiblingProcessorUsage;
 
@@ -243,11 +243,11 @@ final class InMemoryRule implements Rule
     }
 
     /**
-     * @param null|float $minimumSiblingMemoryUsage
+     * @param float $minimumSiblingMemoryUsage
      *
      * @return $this
      */
-    public function setMinimumSiblingMemoryUsage($minimumSiblingMemoryUsage)
+    public function setMinimumSiblingMemoryUsage(float $minimumSiblingMemoryUsage)
     {
         $this->minimumSiblingMemoryUsage = $minimumSiblingMemoryUsage;
 
@@ -265,11 +265,11 @@ final class InMemoryRule implements Rule
     }
 
     /**
-     * @param null|float $maximumSiblingMemoryUsage
+     * @param float $maximumSiblingMemoryUsage
      *
      * @return $this
      */
-    public function setMaximumSiblingMemoryUsage($maximumSiblingMemoryUsage)
+    public function setMaximumSiblingMemoryUsage(float $maximumSiblingMemoryUsage)
     {
         $this->maximumSiblingMemoryUsage = $maximumSiblingMemoryUsage;
 

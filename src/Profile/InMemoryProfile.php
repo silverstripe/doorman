@@ -15,12 +15,12 @@ final class InMemoryProfile implements Profile
     /**
      * @var float
      */
-    private $processorLoad = 0.0;
+    private $processorLoad;
 
     /**
      * @var float
      */
-    private $memoryLoad = 0.0;
+    private $memoryLoad;
 
     /**
      * @var Process[]
@@ -30,19 +30,19 @@ final class InMemoryProfile implements Profile
     /**
      * @var float
      */
-    private $siblingProcessorLoad = 0.0;
+    private $siblingProcessorLoad;
 
     /**
      * @var float
      */
-    private $siblingMemoryLoad = 0.0;
+    private $siblingMemoryLoad;
 
     /**
      * @inheritdoc
      *
      * @return Process[]
      */
-    public function getProcesses()
+    public function getProcesses(): array
     {
         return $this->processes;
     }
@@ -64,7 +64,7 @@ final class InMemoryProfile implements Profile
     /**
      * @inheritdoc
      *
-     * @return float
+     * @return null|float
      */
     public function getProcessorLoad()
     {
@@ -78,7 +78,7 @@ final class InMemoryProfile implements Profile
      *
      * @return $this
      */
-    public function setProcessorLoad($processorLoad)
+    public function setProcessorLoad(float $processorLoad)
     {
         $this->processorLoad = $processorLoad;
 
@@ -88,7 +88,7 @@ final class InMemoryProfile implements Profile
     /**
      * @inheritdoc
      *
-     * @return float
+     * @return null|float
      */
     public function getMemoryLoad()
     {
@@ -102,7 +102,7 @@ final class InMemoryProfile implements Profile
      *
      * @return $this
      */
-    public function setMemoryLoad($memoryLoad)
+    public function setMemoryLoad(float $memoryLoad)
     {
         $this->memoryLoad = $memoryLoad;
 
@@ -114,7 +114,7 @@ final class InMemoryProfile implements Profile
      *
      * @return Process[]
      */
-    public function getSiblingProcesses()
+    public function getSiblingProcesses(): array
     {
         return $this->siblingProcesses;
     }
@@ -136,7 +136,7 @@ final class InMemoryProfile implements Profile
     /**
      * @inheritdoc
      *
-     * @return float
+     * @return null|float
      */
     public function getSiblingProcessorLoad()
     {
@@ -150,7 +150,7 @@ final class InMemoryProfile implements Profile
      *
      * @return $this
      */
-    public function setSiblingProcessorLoad($siblingProcessorLoad)
+    public function setSiblingProcessorLoad(float $siblingProcessorLoad)
     {
         $this->siblingProcessorLoad = $siblingProcessorLoad;
 
@@ -160,7 +160,7 @@ final class InMemoryProfile implements Profile
     /**
      * @inheritdoc
      *
-     * @return float
+     * @return null|float
      */
     public function getSiblingMemoryLoad()
     {
@@ -174,7 +174,7 @@ final class InMemoryProfile implements Profile
      *
      * @return $this
      */
-    public function setSiblingMemoryLoad($siblingMemoryLoad)
+    public function setSiblingMemoryLoad(float $siblingMemoryLoad)
     {
         $this->siblingMemoryLoad = $siblingMemoryLoad;
 

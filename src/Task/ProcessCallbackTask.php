@@ -34,7 +34,7 @@ final class ProcessCallbackTask extends CallbackTask implements Expires, Process
      *
      * @return $this
      */
-    public function setId($id)
+    public function setId(int $id)
     {
         $this->id = $id;
 
@@ -46,7 +46,7 @@ final class ProcessCallbackTask extends CallbackTask implements Expires, Process
      *
      * @return int
      */
-    public function getExpiresIn()
+    public function getExpiresIn(): int
     {
         return -1;
     }
@@ -58,7 +58,7 @@ final class ProcessCallbackTask extends CallbackTask implements Expires, Process
      *
      * @return bool
      */
-    public function shouldExpire($startedAt)
+    public function shouldExpire(int $startedAt): bool
     {
         $this->expiredAt = time();
 
@@ -70,7 +70,7 @@ final class ProcessCallbackTask extends CallbackTask implements Expires, Process
      *
      * @return bool
      */
-    public function hasExpired()
+    public function hasExpired(): bool
     {
         return is_int($this->expiredAt);
     }

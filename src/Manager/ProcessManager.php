@@ -57,23 +57,23 @@ final class ProcessManager implements Manager
      * @var null|string
      */
     private $worker;
-    
+
     /**
      * Get a list of the waiting tasks.
-     * 
+     *
      * @return array
      */
-    public function getWaiting()
+    public function getWaiting(): array
     {
         return $this->waiting;
     }
-    
+
     /**
      * Get a list of the running tasks.
-     * 
+     *
      * @return array
      */
-    public function getRunning()
+    public function getRunning(): array
     {
         return $this->running;
     }
@@ -97,7 +97,7 @@ final class ProcessManager implements Manager
      *
      * @return bool
      */
-    public function tick()
+    public function tick(): bool
     {
         if (!$this->timings instanceof SplObjectStorage) {
             $this->timings = new SplObjectStorage();
@@ -162,7 +162,7 @@ final class ProcessManager implements Manager
     private function stopSiblingTasks(Task $task)
     {
         $handler = $task->getHandler();
-        
+
         $stdout = $this->getStdOut();
         $stderr = $this->getStdErr();
 
@@ -559,7 +559,7 @@ final class ProcessManager implements Manager
         if ($task instanceof Process) {
             $stdout = $this->getStdOut();
             $stderr = $this->getStdErr();
-            
+
             $this->getShell()->exec("kill -9 %s {$stdout} {$stderr} &", [
                 $task->getId(),
             ]);

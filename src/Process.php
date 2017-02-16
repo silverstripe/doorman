@@ -7,7 +7,7 @@ interface Process
     /**
      * @param int $id
      */
-    public function setId($id);
+    public function setId(int $id);
 
     /**
      * @return null|int

@@ -56,7 +56,7 @@ final class InMemoryRules implements Rules
      *
      * @return bool
      */
-    public function canRunTask(Task $task, Profile $profile)
+    public function canRunTask(Task $task, Profile $profile): bool
     {
         $rules = $this->getRulesForTask($task);
 
@@ -84,7 +84,7 @@ final class InMemoryRules implements Rules
      *
      * @return Rule[]
      */
-    private function getRulesForTask(Task $task)
+    private function getRulesForTask(Task $task): array
     {
         return array_filter($this->rules, function (Rule $rule) use ($task) {
             return $rule->getHandler() === null || $rule->getHandler() === $task->getHandler();
@@ -99,7 +99,7 @@ final class InMemoryRules implements Rules
      *
      * @return bool
      */
-    private function hasTooManyProcessesRunning(Rule $rule, Profile $profile)
+    private function hasTooManyProcessesRunning(Rule $rule, Profile $profile): bool
     {
         return $this->withinConstraints($rule, $profile) && count($profile->getProcesses()) >= $rule->getProcesses();
     }
@@ -112,7 +112,7 @@ final class InMemoryRules implements Rules
      *
      * @return bool
      */
-    private function withinConstraints(Rule $rule, Profile $profile)
+    private function withinConstraints(Rule $rule, Profile $profile): bool
     {
         return $this->withinProcessorConstraints($rule, $profile) || $this->withinMemoryConstraints($rule, $profile);
     }
@@ -125,7 +125,7 @@ final class InMemoryRules implements Rules
      *
      * @return bool
      */
-    private function withinProcessorConstraints(Rule $rule, Profile $profile)
+    private function withinProcessorConstraints(Rule $rule, Profile $profile): bool
     {
         if ($rule->getMinimumProcessorUsage() !== null && $rule->getMaximumProcessorUsage() !== null) {
             return $profile->getProcessorLoad() >= $rule->getMinimumProcessorUsage() && $profile->getProcessorLoad() <= $rule->getMaximumProcessorUsage();
@@ -142,7 +142,7 @@ final class InMemoryRules implements Rules
      *
      * @return bool
      */
-    private function withinMemoryConstraints(Rule $rule, Profile $profile)
+    private function withinMemoryConstraints(Rule $rule, Profile $profile): bool
     {
         if ($rule->getMinimumMemoryUsage() !== null && $rule->getMaximumMemoryUsage() !== null) {
             return $profile->getMemoryLoad() >= $rule->getMinimumMemoryUsage() && $profile->getMemoryLoad() <= $rule->getMaximumMemoryUsage();
@@ -159,7 +159,7 @@ final class InMemoryRules implements Rules
      *
      * @return bool
      */
-    private function hasTooManySiblingProcessesRunning(Rule $rule, Profile $profile)
+    private function hasTooManySiblingProcessesRunning(Rule $rule, Profile $profile): bool
     {
         return $this->withinSiblingConstraints($rule, $profile) && count($profile->getSiblingProcesses()) >= $rule->getProcesses();
     }
@@ -172,7 +172,7 @@ final class InMemoryRules implements Rules
      *
      * @return bool
      */
-    private function withinSiblingConstraints(Rule $rule, Profile $profile)
+    private function withinSiblingConstraints(Rule $rule, Profile $profile): bool
     {
         return $this->withinSiblingProcessorConstraints($rule, $profile) || $this->withinSiblingMemoryConstraints($rule, $profile);
     }
@@ -186,7 +186,7 @@ final class InMemoryRules implements Rules
      *
      * @return bool
      */
-    private function withinSiblingProcessorConstraints(Rule $rule, Profile $profile)
+    private function withinSiblingProcessorConstraints(Rule $rule, Profile $profile): bool
     {
         if ($rule->getMinimumSiblingProcessorUsage() !== null && $rule->getMaximumSiblingProcessorUsage() !== null) {
             return $profile->getSiblingProcessorLoad() >= $rule->getMinimumSiblingProcessorUsage() && $profile->getSiblingProcessorLoad() <= $rule->getMaximumSiblingProcessorUsage();
@@ -203,7 +203,7 @@ final class InMemoryRules implements Rules
      *
      * @return bool
      */
-    private function withinSiblingMemoryConstraints(Rule $rule, Profile $profile)
+    private function withinSiblingMemoryConstraints(Rule $rule, Profile $profile): bool
     {
         if ($rule->getMinimumSiblingMemoryUsage() !== null && $rule->getMaximumSiblingMemoryUsage() !== null) {
             return $profile->getSiblingMemoryLoad() >= $rule->getMinimumSiblingMemoryUsage() && $profile->getSiblingMemoryLoad() <= $rule->getMaximumSiblingMemoryUsage();

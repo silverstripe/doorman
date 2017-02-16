@@ -32,7 +32,7 @@ final class SynchronousManager implements Manager
      *
      * @return bool
      */
-    public function tick()
+    public function tick(): bool
     {
         foreach ($this->waiting as $task) {
             $handler = $task->getHandler();

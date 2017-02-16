@@ -67,7 +67,7 @@ final class GroupProcessManager implements Manager
      *
      * @return bool
      */
-    public function tick()
+    public function tick(): bool
     {
         if (!empty($this->queuing)) {
             $this->manager->addTask(array_shift($this->queuing));

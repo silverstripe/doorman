@@ -51,7 +51,7 @@ class CallbackTask implements Task
      *
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
         return [
             "closure" => $this->closure,
@@ -63,7 +63,7 @@ class CallbackTask implements Task
      *
      * @return string
      */
-    public function getHandler()
+    public function getHandler(): string
     {
         return "AsyncPHP\\Doorman\\Handler\\CallbackHandler";
     }
@@ -73,7 +73,7 @@ class CallbackTask implements Task
      *
      * @return bool
      */
-    public function ignoresRules()
+    public function ignoresRules(): bool
     {
         return false;
     }
@@ -83,7 +83,7 @@ class CallbackTask implements Task
      *
      * @return bool
      */
-    public function stopsSiblings()
+    public function stopsSiblings(): bool
     {
         return false;
     }
@@ -93,7 +93,7 @@ class CallbackTask implements Task
      *
      * @return bool
      */
-    public function canRunTask()
+    public function canRunTask(): bool
     {
         return true;
     }

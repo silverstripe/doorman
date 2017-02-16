@@ -26,5 +26,5 @@ interface Rules
      *
      * @return bool
      */
-    public function canRunTask(Task $task, Profile $profile);
+    public function canRunTask(Task $task, Profile $profile): bool;
 }

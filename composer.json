@@ -4,7 +4,9 @@
     "license": "MIT",
     "require": {
         "php": ">=5.5.9",
-        "jeremeamia/SuperClosure": "^2.0"
+        "jeremeamia/SuperClosure": "^2.0",
+        "pre/short-closures": "^0.3.1",
+        "pre/class-accessors": "^0.3.1"
     },
     "require-dev": {
         "phpunit/phpunit": "^4.7"
@@ -18,5 +20,7 @@
         "psr-4": {
             "AsyncPHP\\Doorman\\Tests\\": "tests"
         }
-    }
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
 }

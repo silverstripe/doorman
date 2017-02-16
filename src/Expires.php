@@ -19,5 +19,5 @@ interface Expires
      *
      * @return bool
      */
-    public function shouldExpire($startedAt);
+    public function shouldExpire(int $startedAt): bool;
 }
