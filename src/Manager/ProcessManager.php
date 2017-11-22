@@ -16,7 +16,7 @@ use AsyncPHP\Doorman\Shell\BashShell;
 use AsyncPHP\Doorman\Task;
 use SplObjectStorage;
 
-final class ProcessManager implements Manager
+class ProcessManager implements Manager
 {
     /**
      * @var Task[]
