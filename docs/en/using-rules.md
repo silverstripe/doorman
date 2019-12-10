@@ -9,18 +9,18 @@ use AsyncPHP\Doorman\Task\ProcessCallbackTask;
 
 $rule1 = new InMemoryRule();
 $rule1->setProcesses(2);
-$rule1->setMinimumProcessorLoad(0);
-$rule1->setMaximumProcessorLoad(50);
+$rule1->setMinimumProcessorUsage(0);
+$rule1->setMaximumProcessorUsage(50);
 
 $rule2 = new InMemoryRule();
 $rule2->setProcesses(1);
-$rule2->setMinimumProcessorLoad(51);
-$rule2->setMaximumProcessorLoad(75);
+$rule2->setMinimumProcessorUsage(51);
+$rule2->setMaximumProcessorUsage(75);
 
 $rule3 = new InMemoryRule();
 $rule3->setProcesses(0);
-$rule3->setMinimumProcessorLoad(76);
-$rule3->setMaximumProcessorLoad(100);
+$rule3->setMinimumProcessorUsage(76);
+$rule3->setMaximumProcessorUsage(100);
 
 $manager = new ProcessManager();
 
@@ -51,9 +51,9 @@ while ($manager->tick()) {
 
 You can also control when the rules apply to different memory loads and whether they only apply to loads of sibling processes or not:
 
-- `InMemoryRule->setMinimumMemoryLoad()`
-- `InMemoryRule->setMaximumMemoryLoad()`
-- `InMemoryRule->setMinimumSiblingProcessorLoad()`
-- `InMemoryRule->setMaximumSiblingProcessorLoad()`
-- `InMemoryRule->setMinimumSiblingMemoryLoad()`
-- `InMemoryRule->setMaximumSiblingMemoryLoad()`
+- `InMemoryRule->setMinimumMemoryUsage()`
+- `InMemoryRule->setMaximumMemoryUsage()`
+- `InMemoryRule->setMinimumSiblingProcessorUsage()`
+- `InMemoryRule->setMaximumSiblingProcessorUsage()`
+- `InMemoryRule->setMinimumSiblingMemoryUsage()`
+- `InMemoryRule->setMaximumSiblingMemoryUsage()`
