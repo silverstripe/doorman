@@ -16,7 +16,12 @@ use AsyncPHP\Doorman\Shell\BashShell;
 use AsyncPHP\Doorman\Task;
 use SplObjectStorage;
 
-final class ProcessManager implements Manager
+/**
+ * Class ProcessManager
+ *
+ * @package AsyncPHP\Doorman\Manager
+ */
+class ProcessManager implements Manager
 {
     /**
      * @var Task[]
@@ -129,7 +134,8 @@ final class ProcessManager implements Manager
                 $this->timings[$task] = time();
             }
 
-            $output = $this->getShell()->exec("{$binary} {$worker} %s {$stdout} {$stderr} & echo $!", [
+            $command = $this->getCommand($binary, $worker, $stdout, $stderr);
+            $output = $this->getShell()->exec($command, [
                 $this->getTaskString($task),
             ]);
 
@@ -150,6 +156,21 @@ final class ProcessManager implements Manager
         $this->running = $running;
 
         return !empty($waiting) || !empty($running);
+    }
+
+    /**
+     * Assemble the command
+     * this can be used to customise command by subclassing and overwriting this function
+     *
+     * @param string $binary
+     * @param string $worker
+     * @param string $stdout
+     * @param string $stderr
+     * @return string
+     */
+    protected function getCommand($binary, $worker, $stdout, $stderr)
+    {
+        return "{$binary} {$worker} %s {$stdout} {$stderr} & echo $!";
     }
 
     /**
