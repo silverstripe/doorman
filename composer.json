@@ -1,22 +1,22 @@
 {
-    "name": "asyncphp/doorman",
-    "description": "Child process management",
-    "license": "MIT",
-    "require": {
-        "php": ">=5.5.9",
-        "jeremeamia/SuperClosure": "^2.0"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^4.7"
-    },
-    "autoload": {
-        "psr-4": {
-            "AsyncPHP\\Doorman\\": "src"
-        }
-    },
-    "autoload-dev": {
-        "psr-4": {
-            "AsyncPHP\\Doorman\\Tests\\": "tests"
-        }
+  "name": "asyncphp/doorman",
+  "description": "Child process management",
+  "license": "MIT",
+  "require": {
+    "php": ">=5.5.9",
+    "jeremeamia/superclosure": "^2.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^4.8.36|^5.7.27"
+  },
+  "autoload": {
+    "psr-4": {
+      "AsyncPHP\\Doorman\\": "src"
     }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "AsyncPHP\\Doorman\\Tests\\": "tests"
+    }
+  }
 }
