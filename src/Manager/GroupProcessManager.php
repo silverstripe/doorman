@@ -81,7 +81,7 @@ final class GroupProcessManager implements Manager
             return false;
         }
 
-        $this->queuing = array_shift($this->waiting);
+        $this->queuing = [array_shift($this->waiting)];
 
         return true;
     }

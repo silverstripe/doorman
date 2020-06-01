@@ -12,7 +12,7 @@ final class BashShell implements Shell
      * @param string $format
      * @param array $parameters
      *
-     * @return array
+     * @return string
      */
     public function exec($format, array $parameters = [])
     {
