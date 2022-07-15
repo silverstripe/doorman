@@ -65,7 +65,7 @@ class ProcessManager implements Manager
     
     /**
      * Get a list of the waiting tasks.
-     * 
+     *
      * @return array
      */
     public function getWaiting()
@@ -75,7 +75,7 @@ class ProcessManager implements Manager
     
     /**
      * Get a list of the running tasks.
-     * 
+     *
      * @return array
      */
     public function getRunning()
