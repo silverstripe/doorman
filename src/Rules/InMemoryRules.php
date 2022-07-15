@@ -69,7 +69,12 @@ final class InMemoryRules implements Rules
                 continue;
             }
 
-            if (($rule->getHandler() === null || $rule->getHandler() === $task->getHandler()) && ($this->hasTooManyProcessesRunning($rule, $profile) || $this->hasTooManySiblingProcessesRunning($rule, $profile))) {
+            if (($rule->getHandler() === null || $rule->getHandler() === $task->getHandler()) &&
+                (
+                    $this->hasTooManyProcessesRunning($rule, $profile) ||
+                    $this->hasTooManySiblingProcessesRunning($rule, $profile)
+                )
+            ) {
                 return false;
             }
         }
@@ -128,7 +133,8 @@ final class InMemoryRules implements Rules
     private function withinProcessorConstraints(Rule $rule, Profile $profile)
     {
         if ($rule->getMinimumProcessorUsage() !== null && $rule->getMaximumProcessorUsage() !== null) {
-            return $profile->getProcessorLoad() >= $rule->getMinimumProcessorUsage() && $profile->getProcessorLoad() <= $rule->getMaximumProcessorUsage();
+            return $profile->getProcessorLoad() >= $rule->getMinimumProcessorUsage() &&
+                $profile->getProcessorLoad() <= $rule->getMaximumProcessorUsage();
         }
 
         return false;
@@ -145,7 +151,8 @@ final class InMemoryRules implements Rules
     private function withinMemoryConstraints(Rule $rule, Profile $profile)
     {
         if ($rule->getMinimumMemoryUsage() !== null && $rule->getMaximumMemoryUsage() !== null) {
-            return $profile->getMemoryLoad() >= $rule->getMinimumMemoryUsage() && $profile->getMemoryLoad() <= $rule->getMaximumMemoryUsage();
+            return $profile->getMemoryLoad() >= $rule->getMinimumMemoryUsage() &&
+                $profile->getMemoryLoad() <= $rule->getMaximumMemoryUsage();
         }
 
         return false;
@@ -161,7 +168,8 @@ final class InMemoryRules implements Rules
      */
     private function hasTooManySiblingProcessesRunning(Rule $rule, Profile $profile)
     {
-        return $this->withinSiblingConstraints($rule, $profile) && count($profile->getSiblingProcesses()) >= $rule->getProcesses();
+        return $this->withinSiblingConstraints($rule, $profile) &&
+            count($profile->getSiblingProcesses()) >= $rule->getProcesses();
     }
 
     /**
@@ -174,7 +182,8 @@ final class InMemoryRules implements Rules
      */
     private function withinSiblingConstraints(Rule $rule, Profile $profile)
     {
-        return $this->withinSiblingProcessorConstraints($rule, $profile) || $this->withinSiblingMemoryConstraints($rule, $profile);
+        return $this->withinSiblingProcessorConstraints($rule, $profile) ||
+            $this->withinSiblingMemoryConstraints($rule, $profile);
     }
 
     /**
@@ -189,7 +198,8 @@ final class InMemoryRules implements Rules
     private function withinSiblingProcessorConstraints(Rule $rule, Profile $profile)
     {
         if ($rule->getMinimumSiblingProcessorUsage() !== null && $rule->getMaximumSiblingProcessorUsage() !== null) {
-            return $profile->getSiblingProcessorLoad() >= $rule->getMinimumSiblingProcessorUsage() && $profile->getSiblingProcessorLoad() <= $rule->getMaximumSiblingProcessorUsage();
+            return $profile->getSiblingProcessorLoad() >= $rule->getMinimumSiblingProcessorUsage() &&
+                $profile->getSiblingProcessorLoad() <= $rule->getMaximumSiblingProcessorUsage();
         }
 
         return false;
@@ -206,7 +216,8 @@ final class InMemoryRules implements Rules
     private function withinSiblingMemoryConstraints(Rule $rule, Profile $profile)
     {
         if ($rule->getMinimumSiblingMemoryUsage() !== null && $rule->getMaximumSiblingMemoryUsage() !== null) {
-            return $profile->getSiblingMemoryLoad() >= $rule->getMinimumSiblingMemoryUsage() && $profile->getSiblingMemoryLoad() <= $rule->getMaximumSiblingMemoryUsage();
+            return $profile->getSiblingMemoryLoad() >= $rule->getMinimumSiblingMemoryUsage() &&
+                $profile->getSiblingMemoryLoad() <= $rule->getMaximumSiblingMemoryUsage();
         }
 
         return false;
