@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ruleset name="SilverStripe">
+    <description>CodeSniffer ruleset for SilverStripe coding conventions.</description>
+
+    <file>src</file>
+    <file>tests</file>
+
+    <!-- base rules are PSR-2 -->
+    <rule ref="PSR2" >
+        <!-- Current exclusions -->
+        <exclude name="PSR1.Files.SideEffects.FoundWithSymbols" />
+        <exclude name="PSR1.Methods.CamelCapsMethodName.NotCamelCaps" />
+    </rule>
+</ruleset>
