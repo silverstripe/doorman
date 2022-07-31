@@ -1,10 +1,6 @@
 # Doorman
 
-[![Build Status](http://img.shields.io/travis/silverstripe/doorman.svg?style=flat-square)](https://travis-ci.com/silverstripe/doorman)
-[![Code Quality](http://img.shields.io/scrutinizer/g/silverstripe/doorman.svg?style=flat-square)](https://scrutinizer-ci.com/g/silverstripe/doorman)
-[![Code Coverage](http://img.shields.io/scrutinizer/coverage/g/silverstripe/doorman.svg?style=flat-square)](https://scrutinizer-ci.com/g/silverstripe/doorman)
-[![Version](http://img.shields.io/packagist/v/asyncphp/doorman.svg?style=flat-square)](https://packagist.org/packages/asyncphp/doorman)
-[![License](http://img.shields.io/packagist/l/asyncphp/doorman.svg?style=flat-square)](license.md)
+[![CI](https://github.com/silverstripe/doorman/actions/workflows/ci.yml/badge.svg)](https://github.com/silverstripe/doorman/actions/workflows/ci.yml)
 
 Child process management. Compatible from PHP `5.3` to PHP `7`. Needs no extensions.
 
