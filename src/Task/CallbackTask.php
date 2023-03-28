@@ -21,28 +21,18 @@ class CallbackTask implements Task
         $this->closure = $closure;
     }
 
-    /**
-     * @inheritdoc
-     *
-     * @return string
-     */
-    public function serialize()
+    public function __serialize(): array
     {
         $closure = new SerializableClosure($this->closure);
-
-        return serialize($closure);
+        return [
+            'closure' => serialize($closure)
+        ];
     }
 
-    /**
-     * @inheritdoc
-     *
-     * @param string $serialized
-     */
-    public function unserialize($serialized)
+    public function __unserialize(array $data): void
     {
         /** @var SerializableClosure $closure */
-        $closure = unserialize($serialized);
-
+        $closure = unserialize($data['closure']);
         $this->closure = $closure->getClosure();
     }
 

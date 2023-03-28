@@ -2,9 +2,7 @@
 
 namespace AsyncPHP\Doorman;
 
-use Serializable;
-
-interface Task extends Serializable
+interface Task
 {
     /**
      * Gets the name of the handler class. This class will be used to handle this task.
@@ -41,4 +39,8 @@ interface Task extends Serializable
      * @return bool
      */
     public function canRunTask();
+
+    public function __serialize(): array;
+
+    public function __unserialize(array $data): void;
 }
