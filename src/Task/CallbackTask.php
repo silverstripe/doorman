@@ -25,6 +25,7 @@ class CallbackTask implements Task
      * @inheritdoc
      *
      * @return string
+     * @deprecated 3.13.0 Will be replaced with __serialize() in 4.0.0
      */
     public function serialize()
     {
@@ -37,6 +38,7 @@ class CallbackTask implements Task
      * @inheritdoc
      *
      * @param string $serialized
+     * @deprecated 3.13.0 Will be replaced with __unserialize() in 4.0.0
      */
     public function unserialize($serialized)
     {
