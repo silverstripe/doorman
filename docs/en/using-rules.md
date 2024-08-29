@@ -14,13 +14,13 @@ $rule1->setMaximumProcessorLoad(50);
 
 $rule2 = new InMemoryRule();
 $rule2->setProcesses(1);
-$rule2->setMinimumProcessorLoad(51);
-$rule2->setMaximumProcessorLoad(75);
+$rule2->setMinimumMemoryUsage(12);
+$rule2->setMaximumMemoryUsage(1200);
 
 $rule3 = new InMemoryRule();
 $rule3->setProcesses(0);
-$rule3->setMinimumProcessorLoad(76);
-$rule3->setMaximumProcessorLoad(100);
+$rule3->setMinimumSiblingProcessorUsage(0);
+$rule3->setMaximumSiblingProcessorUsage(2);
 
 $manager = new ProcessManager();
 
