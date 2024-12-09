@@ -5,21 +5,15 @@ namespace AsyncPHP\Doorman\Tests\Manager;
 use AsyncPHP\Doorman\Manager\GroupProcessManager;
 use AsyncPHP\Doorman\Manager\ProcessManager;
 use AsyncPHP\Doorman\Task\ProcessCallbackTask;
-use AsyncPHP\Doorman\Tests\Test;
+use PHPUnit\Framework\TestCase;
 
-/**
- * @covers AsyncPHP\Doorman\Manager\GroupProcessManager
- */
-class GroupProcessManagerTest extends Test
+class GroupProcessManagerTest extends TestCase
 {
     /**
      * @var GroupProcessManager
      */
     protected $manager;
 
-    /**
-     * @inheritdoc
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -29,11 +23,9 @@ class GroupProcessManagerTest extends Test
         );
     }
 
-    /**
-     * @test
-     */
-    public function groupsExecuteInPredictableOrder()
+    public function testGroupsExecuteInPredictableOrder()
     {
+        $this->expectNotToPerformAssertions();
         $this->unlink("task1");
         $this->unlink("task2");
         $this->unlink("task3");

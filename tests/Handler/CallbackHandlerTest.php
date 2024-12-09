@@ -4,21 +4,15 @@ namespace AsyncPHP\Doorman\Tests\Handler;
 
 use AsyncPHP\Doorman\Handler\CallbackHandler;
 use AsyncPHP\Doorman\Task\CallbackTask;
-use AsyncPHP\Doorman\Tests\Test;
+use PHPUnit\Framework\TestCase;
 
-/**
- * @covers AsyncPHP\Doorman\Handler\CallbackHandler
- */
-class CallbackHandlerTest extends Test
+class CallbackHandlerTest extends TestCase
 {
     /**
      * @var CallbackHandler
      */
     protected $handler;
 
-    /**
-     * @inheritdoc
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -26,10 +20,7 @@ class CallbackHandlerTest extends Test
         $this->handler = new CallbackHandler();
     }
 
-    /**
-     * @test
-     */
-    public function handlesCallbackTasks()
+    public function testHandlesCallbackTasks()
     {
         $store = 0;
 

@@ -3,21 +3,15 @@
 namespace AsyncPHP\Doorman\Tests\Shell;
 
 use AsyncPHP\Doorman\Shell\BashShell;
-use AsyncPHP\Doorman\Tests\Test;
+use PHPUnit\Framework\TestCase;
 
-/**
- * @covers AsyncPHP\Doorman\Shell\BashShell
- */
-class BashShellTest extends Test
+class BashShellTest extends TestCase
 {
     /**
      * @var BashShell
      */
     protected $shell;
 
-    /**
-     * @inheritdoc
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -25,10 +19,7 @@ class BashShellTest extends Test
         $this->shell = new BashShell();
     }
 
-    /**
-     * @test
-     */
-    public function executesShellCommands()
+    public function testExecutesShellCommands()
     {
         $this->assertEquals(array("hello world"), $this->shell->exec("echo %s", array("hello world")));
     }

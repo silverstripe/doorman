@@ -4,21 +4,16 @@ namespace AsyncPHP\Doorman\Tests\Profile;
 
 use AsyncPHP\Doorman\Profile\InMemoryProfile;
 use AsyncPHP\Doorman\Task\ProcessCallbackTask;
-use AsyncPHP\Doorman\Tests\Test;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @covers AsyncPHP\Doorman\Profile\InMemoryProfile
- */
-class InMemoryProfileTest extends Test
+class InMemoryProfileTest extends TestCase
 {
     /**
      * @var InMemoryProfile
      */
     protected $rule;
 
-    /**
-     * @inheritdoc
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -27,15 +22,12 @@ class InMemoryProfileTest extends Test
     }
 
     /**
-     * @test
-     *
-     * @dataProvider gettersAndSettersProvider
-     *
      * @param string $getter
      * @param string $setter
      * @param mixed $value
      */
-    public function gettersAndSettersWork($getter, $setter, $value)
+    #[DataProvider('provideGettersAndSetters')]
+    public function testGettersAndSettersWork($getter, $setter, $value)
     {
         $this->rule->$setter($value);
 
@@ -45,7 +37,7 @@ class InMemoryProfileTest extends Test
     /**
      * @return array
      */
-    public function gettersAndSettersProvider()
+    public static function provideGettersAndSetters()
     {
         $task = new ProcessCallbackTask(function () {
             return;

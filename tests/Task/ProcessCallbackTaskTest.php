@@ -3,21 +3,15 @@
 namespace AsyncPHP\Doorman\Tests\TAsk;
 
 use AsyncPHP\Doorman\Task\ProcessCallbackTask;
-use AsyncPHP\Doorman\Tests\Test;
+use PHPUnit\Framework\TestCase;
 
-/**
- * @covers AsyncPHP\Doorman\Task\ProcessCallbackTask
- */
-class ProcessCallbackTaskTest extends Test
+class ProcessCallbackTaskTest extends TestCase
 {
     /**
      * @var ProcessCallbackTask
      */
     protected $task;
 
-    /**
-     * @inheritdoc
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -27,10 +21,7 @@ class ProcessCallbackTaskTest extends Test
         });
     }
 
-    /**
-     * @test
-     */
-    public function gettersAndSettersWork()
+    public function testGettersAndSettersWork()
     {
         $this->task->setId(3);
 
