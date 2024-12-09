@@ -7,21 +7,15 @@ use AsyncPHP\Doorman\Rule\InMemoryRule;
 use AsyncPHP\Doorman\Rules\InMemoryRules;
 use AsyncPHP\Doorman\Shell\BashShell;
 use AsyncPHP\Doorman\Task\ProcessCallbackTask;
-use AsyncPHP\Doorman\Tests\Test;
+use PHPUnit\Framework\TestCase;
 
-/**
- * @covers AsyncPHP\Doorman\Manager\ProcessManager
- */
-class ProcessManagerTest extends Test
+class ProcessManagerTest extends TestCase
 {
     /**
      * @var ProcessManager
      */
     protected $manager;
 
-    /**
-     * @inheritdoc
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -29,10 +23,7 @@ class ProcessManagerTest extends Test
         $this->manager = new ProcessManager();
     }
 
-    /**
-     * @test
-     */
-    public function gettersAndSettersWork()
+    public function testGettersAndSettersWork()
     {
         $this->manager->setLogPath(__DIR__);
 
@@ -55,11 +46,9 @@ class ProcessManagerTest extends Test
         $this->assertEquals($rules, $this->manager->getRules());
     }
 
-    /**
-     * @test
-     */
-    public function basicRulesAndTasksWork()
+    public function testBasicRulesAndTasksWork()
     {
+        $this->expectNotToPerformAssertions();
         $task1 = new ProcessCallbackTask(function () {
             touch(__DIR__ . "/task1.temp");
 

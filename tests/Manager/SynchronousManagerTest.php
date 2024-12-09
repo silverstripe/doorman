@@ -4,21 +4,15 @@ namespace AsyncPHP\Doorman\Tests\Manager;
 
 use AsyncPHP\Doorman\Manager\SynchronousManager;
 use AsyncPHP\Doorman\Task\CallbackTask;
-use AsyncPHP\Doorman\Tests\Test;
+use PHPUnit\Framework\TestCase;
 
-/**
- * @covers AsyncPHP\Doorman\Manager\SynchronousManager
- */
-class SynchronousManagerTest extends Test
+class SynchronousManagerTest extends TestCase
 {
     /**
      * @var SynchronousManager
      */
     protected $manager;
 
-    /**
-     * @inheritdoc
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -26,10 +20,7 @@ class SynchronousManagerTest extends Test
         $this->manager = new SynchronousManager();
     }
 
-    /**
-     * @test
-     */
-    public function handlesCallbackTasks()
+    public function testHandlesCallbackTasks()
     {
         $task1 = new CallbackTask(function () {
             touch(__DIR__ . "/task1.tmp");
@@ -54,5 +45,12 @@ class SynchronousManagerTest extends Test
 
         $this->unlink(__DIR__ . "/task1.tmp");
         $this->unlink(__DIR__ . "/task2.tmp");
+    }
+
+    private function unlink($file)
+    {
+        if (file_exists($file)) {
+            unlink($file);
+        }
     }
 }

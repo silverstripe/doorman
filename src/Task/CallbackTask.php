@@ -4,7 +4,7 @@ namespace AsyncPHP\Doorman\Task;
 
 use AsyncPHP\Doorman\Task;
 use Closure;
-use Opis\Closure\SerializableClosure;
+use Laravel\SerializableClosure\SerializableClosure;
 
 class CallbackTask implements Task
 {

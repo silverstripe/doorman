@@ -3,21 +3,16 @@
 namespace AsyncPHP\Doorman\Tests\Rule;
 
 use AsyncPHP\Doorman\Rule\InMemoryRule;
-use AsyncPHP\Doorman\Tests\Test;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\Attributes\DataProvider;
 
-/**
- * @covers AsyncPHP\Doorman\Rule\InMemoryRule
- */
-class InMemoryRuleTest extends Test
+class InMemoryRuleTest extends TestCase
 {
     /**
      * @var InMemoryRule
      */
     protected $rule;
 
-    /**
-     * @inheritdoc
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -26,15 +21,12 @@ class InMemoryRuleTest extends Test
     }
 
     /**
-     * @test
-     *
-     * @dataProvider gettersAndSettersProvider
-     *
      * @param string $getter
      * @param string $setter
      * @param mixed $value
      */
-    public function gettersAndSettersWork($getter, $setter, $value)
+    #[DataProvider('provideGettersAndSetters')]
+    public function testGettersAndSettersWork($getter, $setter, $value)
     {
         $this->rule->$setter($value);
 
@@ -44,7 +36,7 @@ class InMemoryRuleTest extends Test
     /**
      * @return array
      */
-    public function gettersAndSettersProvider()
+    public static function provideGettersAndSetters()
     {
         return array(
             array("getProcesses", "setProcesses", 3),

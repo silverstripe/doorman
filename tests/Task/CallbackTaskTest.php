@@ -3,12 +3,9 @@
 namespace AsyncPHP\Doorman\Tests\Task;
 
 use AsyncPHP\Doorman\Task\CallbackTask;
-use AsyncPHP\Doorman\Tests\Test;
+use PHPUnit\Framework\TestCase;
 
-/**
- * @covers AsyncPHP\Doorman\Task\CallbackTask
- */
-class CallbackTaskTest extends Test
+class CallbackTaskTest extends TestCase
 {
     /**
      * @var CallbackTask
@@ -20,9 +17,6 @@ class CallbackTaskTest extends Test
      */
     protected $callback;
 
-    /**
-     * @inheritdoc
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -32,10 +26,7 @@ class CallbackTaskTest extends Test
         });
     }
 
-    /**
-     * @test
-     */
-    public function taskCanBeSerializedAndUnserialized()
+    public function testTaskCanBeSerializedAndUnserialized()
     {
         $serialized = serialize($this->task);
 
@@ -47,20 +38,14 @@ class CallbackTaskTest extends Test
         $this->assertEquals("hello world", $closure());
     }
 
-    /**
-     * @test
-     */
-    public function taskReturnsValidHandlerClass()
+    public function testTaskReturnsValidHandlerClass()
     {
         $class = $this->task->getHandler();
 
         $this->assertInstanceOf("AsyncPHP\\Doorman\\Handler", new $class());
     }
 
-    /**
-     * @test
-     */
-    public function taskAdheresToRulesAndAllowsSiblings()
+    public function testTaskAdheresToRulesAndAllowsSiblings()
     {
         $this->assertFalse($this->task->ignoresRules());
         $this->assertFalse($this->task->stopsSiblings());

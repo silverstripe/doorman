@@ -6,21 +6,15 @@ use AsyncPHP\Doorman\Profile\InMemoryProfile;
 use AsyncPHP\Doorman\Rule\InMemoryRule;
 use AsyncPHP\Doorman\Rules\InMemoryRules;
 use AsyncPHP\Doorman\Task\ProcessCallbackTask;
-use AsyncPHP\Doorman\Tests\Test;
+use PHPUnit\Framework\TestCase;
 
-/**
- * @covers AsyncPHP\Doorman\Rules\InMemoryRules
- */
-class InMemoryRulesTest extends Test
+class InMemoryRulesTest extends TestCase
 {
     /**
      * @var InMemoryRules
      */
     protected $rules;
 
-    /**
-     * @inheritdoc
-     */
     public function setUp(): void
     {
         parent::setUp();
@@ -28,10 +22,7 @@ class InMemoryRulesTest extends Test
         $this->rules = new InMemoryRules();
     }
 
-    /**
-     * @test
-     */
-    public function rulesLimitParallelProcesses()
+    public function testRulesLimitParallelProcesses()
     {
         $task1 = new ProcessCallbackTask(function () {
             return;
@@ -79,10 +70,7 @@ class InMemoryRulesTest extends Test
         $this->assertTrue($this->rules->canRunTask($task2, $profile2));
     }
 
-    /**
-     * @test
-     */
-    public function rulesLimitProcessorAndMemoryUsage()
+    public function testRulesLimitProcessorAndMemoryUsage()
     {
         $task1 = new ProcessCallbackTask(function () {
             return;
